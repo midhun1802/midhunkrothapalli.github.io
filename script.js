@@ -223,7 +223,7 @@ const commands = [
     output: [
       { text: '▸ Status   : OPEN TO OPPORTUNITIES', cls: 'line-green' },
       { text: '▸ Focus    : Senior Leadership Roles', cls: 'line-blue' },
-      { text: '▸ Location : Where ever the Job Demands (flexible)', cls: '' },
+      { text: '▸ Location : Houston, TX (flexible)', cls: '' },
     ]
   }
 ];
