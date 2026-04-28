@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Midhun Krothapalli — Lab Informatics & LIS Lead</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@300..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <a href="#main" class="sr-only skip-link">Skip to content</a>
+
+  <!-- NAV -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-label="MK Logo" xmlns="http://www.w3.org/2000/svg">
+          <rect width="32" height="32" rx="6" fill="#4fbecb"/>
+          <text x="4" y="22" font-family="monospace" font-weight="700" font-size="14" fill="white">MK</text>
+        </svg>
+        <span class="logo-text">Midhun Krothapalli</span>
+      </div>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#skills">Skills</a>
+        <a href="#achievements">Achievements</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="header-actions">
+        <button data-theme-toggle aria-label="Switch to light mode" class="theme-toggle">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="mobile-nav" id="mobileNav">
+      <a href="#about" class="mobile-link">About</a>
+      <a href="#experience" class="mobile-link">Experience</a>
+      <a href="#skills" class="mobile-link">Skills</a>
+      <a href="#achievements" class="mobile-link">Achievements</a>
+      <a href="#contact" class="mobile-link">Contact</a>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- HERO -->
+    <section class="hero-section">
+      <div class="container">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          <span class="mono">OPEN TO OPPORTUNITIES</span>
+        </div>
+        <h1 class="hero-heading">
+          Hi, I'm <span class="accent">Midhun Krothapalli</span><br/>
+          I build and <span class="accent">compliant</span> lab systems
+        </h1>
+        <p class="hero-sub">
+          Senior Lab Informatics &amp; LIS Lead with 10+ years designing, implementing,<br class="br-desktop"/>
+          and supporting laboratory and regulatory systems in pharma.
+        </p>
+
+        <div class="hero-stats">
+          <div class="stat-card">
+            <span class="stat-num" data-target="10">0</span><span class="stat-plus">+</span>
+            <span class="stat-label">Years Experience</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num" data-target="40">0</span><span class="stat-plus">%</span>
+            <span class="stat-label">Manual Effort Reduced</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-num" data-target="25">0</span><span class="stat-plus">%</span>
+            <span class="stat-label">Data Quality Improved</span>
+          </div>
+        </div>
+
+        <div class="terminal-card">
+          <div class="terminal-bar">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+            <span class="mono terminal-title">midhun@resume ~ bash</span>
+          </div>
+          <div class="terminal-body">
+            <div class="terminal-line">
+              <span class="prompt mono">$</span>
+              <span class="cmd mono" id="typedCmd"></span>
+              <span class="cursor mono" id="cursor">|</span>
+            </div>
+            <div class="terminal-output mono" id="terminalOutput"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="section" id="about">
+      <div class="container">
+        <div class="section-label mono">01 &mdash; ABOUT</div>
+        <h2 class="section-heading">About Me</h2>
+        <div class="about-grid">
+          <div class="about-text">
+            <p>I engineer laboratory and regulatory digital systems at the intersection of <strong>Life Sciences, GxP compliance, and enterprise technology</strong>. With 10+ years at Gilead Sciences, I've progressed from LIS support engineer to Digital Product Owner of enterprise lab platforms.</p>
+            <p>From implementing LIS/LIMS platforms to driving Veeva Vault RIMS integrations across global R&amp;D and GMP environments — I translate complex laboratory requirements into scalable, compliant, inspection-ready digital solutions.</p>
+            <p>I believe the best pharma digital systems are technically robust and audit-ready from day one. That's how I build them.</p>
+          </div>
+          <div class="about-stats-grid">
+            <div class="mini-stat">
+              <span class="mini-num">10+</span>
+              <span class="mini-label">Years at Gilead Sciences</span>
+            </div>
+            <div class="mini-stat">
+              <span class="mini-num">4+</span>
+              <span class="mini-label">Roles &amp; Promotions</span>
+            </div>
+            <div class="mini-stat">
+              <span class="mini-num">GxP</span>
+              <span class="mini-label">Compliance Expert</span>
+            </div>
+            <div class="mini-stat">
+              <span class="mini-num">RIMS</span>
+              <span class="mini-label">Veeva Vault Lead</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section class="section section-alt" id="experience">
+      <div class="container">
+        <div class="section-label mono">02 &mdash; EXPERIENCE</div>
+        <h2 class="section-heading">Work Experience</h2>
+        <div class="timeline">
+
+          <div class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <div class="timeline-meta">
+                <span class="role-tag mono">CURRENT</span>
+                <span class="period mono">Jan 2024 — Present</span>
+              </div>
+              <h3>System Manager — Scientific Applications</h3>
+              <p class="company">Gilead Sciences &middot; Digital Product Owner &middot; Foster City, CA</p>
+              <ul class="bullet-list">
+                <li>Lead strategy, governance, and lifecycle management for LIS/LIMS and laboratory digital platforms</li>
+                <li>Partner with Quality, Regulatory, and R&amp;D stakeholders to deliver compliant lab workflows and data management</li>
+                <li>Support regulatory processes through Veeva Vault RIMS platform administration and integrations</li>
+                <li>Drive cross-platform integrations between LIS, ELN, SDMS, and regulatory systems</li>
+                <li>Define and execute multi-year roadmap for laboratory digital platforms</li>
+              </ul>
+              <div class="achievements-chips">
+                <span class="chip">+25% data quality</span>
+                <span class="chip">Global lab standardization</span>
+                <span class="chip">Real-time analytics</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <div class="timeline-meta">
+                <span class="period mono">Sep 2022 — Jan 2024</span>
+              </div>
+              <h3>Scientific Data Management — LIS Project Lead</h3>
+              <p class="company">Gilead Sciences &middot; Foster City, CA</p>
+              <ul class="bullet-list">
+                <li>Served as technical and functional lead for LIS implementations and enhancements</li>
+                <li>Partnered with regulatory and quality teams for Veeva RIMS data integration and tracking</li>
+                <li>Designed laboratory data pipelines improving traceability and compliance reporting</li>
+                <li>Delivered system enhancements aligned with GxP validation and audit requirements</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <div class="timeline-meta">
+                <span class="period mono">Jan 2020 — Sep 2022</span>
+              </div>
+              <h3>Lab Information Systems — Senior Administrator</h3>
+              <p class="company">Gilead Sciences &middot; Foster City, CA</p>
+              <ul class="bullet-list">
+                <li>Implemented LIS workflow improvements reducing turnaround time by 20%</li>
+                <li>Supported instrument integration, sample lifecycle tracking, and laboratory reporting</li>
+                <li>Produced validation documentation including IQ/OQ/PQ, risk assessments, and change controls</li>
+                <li>Maintained compliance with 21 CFR Part 11 and GAMP5 standards</li>
+              </ul>
+              <div class="achievements-chips">
+                <span class="chip">-20% turnaround time</span>
+                <span class="chip">21 CFR Part 11</span>
+                <span class="chip">GAMP5</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <div class="timeline-meta">
+                <span class="period mono">2016 — 2020</span>
+              </div>
+              <h3>Progressive Growth — Lab Systems Leadership</h3>
+              <p class="company">Gilead Sciences &middot; LIS Support &rarr; Admin &rarr; Senior Admin &rarr; Validation Engineer</p>
+              <ul class="bullet-list">
+                <li>Supported Digital Quality Lab Systems in GMP and R&amp;D environments</li>
+                <li>Integrated instruments, data pipelines, and reporting tools to improve reliability</li>
+                <li>Authored validation documentation, risk assessments, and formal change controls aligned with GxP</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="timeline-item reveal edu-item">
+            <div class="timeline-dot edu-dot"></div>
+            <div class="timeline-content">
+              <div class="timeline-meta">
+                <span class="role-tag edu-tag mono">EDUCATION</span>
+              </div>
+              <h3>Master of Science — Computer Science</h3>
+              <p class="company">Silicon Valley University &middot; San Jose, CA</p>
+            </div>
+          </div>
+
+          <div class="timeline-item reveal edu-item">
+            <div class="timeline-dot edu-dot"></div>
+            <div class="timeline-content">
+              <div class="timeline-meta">
+                <span class="role-tag edu-tag mono">EDUCATION</span>
+              </div>
+              <h3>Bachelor of Technology — Mechanical Engineering</h3>
+              <p class="company">Jawaharlal Nehru Technological University (JNTU) &middot; Kakinada, India</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section class="section" id="skills">
+      <div class="container">
+        <div class="section-label mono">03 &mdash; SKILLS</div>
+        <h2 class="section-heading">Skills &amp; Technologies</h2>
+        <div class="skills-grid">
+          <div class="skill-group reveal">
+            <div class="skill-group-title">Lab Informatics</div>
+            <div class="skill-tags">
+              <span class="tag">LIS / LIMS</span>
+              <span class="tag">ELN (BIOVIA / Benchling)</span>
+              <span class="tag">SDMS</span>
+              <span class="tag">Instrument Integrations</span>
+              <span class="tag">Data Pipelines</span>
+              <span class="tag">Analytical Reporting</span>
+            </div>
+          </div>
+          <div class="skill-group reveal">
+            <div class="skill-group-title">Regulatory Platforms</div>
+            <div class="skill-tags">
+              <span class="tag">Veeva Vault RIMS</span>
+              <span class="tag">Regulatory Submissions</span>
+              <span class="tag">Document Management</span>
+              <span class="tag">Health Authority Tracking</span>
+              <span class="tag">Data Governance</span>
+            </div>
+          </div>
+          <div class="skill-group reveal">
+            <div class="skill-group-title">Compliance &amp; Validation</div>
+            <div class="skill-tags">
+              <span class="tag">GxP (GMP / GLP / GCP)</span>
+              <span class="tag">21 CFR Part 11</span>
+              <span class="tag">Annex 11</span>
+              <span class="tag">GAMP 5</span>
+              <span class="tag">HIPAA / GDPR</span>
+              <span class="tag">CLIA / CAP</span>
+              <span class="tag">CSV / CSA</span>
+              <span class="tag">IQ / OQ / PQ</span>
+            </div>
+          </div>
+          <div class="skill-group reveal">
+            <div class="skill-group-title">Digital Quality Systems</div>
+            <div class="skill-tags">
+              <span class="tag">MES</span>
+              <span class="tag">QMS</span>
+              <span class="tag">EDC</span>
+              <span class="tag">RIMS</span>
+            </div>
+          </div>
+          <div class="skill-group reveal">
+            <div class="skill-group-title">Technical Stack</div>
+            <div class="skill-tags">
+              <span class="tag">Python</span>
+              <span class="tag">PowerShell</span>
+              <span class="tag">Bash</span>
+              <span class="tag">Oracle (10g / 19c)</span>
+              <span class="tag">SQL Server</span>
+              <span class="tag">AWS Cloud</span>
+              <span class="tag">Linux</span>
+              <span class="tag">Apache Tomcat</span>
+              <span class="tag">WebLogic</span>
+            </div>
+          </div>
+          <div class="skill-group reveal">
+            <div class="skill-group-title">Product &amp; Project</div>
+            <div class="skill-tags">
+              <span class="tag">Agile / Scrum / Kanban</span>
+              <span class="tag">JIRA</span>
+              <span class="tag">ServiceNow</span>
+              <span class="tag">Product Roadmapping</span>
+              <span class="tag">User Story Development</span>
+              <span class="tag">Stakeholder Management</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACHIEVEMENTS -->
+    <section class="section section-alt" id="achievements">
+      <div class="container">
+        <div class="section-label mono">04 &mdash; ACHIEVEMENTS</div>
+        <h2 class="section-heading">Key Achievements</h2>
+        <div class="achievements-grid">
+          <div class="achievement-card reveal">
+            <div class="ach-icon mono">01</div>
+            <p>Led <strong>enterprise LIS platform governance</strong> supporting global laboratories across Gilead Sciences</p>
+          </div>
+          <div class="achievement-card reveal">
+            <div class="ach-icon mono">02</div>
+            <p>Implemented integrations across <strong>LIS, ELN, SDMS, and Veeva RIMS</strong> in GxP-regulated environments</p>
+          </div>
+          <div class="achievement-card reveal">
+            <div class="ach-icon mono">03</div>
+            <p>Reduced manual laboratory data handling by <strong>40%</strong> through workflow automation and digital solutions</p>
+          </div>
+          <div class="achievement-card reveal">
+            <div class="ach-icon mono">04</div>
+            <p>Enabled <strong>real-time operational dashboards</strong> for laboratory and regulatory data across R&amp;D and Quality</p>
+          </div>
+          <div class="achievement-card reveal">
+            <div class="ach-icon mono">05</div>
+            <p>Delivered systems supporting <strong>global GxP compliance and inspection readiness</strong> across multiple sites</p>
+          </div>
+          <div class="achievement-card reveal">
+            <div class="ach-icon mono">06</div>
+            <p>Improved laboratory data quality and usability by <strong>25%</strong> through workflow optimization and governance improvements</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section contact-section" id="contact">
+      <div class="container contact-inner">
+        <div class="section-label mono">05 &mdash; CONTACT</div>
+        <h2 class="section-heading">Get In Touch</h2>
+        <p class="contact-sub">Open to senior leadership opportunities in lab informatics, regulatory systems, and pharma digital transformation. Let's connect.</p>
+        <div class="contact-links">
+          <a href="mailto:Midhunkrothapalli@yahoo.com" class="contact-card">
+            <span class="mono contact-label">EMAIL</span>
+            <span>Midhunkrothapalli@yahoo.com</span>
+          </a>
+          <a href="tel:3463231393" class="contact-card">
+            <span class="mono contact-label">PHONE</span>
+            <span>(346) 323-1393</span>
+          </a>
+          <a href="https://www.linkedin.com/in/midhun-krishna-939214162/" target="_blank" rel="noopener noreferrer" class="contact-card">
+            <span class="mono contact-label">LINKEDIN</span>
+            <span>Connect on LinkedIn &rarr;</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span class="mono footer-text">&copy; 2026 Midhun Krothapalli</span>
+      <span class="mono footer-text">Built with purpose.</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
