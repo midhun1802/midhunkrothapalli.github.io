@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Midhun's Knowledge Base</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+  /* ─── TOKENS ─── */
+  :root {
+    --bg:        #09090b;
+    --surface:   #111113;
+    --surface2:  #18181b;
+    --surface3:  #1f1f24;
+    --border:    #27272a;
+    --border2:   #3f3f46;
+    --text:      #fafafa;
+    --text2:     #a1a1aa;
+    --text3:     #52525b;
+    --gold:      #d4a853;
+    --gold2:     #f0c878;
+    --gold-bg:   rgba(212,168,83,0.07);
+    --gold-glow: rgba(212,168,83,0.15);
+    --red:       #ef4444;
+    --green:     #22c55e;
+    --r: 8px;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html, body {
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+  }
+
+  /* ═══════════════════════════════
+     NOISE OVERLAY
+  ═══════════════════════════════ */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* ═══════════════════════════════
+     RADIAL GLOW
+  ═══════════════════════════════ */
+  .glow-orb {
+    position: fixed;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,168,83,0.06) 0%, transparent 70%);
+    top: -200px; left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ═══════════════════════════════
+     LAYOUT WRAPPER
+  ═══════════════════════════════ */
+  .page {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ═══════════════════════════════
+     HEADER
+  ═══════════════════════════════ */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(9,9,11,0.8);
+    backdrop-filter: blur(12px);
+    position: sticky; top: 0;
+    z-index: 50;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo-mark {
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--gold);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Instrument Serif', serif;
+    font-size: 18px;
+    color: var(--gold);
+    background: var(--gold-bg);
+  }
+
+  .logo-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+
+  .logo-sub {
+    font-size: 11px;
+    color: var(--text3);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.06em;
+  }
+
+  .header-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text3);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 6px 12px;
+    border-radius: 99px;
+  }
+
+  .lock-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--red);
+    transition: background 0.3s;
+  }
+
+  .lock-dot.unlocked { background: var(--green); }
+
+  /* ═══════════════════════════════
+     HERO / LOCK GATE
+  ═══════════════════════════════ */
+  .gate-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 24px;
+  }
+
+  /* ─── LOCK GATE (shown when locked) ─── */
+  #lockGate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 440px;
+    width: 100%;
+    animation: fadeIn 0.5s ease both;
+  }
+
+  @keyframes fadeIn {
+    from { opacity:0; transform: translateY(16px); }
+    to   { opacity:1; transform: translateY(0); }
+  }
+
+  .lock-icon {
+    width: 72px; height: 72px;
+    border: 1.5px solid var(--gold);
+    border-radius: 16px;
+    background: var(--gold-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin-bottom: 28px;
+    box-shadow: 0 0 40px var(--gold-glow);
+    animation: pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%,100% { box-shadow: 0 0 30px var(--gold-glow); }
+    50%      { box-shadow: 0 0 60px rgba(212,168,83,0.25); }
+  }
+
+  .gate-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 32px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+
+  .gate-subtitle {
+    font-size: 14px;
+    color: var(--text2);
+    line-height: 1.65;
+    margin-bottom: 36px;
+    max-width: 360px;
+  }
+
+  /* ─── Password form ─── */
+  .pw-form {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .pw-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--text3);
+    text-transform: uppercase;
+    margin-bottom: -6px;
+  }
+
+  .pw-input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .pw-input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 13px 48px 13px 16px;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .pw-input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(212,168,83,0.1);
+  }
+
+  .pw-input.error {
+    border-color: var(--red);
+    box-shadow: 0 0 0 3px rgba(239,68,68,0.1);
+    animation: shake 0.4s ease;
+  }
+
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20%      { transform: translateX(-6px); }
+    40%      { transform: translateX(6px); }
+    60%      { transform: translateX(-4px); }
+    80%      { transform: translateX(4px); }
+  }
+
+  .pw-toggle {
+    position: absolute;
+    right: 14px;
+    background: none;
+    border: none;
+    color: var(--text3);
+    cursor: pointer;
+    font-size: 14px;
+    transition: color 0.15s;
+    padding: 4px;
+  }
+  .pw-toggle:hover { color: var(--text2); }
+
+  .pw-error-msg {
+    font-size: 12.5px;
+    color: var(--red);
+    display: none;
+    align-items: center;
+    gap: 6px;
+  }
+  .pw-error-msg.show { display: flex; }
+
+  .btn-unlock {
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    padding: 13px 20px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.15s;
+    letter-spacing: 0.01em;
+  }
+
+  .btn-unlock:hover { opacity: 0.92; transform: translateY(-1px); }
+  .btn-unlock:active { transform: translateY(0); }
+
+  .access-request {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--text3);
+  }
+
+  .access-request a {
+    color: var(--gold);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.15s;
+  }
+  .access-request a:hover { color: var(--gold2); }
+
+  /* ═══════════════════════════════
+     KB CONTENT (shown when unlocked)
+  ═══════════════════════════════ */
+  #kbContent {
+    display: none;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 24px 80px;
+    animation: fadeIn 0.5s ease both;
+  }
+
+  .kb-header {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+
+  .kb-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .kb-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 40px;
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    margin-bottom: 14px;
+    line-height: 1.1;
+  }
+
+  .kb-desc {
+    font-size: 15px;
+    color: var(--text2);
+    max-width: 520px;
+    margin: 0 auto;
+    line-height: 1.65;
+  }
+
+  /* ─── KB Cards ─── */
+  .kb-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 24px;
+  }
+
+  .kb-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    position: relative;
+  }
+
+  .kb-card:hover {
+    border-color: var(--gold);
+    transform: translateY(-3px);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.4), 0 0 0 1px var(--gold);
+  }
+
+  .kb-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--gold-glow), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+  }
+  .kb-card:hover::before { opacity: 1; }
+
+  .card-top {
+    padding: 28px 28px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .card-icon {
+    width: 48px; height: 48px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin-bottom: 18px;
+  }
+
+  .card-icon-1 { background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2); }
+  .card-icon-2 { background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.2); }
+
+  .card-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    color: var(--text3);
+  }
+
+  .card-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    line-height: 1.25;
+    margin-bottom: 10px;
+  }
+
+  .card-desc {
+    font-size: 13.5px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+
+  .card-bottom {
+    padding: 18px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .card-meta {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11.5px;
+    color: var(--text3);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .meta-item svg { flex-shrink: 0; }
+
+  .card-cta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gold);
+    white-space: nowrap;
+    transition: gap 0.15s;
+  }
+  .kb-card:hover .card-cta { gap: 10px; }
+
+  /* ─── Tags row ─── */
+  .tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 0 28px 20px;
+  }
+
+  .tag {
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 3px 9px;
+    border-radius: 4px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text3);
+  }
+
+  /* ─── Access revoked banner ─── */
+  .revoke-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 20px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+
+  .revoke-bar-text {
+    font-size: 13px;
+    color: var(--text2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn-lock {
+    font-family: 'Outfit', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 7px 16px;
+    border-radius: 6px;
+    border: 1px solid var(--border2);
+    background: var(--surface2);
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-lock:hover { background: var(--surface3); color: var(--text); border-color: var(--text3); }
+
+  /* ─── Footer ─── */
+  .kb-footer {
+    text-align: center;
+    margin-top: 60px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text3);
+    font-family: 'JetBrains Mono', monospace;
+    line-height: 1.8;
+  }
+
+  .kb-footer a { color: var(--gold); text-decoration: none; }
+  .kb-footer a:hover { color: var(--gold2); }
+
+  /* ═══════════════════════════════
+     SUCCESS FLASH
+  ═══════════════════════════════ */
+  .toast {
+    position: fixed;
+    bottom: 28px; right: 28px;
+    background: var(--surface);
+    border: 1px solid var(--green);
+    border-radius: 10px;
+    padding: 14px 20px;
+    font-size: 13.5px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 999;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast-icon { font-size: 16px; }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 600px) {
+    header { padding: 16px 20px; }
+    .gate-wrapper { padding: 40px 16px; }
+    .kb-title { font-size: 30px; }
+    .kb-grid { grid-template-columns: 1fr; }
+    #kbContent { padding: 40px 16px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="glow-orb"></div>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <div class="logo-mark">M</div>
+      <div>
+        <div class="logo-text">Midhun's Knowledge Base</div>
+        <div class="logo-sub">PHARMA · GxP · VALIDATION</div>
+      </div>
+    </div>
+    <div class="header-badge">
+      <div class="lock-dot" id="lockDot"></div>
+      <span id="lockStatus">RESTRICTED</span>
+    </div>
+  </header>
+
+  <!-- GATE WRAPPER -->
+  <div class="gate-wrapper">
+
+    <!-- ── LOCK GATE ── -->
+    <div id="lockGate">
+      <div class="lock-icon">🔒</div>
+      <div class="gate-title">Access Required</div>
+      <div class="gate-subtitle">
+        These knowledge bases contain curated GxP validation and Veeva Vault reference materials. Enter your access password to continue.
+      </div>
+
+      <div class="pw-form">
+        <div class="pw-label">Access Password</div>
+        <div class="pw-input-wrap">
+          <input
+            class="pw-input"
+            id="pwInput"
+            type="password"
+            placeholder="Enter password…"
+            autocomplete="off"
+            onkeydown="if(event.key==='Enter') checkPassword()"
+          />
+          <button class="pw-toggle" onclick="togglePw()" title="Show/hide password">👁</button>
+        </div>
+        <div class="pw-error-msg" id="pwError">
+          <span>✕</span>
+          <span>Incorrect password. Request access below.</span>
+        </div>
+        <button class="btn-unlock" onclick="checkPassword()">Unlock Knowledge Base →</button>
+      </div>
+
+      <div class="access-request">
+        Don't have the password?
+        <!-- ✏️ CHANGE THIS EMAIL ADDRESS -->
+        <a href="mailto:midhunkrothapalli@yahoo.com?subject=KB%20Access%20Request&body=Hi%20Midhun%2C%0A%0AI'd%20like%20to%20request%20access%20to%20your%20GxP%20Knowledge%20Base.%0A%0AMy%20name%3A%20%0AMy%20company%2Frole%3A%20%0AReason%20for%20access%3A%0A%0AThank%20you!">
+          Email me for access
+        </a>
+      </div>
+    </div>
+
+    <!-- ── KB CONTENT (hidden until unlocked) ── -->
+    <div id="kbContent">
+
+      <div class="revoke-bar">
+        <div class="revoke-bar-text">
+          <span style="color:var(--green)">✓</span>
+          Access granted · Session active
+        </div>
+        <button class="btn-lock" onclick="lockVault()">🔒 Lock Session</button>
+      </div>
+
+      <div class="kb-header">
+        <div class="kb-eyebrow">Knowledge Base · GxP · Pharma Validation</div>
+        <div class="kb-title">Pharma Systems<br>Reference Library</div>
+        <div class="kb-desc">
+          Curated reference materials covering GxP system validation lifecycle, Veeva QMS &amp; RIM administration, and regulatory compliance frameworks.
+        </div>
+      </div>
+
+      <div class="kb-grid">
+
+        <!-- CARD 1 — GxP Lifecycle -->
+        <a class="kb-card" href="gxp_lifecycle_guide.html" target="_blank">
+          <div class="card-top">
+            <div class="card-icon card-icon-1">📋</div>
+            <div class="card-tag">KB-001 · GxP · CSV · GAMP 5</div>
+            <div class="card-title">GxP System Lifecycle<br>Reference Guide</div>
+            <div class="card-desc">
+              Complete walkthrough of onboarding, validating, enhancing, and maintaining a GxP-regulated computer system — from System Impact Assessment through decommissioning.
+            </div>
+          </div>
+          <div class="tag-row">
+            <span class="tag">IQ / OQ / PQ</span>
+            <span class="tag">Change Control</span>
+            <span class="tag">21 CFR Part 11</span>
+            <span class="tag">ALCOA+</span>
+            <span class="tag">Periodic Review</span>
+            <span class="tag">RTM</span>
+          </div>
+          <div class="card-bottom">
+            <div class="card-meta">
+              <div class="meta-item">
+                <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+                12 Sections
+              </div>
+              <div class="meta-item">
+                <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                ~20 min read
+              </div>
+            </div>
+            <div class="card-cta">Open KB <span>→</span></div>
+          </div>
+        </a>
+
+        <!-- CARD 2 — Veeva QMS/RIM Q&A -->
+        <a class="kb-card" href="veeva_qms_rim_qa.html" target="_blank">
+          <div class="card-top">
+            <div class="card-icon card-icon-2">🏛️</div>
+            <div class="card-tag">KB-002 · Veeva · QMS · RIM</div>
+            <div class="card-title">Veeva Vault QMS &amp; RIM<br>Interview Prep Q&amp;A</div>
+            <div class="card-desc">
+              32 deep technical and process-level questions &amp; answers at Admin and Validation Lead levels — covering both Vault QMS and Vault RIM modules.
+            </div>
+          </div>
+          <div class="tag-row">
+            <span class="tag">Vault QMS</span>
+            <span class="tag">Vault RIM</span>
+            <span class="tag">eCTD Publishing</span>
+            <span class="tag">E-Sig</span>
+            <span class="tag">Lifecycle Config</span>
+            <span class="tag">CSV Strategy</span>
+          </div>
+          <div class="card-bottom">
+            <div class="card-meta">
+              <div class="meta-item">
+                <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+                32 Q&amp;As
+              </div>
+              <div class="meta-item">
+                <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                ~35 min read
+              </div>
+            </div>
+            <div class="card-cta">Open KB <span>→</span></div>
+          </div>
+        </a>
+
+      </div><!-- /kb-grid -->
+
+      <div class="kb-footer">
+        <div>Maintained by Midhun · Pharma Systems &amp; Validation</div>
+        <div style="margin-top:6px">
+          Questions or access requests →
+          <!-- ✏️ CHANGE THIS EMAIL ADDRESS -->
+          <a href="mailto:YOUR_EMAIL@example.com">YOUR_EMAIL@example.com</a>
+        </div>
+      </div>
+
+    </div><!-- /kbContent -->
+
+  </div><!-- /gate-wrapper -->
+
+</div><!-- /page -->
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span class="toast-icon">✅</span>
+  <span>Access granted. Welcome!</span>
+</div>
+
+<script>
+  // ─────────────────────────────────────
+  // ✏️  SET YOUR PASSWORD HERE
+  // ─────────────────────────────────────
+  const ACCESS_PASSWORD = 'Cantuseeme@9';
+  // ─────────────────────────────────────
+
+  const SESSION_KEY = 'kb_unlocked';
+
+  function checkPassword() {
+    const input = document.getElementById('pwInput');
+    const val = input.value.trim();
+
+    if (val === ACCESS_PASSWORD) {
+      sessionStorage.setItem(SESSION_KEY, '1');
+      unlockVault();
+    } else {
+      input.classList.add('error');
+      document.getElementById('pwError').classList.add('show');
+      input.value = '';
+      setTimeout(() => input.classList.remove('error'), 600);
+    }
+  }
+
+  function unlockVault() {
+    document.getElementById('lockGate').style.display = 'none';
+    document.getElementById('kbContent').style.display = 'block';
+    document.getElementById('lockDot').classList.add('unlocked');
+    document.getElementById('lockStatus').textContent = 'UNLOCKED';
+
+    // Toast
+    const t = document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  function lockVault() {
+    sessionStorage.removeItem(SESSION_KEY);
+    document.getElementById('lockGate').style.display = 'flex';
+    document.getElementById('kbContent').style.display = 'none';
+    document.getElementById('lockDot').classList.remove('unlocked');
+    document.getElementById('lockStatus').textContent = 'RESTRICTED';
+    document.getElementById('pwInput').value = '';
+    document.getElementById('pwError').classList.remove('show');
+
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function togglePw() {
+    const el = document.getElementById('pwInput');
+    el.type = el.type === 'password' ? 'text' : 'password';
+  }
+
+  // Auto-unlock if session is still active (same tab session)
+  window.addEventListener('DOMContentLoaded', () => {
+    if (sessionStorage.getItem(SESSION_KEY) === '1') {
+      unlockVault();
+    }
+  });
+</script>
+
+</body>
+</html>

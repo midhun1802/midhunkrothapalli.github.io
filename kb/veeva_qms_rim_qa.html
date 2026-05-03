@@ -1,0 +1,1651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Veeva QMS & RIM — Interview Prep</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Literata:ital,opsz,wght@0,7..72,300;0,7..72,400;1,7..72,300&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #f5f2eb;
+    --surface: #faf8f3;
+    --surface2: #f0ece2;
+    --border: #e2ddd0;
+    --border2: #cdc8b8;
+    --ink: #1c1a16;
+    --ink2: #4a4639;
+    --ink3: #8a8270;
+    --qms: #1a3a2a;
+    --qms-light: #2d6a4f;
+    --qms-pale: #e8f3ee;
+    --rim: #1a2a3a;
+    --rim-light: #2d4f6a;
+    --rim-pale: #e8f0f3;
+    --both: #3a1a2a;
+    --both-light: #7a3a5a;
+    --both-pale: #f3e8ee;
+    --gold: #b8860b;
+    --gold-pale: #fdf6e3;
+    --red: #8b1a1a;
+    --red-pale: #fdf0f0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Literata', Georgia, serif;
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  /* ─── MASTHEAD ─── */
+  .masthead {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .masthead-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 160px;
+  }
+
+  .masthead-qms {
+    background: var(--qms);
+    padding: 36px 40px;
+    position: relative;
+  }
+
+  .masthead-rim {
+    background: var(--rim);
+    padding: 36px 40px;
+    position: relative;
+  }
+
+  .masthead-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    opacity: 0.6;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .masthead-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .masthead-sub {
+    font-size: 12.5px;
+    opacity: 0.65;
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  .masthead-divider {
+    width: 2px;
+    background: rgba(255,255,255,0.1);
+  }
+
+  /* ─── CONTROLS ─── */
+  .controls {
+    background: var(--surface);
+    border-bottom: 2px solid var(--border);
+    padding: 16px 40px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .filter-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--ink3);
+    text-transform: uppercase;
+    margin-right: 4px;
+  }
+
+  .filter-btn {
+    font-family: 'Syne', sans-serif;
+    font-size: 11.5px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 3px;
+    border: 1.5px solid var(--border2);
+    background: var(--surface);
+    color: var(--ink2);
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.03em;
+  }
+
+  .filter-btn:hover { background: var(--surface2); border-color: var(--ink3); }
+  .filter-btn.active-all { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .filter-btn.active-qms { background: var(--qms); color: #fff; border-color: var(--qms); }
+  .filter-btn.active-rim { background: var(--rim); color: #fff; border-color: var(--rim); }
+  .filter-btn.active-admin { background: var(--gold); color: #fff; border-color: var(--gold); }
+  .filter-btn.active-vallead { background: var(--both-light); color: #fff; border-color: var(--both-light); }
+
+  .sep { width: 1px; height: 24px; background: var(--border2); margin: 0 6px; }
+
+  .q-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink3);
+    margin-left: auto;
+  }
+
+  /* ─── MAIN LAYOUT ─── */
+  .layout {
+    display: grid;
+    grid-template-columns: 230px 1fr;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  /* ─── SIDEBAR ─── */
+  .sidebar {
+    padding: 28px 0;
+    border-right: 1px solid var(--border);
+    position: sticky;
+    top: 60px;
+    height: calc(100vh - 60px);
+    overflow-y: auto;
+    background: var(--surface);
+  }
+
+  .sidebar::-webkit-scrollbar { width: 3px; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border2); }
+
+  .nav-group-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    color: var(--ink3);
+    text-transform: uppercase;
+    padding: 16px 20px 5px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px 20px;
+    cursor: pointer;
+    transition: all 0.12s;
+    font-size: 12.5px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    color: var(--ink2);
+    border-left: 3px solid transparent;
+    line-height: 1.3;
+  }
+
+  .nav-item:hover { background: var(--surface2); color: var(--ink); }
+  .nav-item.active-qms { color: var(--qms-light); border-left-color: var(--qms-light); background: var(--qms-pale); }
+  .nav-item.active-rim { color: var(--rim-light); border-left-color: var(--rim-light); background: var(--rim-pale); }
+
+  .nav-pip {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+
+  .pip-qms { background: var(--qms-light); }
+  .pip-rim { background: var(--rim-light); }
+
+  /* ─── CONTENT AREA ─── */
+  .content {
+    padding: 40px 52px 80px;
+    max-width: 920px;
+  }
+
+  /* ─── SECTION ─── */
+  .section {
+    margin-bottom: 56px;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .section-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    padding: 4px 10px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+
+  .tag-qms { background: var(--qms); color: #fff; }
+  .tag-rim { background: var(--rim); color: #fff; }
+  .tag-both { background: var(--both); color: #fff; }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+
+  .section-desc {
+    font-size: 13.5px;
+    color: var(--ink3);
+    font-style: italic;
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+
+  /* ─── Q&A CARDS ─── */
+  .qa-card {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    transition: border-color 0.15s;
+  }
+
+  .qa-card:hover { border-color: var(--border2); }
+
+  .qa-card.qms-card { border-left: 4px solid var(--qms-light); }
+  .qa-card.rim-card { border-left: 4px solid var(--rim-light); }
+  .qa-card.both-card { border-left: 4px solid var(--both-light); }
+
+  .qa-question {
+    padding: 18px 22px 16px;
+    cursor: pointer;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    user-select: none;
+  }
+
+  .qa-question:hover { background: var(--surface2); }
+
+  .q-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex-shrink: 0;
+    min-width: 56px;
+    align-items: flex-start;
+  }
+
+  .q-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ink3);
+  }
+
+  .level-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    padding: 2px 6px;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+
+  .badge-admin { background: var(--gold-pale); color: var(--gold); border: 1px solid #e8c96a; }
+  .badge-val { background: var(--both-pale); color: var(--both-light); border: 1px solid #d4a0be; }
+  .badge-both2 { background: var(--red-pale); color: var(--red); border: 1px solid #e8a0a0; }
+
+  .q-text {
+    font-family: 'Syne', sans-serif;
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.4;
+    flex: 1;
+  }
+
+  .q-chevron {
+    font-size: 12px;
+    color: var(--ink3);
+    transition: transform 0.2s;
+    margin-top: 3px;
+    flex-shrink: 0;
+  }
+
+  .qa-card.open .q-chevron { transform: rotate(180deg); }
+
+  .qa-answer {
+    display: none;
+    padding: 0 22px 22px 22px;
+    border-top: 1px solid var(--border);
+  }
+
+  .qa-card.open .qa-answer { display: block; }
+
+  .answer-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    color: var(--ink3);
+    text-transform: uppercase;
+    margin: 16px 0 10px;
+  }
+
+  .answer-body {
+    font-size: 14px;
+    color: var(--ink2);
+    line-height: 1.8;
+  }
+
+  .answer-body p { margin-bottom: 10px; }
+  .answer-body p:last-child { margin-bottom: 0; }
+
+  .answer-body strong { color: var(--ink); font-weight: 600; }
+
+  .answer-body ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .answer-body ul li {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 13.5px;
+  }
+
+  .answer-body ul li::before {
+    content: '▸';
+    color: var(--ink3);
+    font-size: 10px;
+    margin-top: 5px;
+    flex-shrink: 0;
+  }
+
+  .answer-body ol {
+    padding-left: 20px;
+    margin: 10px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .answer-body ol li { font-size: 13.5px; color: var(--ink2); }
+
+  .tip {
+    background: var(--gold-pale);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 4px 4px 0;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: var(--ink2);
+    font-style: italic;
+  }
+
+  .tip strong { color: var(--gold); font-style: normal; }
+
+  .critical {
+    background: var(--red-pale);
+    border-left: 3px solid var(--red);
+    border-radius: 0 4px 4px 0;
+    padding: 12px 16px;
+    margin: 12px 0;
+    font-size: 13px;
+    color: var(--ink2);
+  }
+
+  .critical strong { color: var(--red); }
+
+  .code-snippet {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin: 10px 0;
+    color: var(--ink2);
+    white-space: pre-wrap;
+    line-height: 1.6;
+  }
+
+  /* ─── HIDDEN STATES ─── */
+  .section.hidden { display: none; }
+  .qa-card.hidden { display: none; }
+
+  /* ─── EMPTY STATE ─── */
+  .empty-state {
+    display: none;
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--ink3);
+    font-style: italic;
+  }
+
+  /* ─── FOOTER ─── */
+  .page-footer {
+    border-top: 2px solid var(--border);
+    padding: 24px 52px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--surface);
+  }
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <div class="masthead-inner">
+    <div class="masthead-qms">
+      <div class="masthead-label">Module 01</div>
+      <div class="masthead-title">Veeva<br>Vault QMS</div>
+      <div class="masthead-sub">Quality Management System — Admin &amp; Validation Lead</div>
+    </div>
+    <div class="masthead-divider"></div>
+    <div class="masthead-rim">
+      <div class="masthead-label">Module 02</div>
+      <div class="masthead-title">Veeva<br>Vault RIM</div>
+      <div class="masthead-sub">Regulatory Information Mgmt — Admin &amp; Validation Lead</div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTROLS -->
+<div class="controls">
+  <span class="filter-label">Filter by</span>
+  <button class="filter-btn active-all" onclick="filter('all', this)">All Questions</button>
+  <div class="sep"></div>
+  <button class="filter-btn" onclick="filter('qms', this)">QMS Only</button>
+  <button class="filter-btn" onclick="filter('rim', this)">RIM Only</button>
+  <div class="sep"></div>
+  <button class="filter-btn" onclick="filter('admin', this)">Admin Level</button>
+  <button class="filter-btn" onclick="filter('vallead', this)">Val Lead Level</button>
+  <span class="q-count" id="qcount">Loading...</span>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
+    <div class="nav-group-label">Veeva QMS</div>
+    <div class="nav-item" onclick="jumpTo('qms-arch')"><div class="nav-pip pip-qms"></div>Architecture & Config</div>
+    <div class="nav-item" onclick="jumpTo('qms-workflows')"><div class="nav-pip pip-qms"></div>Workflows & Lifecycle</div>
+    <div class="nav-item" onclick="jumpTo('qms-doc')"><div class="nav-pip pip-qms"></div>Document Control</div>
+    <div class="nav-item" onclick="jumpTo('qms-deviation')"><div class="nav-pip pip-qms"></div>Deviations & CAPA</div>
+    <div class="nav-item" onclick="jumpTo('qms-training')"><div class="nav-pip pip-qms"></div>Training Management</div>
+    <div class="nav-item" onclick="jumpTo('qms-audit')"><div class="nav-pip pip-qms"></div>Audits & Inspections</div>
+    <div class="nav-item" onclick="jumpTo('qms-val')"><div class="nav-pip pip-qms"></div>Validation & CSV</div>
+
+    <div class="nav-group-label">Veeva RIM</div>
+    <div class="nav-item" onclick="jumpTo('rim-arch')"><div class="nav-pip pip-rim"></div>Architecture & Modules</div>
+    <div class="nav-item" onclick="jumpTo('rim-submissions')"><div class="nav-pip pip-rim"></div>Submissions</div>
+    <div class="nav-item" onclick="jumpTo('rim-registrations')"><div class="nav-pip pip-rim"></div>Registrations</div>
+    <div class="nav-item" onclick="jumpTo('rim-publishing')"><div class="nav-pip pip-rim"></div>Publishing & eDossier</div>
+    <div class="nav-item" onclick="jumpTo('rim-val')"><div class="nav-pip pip-rim"></div>Validation & CSV</div>
+
+    <div class="nav-group-label">Cross-Cutting</div>
+    <div class="nav-item" onclick="jumpTo('cross-admin')"><div class="nav-pip" style="background:var(--both-light)"></div>Admin Best Practices</div>
+    <div class="nav-item" onclick="jumpTo('cross-esig')"><div class="nav-pip" style="background:var(--both-light)"></div>E-Sig & Audit Trail</div>
+    <div class="nav-item" onclick="jumpTo('cross-upgrade')"><div class="nav-pip" style="background:var(--both-light)"></div>Upgrades & Releases</div>
+  </nav>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- ═══════════════════════════════════════
+         QMS — ARCHITECTURE & CONFIGURATION
+    ═══════════════════════════════════════ -->
+    <div class="section" id="qms-arch" data-section="qms">
+      <div class="section-header">
+        <span class="section-tag tag-qms">QMS</span>
+        <div>
+          <div class="section-title">Architecture &amp; Configuration</div>
+          <div class="section-desc">Vault structure, object model, security, and admin fundamentals</div>
+        </div>
+      </div>
+
+      <!-- Q1 -->
+      <div class="qa-card qms-card" data-tags="qms admin">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q01</span><span class="level-badge badge-admin">Admin</span></div>
+          <div class="q-text">What is the Vault object model and how does it differ from a relational database? How do you design custom objects in QMS?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <div class="answer-label">Answer</div>
+          <div class="answer-body">
+            <p>Vault uses a <strong>metadata-driven object model</strong>. Every piece of data — whether a document, a CAPA record, or a training assignment — is an object with fields, lifecycle states, and relationships. This differs from a relational DB where you design tables and joins manually.</p>
+            <p><strong>Core concepts:</strong></p>
+            <ul>
+              <li><strong>Object Types</strong> — Subtypes of a base object (e.g., "CAPA" and "Deviation" can both be types of "Quality Event"). Each type can have different fields, lifecycles, and page layouts.</li>
+              <li><strong>Object Fields</strong> — Standard (system-managed) vs. custom fields. Field types: text, picklist, date, lookup, object reference, multi-value picklist.</li>
+              <li><strong>Object Relationships</strong> — Parent-child (cascade delete behavior), lookup (reference without ownership), many-to-many via junction objects.</li>
+              <li><strong>Page Layouts</strong> — Control which fields appear for which object type and role. One object type can have multiple layouts for different user roles.</li>
+            </ul>
+            <p><strong>Design best practice:</strong> Before creating a custom object, map out: What fields are required? What lifecycle states? Who can create/edit/delete? What relationships to existing objects? Document this in a Configuration Specification before building in Admin.</p>
+            <div class="tip"><strong>Audit consideration:</strong> Every custom object, field, and picklist value created in a validated vault must be tracked in a Configuration Specification document and tested in OQ/PQ. Configuration changes are change-controlled.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="qa-card qms-card" data-tags="qms admin">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q02</span><span class="level-badge badge-admin">Admin</span></div>
+          <div class="q-text">How does Vault security model work — Vault Access, Object Permissions, and Document Roles? What's the difference and how do they interact?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <div class="answer-label">Answer</div>
+          <div class="answer-body">
+            <p>Vault uses a <strong>layered security model</strong> with three distinct layers that must all be satisfied for a user to do anything:</p>
+            <ol>
+              <li><strong>License Type</strong> — Full User, External User, or Read-Only User. Controls what module features are available at all.</li>
+              <li><strong>Security Profile</strong> — Grants access to the Vault application itself and to Admin features. Controls UI tabs and admin menu access.</li>
+              <li><strong>Permission Sets</strong> — Control CRUD (Create/Read/Update/Delete) on Object Types and specific field-level permissions. Assigned to users or groups.</li>
+              <li><strong>Document Roles (for Documents)</strong> — Viewer, Editor, Owner, Coordinator. Assigned at the document or binder level or inherited via sharing rules. Determines who can edit, review, approve a document.</li>
+              <li><strong>Sharing Rules &amp; Dynamic Access Control</strong> — Automatically assign document roles based on field values (e.g., "All documents where Department = QA get the QA Reviewer role assigned to the QA group").</li>
+            </ol>
+            <p><strong>Key interaction:</strong> A user needs the right Permission Set (to see the object) AND the right Document Role (to act on a specific document). Having one without the other results in no access.</p>
+            <div class="critical"><strong>Validation implication:</strong> Your OQ must test each role combination — including negative tests proving that Role A cannot perform Role B's actions. The Permission Set matrix must be documented in your Configuration Spec and tested against your URS access requirements.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="qa-card qms-card" data-tags="qms admin vallead">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q03</span><span class="level-badge badge-both2">Both</span></div>
+          <div class="q-text">What environments exist in Veeva Vault and how do you manage the promotion of configuration changes from Dev to Production?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <div class="answer-label">Answer</div>
+          <div class="answer-body">
+            <p>Veeva Vault provides multiple vault instances — typically referred to as <strong>environments</strong>:</p>
+            <ul>
+              <li><strong>Development (DEV) Vault</strong> — Where new configurations are built and unit-tested. Sandbox. Not GxP.</li>
+              <li><strong>QA / Validation Vault</strong> — Where formal validation testing (OQ/PQ/UAT) is executed. This vault must mirror Production configuration at the point of testing.</li>
+              <li><strong>Production (PROD) Vault</strong> — Live GxP system. Changes only enter after approved change control and successful validation testing.</li>
+            </ul>
+            <p><strong>Configuration Migration:</strong> Veeva provides the <strong>Vault Loader</strong> and <strong>Configuration Migration</strong> (now largely via Vault's built-in deployment packages / VPK files). An admin exports a deployment package from DEV and imports it to QA/Prod. The package is reviewed and approved as part of the Change Control.</p>
+            <div class="tip"><strong>Val Lead angle:</strong> The migration itself is a validated step. Your OQ should include a test that verifies the configuration deployed to QA matches the Configuration Spec exactly. Post-deployment to PROD, a configuration verification step should confirm settings are as expected — this becomes evidence in the Change Control closure.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q4 -->
+      <div class="qa-card qms-card" data-tags="qms admin">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q04</span><span class="level-badge badge-admin">Admin</span></div>
+          <div class="q-text">Explain Vault's Lifecycle and Workflow engine. What is the difference between a Lifecycle State and a Workflow Task?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <div class="answer-label">Answer</div>
+          <div class="answer-body">
+            <p><strong>Lifecycle</strong> is the overall state machine for a document or object. It defines the possible states (e.g., Draft → In Review → Approved → Superseded → Obsolete) and the allowed transitions between them.</p>
+            <p><strong>State Actions &amp; Entry/Exit Actions</strong> — You can configure automatic actions when entering or leaving a state: auto-assign tasks, send notifications, trigger field updates, lock/unlock fields.</p>
+            <p><strong>Workflow</strong> is a structured process assigned to a document/object to orchestrate human tasks. A workflow has <strong>Tasks</strong> (assigned to specific users or groups) with actions: Approve, Reject, Complete.</p>
+            <p><strong>Key difference:</strong></p>
+            <ul>
+              <li>Lifecycle defines WHERE the document is (its state). It's always active.</li>
+              <li>Workflow defines WHO needs to do WHAT to move it. It's triggered on demand or by a lifecycle entry action.</li>
+              <li>A lifecycle transition can be conditional — it only moves to the next state after a workflow is completed (e.g., document cannot move to Approved until the Approval Workflow task is completed by the designated approver).</li>
+            </ul>
+            <div class="tip"><strong>Admin tip:</strong> Workflows can be multi-step with parallel and sequential tasks. Use <strong>workflow controls</strong> to define what happens on rejection — does it return to Draft, notify the initiator, or route to a manager? This logic must be explicitly configured and tested in OQ.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         QMS — WORKFLOWS & LIFECYCLE
+    ═══════════════════════════════════════ -->
+    <div class="section" id="qms-workflows" data-section="qms">
+      <div class="section-header">
+        <span class="section-tag tag-qms">QMS</span>
+        <div>
+          <div class="section-title">Workflows &amp; Object Lifecycles</div>
+          <div class="section-desc">QMS process flows — Deviations, CAPAs, Change Controls, Complaints</div>
+        </div>
+      </div>
+
+      <!-- Q5 -->
+      <div class="qa-card qms-card" data-tags="qms admin vallead">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q05</span><span class="level-badge badge-both2">Both</span></div>
+          <div class="q-text">Walk through the full lifecycle of a Deviation record in Vault QMS — from initiation to closure. What states, workflows, and validations are typically involved?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <div class="answer-label">Answer</div>
+          <div class="answer-body">
+            <p>A typical Deviation lifecycle in Vault QMS flows through these states:</p>
+            <ol>
+              <li><strong>Draft</strong> — Initiator describes the event, assigns affected products/processes, selects deviation type (Planned/Unplanned). Required fields enforced before state transition.</li>
+              <li><strong>Under Investigation</strong> — Root cause analysis conducted. QA assigned as owner. Entry triggers workflow task to QA reviewer. Immediate containment actions documented.</li>
+              <li><strong>Pending QA Review</strong> — QA reviews investigation, root cause, and impact assessment. Workflow task: Approve → moves forward; Reject → returns to Investigation with comments.</li>
+              <li><strong>CAPA Required (conditional)</strong> — If risk score meets threshold (configurable via formula fields), system auto-creates a linked CAPA record. Relationship established (Deviation is parent).</li>
+              <li><strong>Pending Closure</strong> — All required fields completed. CAPA (if required) must be in Approved or Implemented state. Entry criteria enforced via lifecycle entry actions.</li>
+              <li><strong>Closed</strong> — Final QA signature (e-signature). Record locked. Audit trail complete.</li>
+            </ol>
+            <div class="critical"><strong>Validation scope:</strong> Each state transition is an OQ test case. Negative tests: attempt to close a deviation with open CAPA — system must block. E-signature on closure must be tested for Part 11 compliance. Auto-CAPA creation must be tested with values both above and below the threshold.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q6 -->
+      <div class="qa-card qms-card" data-tags="qms admin">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q06</span><span class="level-badge badge-admin">Admin</span></div>
+          <div class="q-text">How do you configure automated notifications and escalations in Vault QMS? Give examples of overdue CAPA escalation logic.</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <div class="answer-label">Answer</div>
+          <div class="answer-body">
+            <p>Vault uses <strong>Workflow Notifications</strong> and <strong>Object Event Triggers</strong> (including time-based triggers via Scheduled Actions) for this.</p>
+            <p><strong>Overdue CAPA Escalation Example:</strong></p>
+            <div class="code-snippet">Object: CAPA
+Field: Due Date (date field)
+Field: Status (picklist: Open, In Progress, Completed, Overdue)
+Field: Owner (user lookup)
+Field: Manager (user lookup, set from Owner's profile)
+
+Scheduled Action (runs daily):
+  Condition: Due Date &lt; TODAY() AND Status != "Completed"
+  Action 1: Update Status field → "Overdue"
+  Action 2: Send Email Notification → Owner + Manager
+  Action 3: If Due Date &lt; TODAY() - 7 days → Notify QA Director</div>
+            <p><strong>Workflow task reminders</strong> — Within a workflow, each task can have a reminder notification (e.g., "Reminder: Task due in 3 days") and an overdue notification (e.g., "Task is past due — notify task owner + their manager").</p>
+            <div class="tip"><strong>OQ test:</strong> You must test each notification fires correctly. Create a CAPA, set Due Date to yesterday, run the scheduled action (or advance date in a sandbox that allows it), verify notification sent to correct recipients, verify Status updated to Overdue.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q7 -->
+      <div class="qa-card qms-card" data-tags="qms vallead">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q07</span><span class="level-badge badge-val">Val Lead</span></div>
+          <div class="q-text">How do you validate a QMS workflow change mid-system lifecycle? A business user requests a new mandatory field on CAPA — how do you handle this end-to-end?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <div class="answer-label">Answer</div>
+          <div class="answer-body">
+            <p>This is a classic <strong>post-go-live enhancement</strong> through the change control process:</p>
+            <ol>
+              <li><strong>Enhancement Request / Change Request opened</strong> — Business user submits ER describing: which object (CAPA), what field (e.g., "Risk Level" picklist), why (regulatory gap identified), business justification.</li>
+              <li><strong>Impact Assessment</strong> — Val Lead assesses: Does this affect a validated GxP function? YES — CAPA is GxP-critical. Does it affect existing open records? YES — data migration consideration. Does it affect any integrations? Check if CAPA data feeds any downstream system.</li>
+              <li><strong>Requirements Update</strong> — FRS and Configuration Spec updated to include new field definition, values, mandatory conditions.</li>
+              <li><strong>RTM Update</strong> — New RTM row added: ER-001 → FRS-045 → OQ test case TBD.</li>
+              <li><strong>Configuration in DEV</strong> — Admin creates field, sets required condition (e.g., required on transition to "Pending Closure"), adds to page layout for all CAPA types.</li>
+              <li><strong>OQ Re-testing in QA Vault</strong> — Write targeted OQ script: (a) Create CAPA, attempt closure without Risk Level — system must block. (b) Create CAPA, enter Risk Level, complete closure — passes. (c) Verify field appears in audit trail. (d) Verify field label and picklist values match FRS.</li>
+              <li><strong>UAT in Staging</strong> — CAPA owner business user confirms the field makes sense in their workflow.</li>
+              <li><strong>Production Deployment + Change Control Closure</strong> — Config migrated to PROD. Post-deployment verification step: confirm field exists, is mandatory on correct transition. Change control closed with test evidence attached.</li>
+            </ol>
+            <div class="critical"><strong>Migration note:</strong> Existing open CAPA records may not have the new field populated. Decide: Is the field conditionally required (only on new records) or will you need a data remediation exercise for existing records? This must be risk-assessed and documented.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         QMS — DOCUMENT CONTROL
+    ═══════════════════════════════════════ -->
+    <div class="section" id="qms-doc" data-section="qms">
+      <div class="section-header">
+        <span class="section-tag tag-qms">QMS</span>
+        <div>
+          <div class="section-title">Document Control &amp; Controlled Documents</div>
+          <div class="section-desc">SOP management, version control, effective date management, and periodic review</div>
+        </div>
+      </div>
+
+      <!-- Q8 -->
+      <div class="qa-card qms-card" data-tags="qms admin">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q08</span><span class="level-badge badge-admin">Admin</span></div>
+          <div class="q-text">How does Vault handle document versioning — major vs. minor versions? How do you configure version numbering and when does each increment?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <div class="answer-label">Answer</div>
+          <div class="answer-body">
+            <p>Vault uses a <strong>Major.Minor</strong> version numbering scheme configurable per document type:</p>
+            <ul>
+              <li><strong>Major version</strong> increments on Approved/Published state entry. Configurable as numeric (1, 2, 3) or alphabetic (A, B, C). Indicates a substantive content change that required full review and approval.</li>
+              <li><strong>Minor version</strong> increments during Draft/Review stages within a major version (0.1, 0.2, 0.3). Tracks in-progress revisions before approval. Draft versions are not shown to most users — only owners and reviewers.</li>
+            </ul>
+            <p><strong>Steady-state versioning:</strong></p>
+            <ul>
+              <li>SOP starts as 0.1 (Draft), goes through review cycles (0.2, 0.3), approved → becomes 1.0.</li>
+              <li>Revision initiated → creates 1.1 (Draft). Revised, approved → becomes 2.0. Previous 1.0 is automatically <strong>Superseded</strong>.</li>
+            </ul>
+            <p><strong>Configuration:</strong> In Admin → Document Types → Version Scheme. You also configure whether the previous approved version remains viewable (it should — for historical audit trail) or is archived.</p>
+            <div class="tip"><strong>Common OQ test:</strong> Verify that when v2.0 is approved, v1.0 automatically moves to Superseded state. Verify that only the latest Approved version is visible to Viewer-role users. Verify minor versions are not visible to non-owners.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q9 -->
+      <div class="qa-card qms-card" data-tags="qms admin vallead">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q09</span><span class="level-badge badge-both2">Both</span></div>
+          <div class="q-text">How do you configure and manage Periodic Review for controlled documents in Vault QMS? What happens when a periodic review is overdue?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <div class="answer-label">Answer</div>
+          <div class="answer-body">
+            <p><strong>Periodic Review</strong> in Vault is driven by a calculated field on the document:</p>
+            <ul>
+              <li><strong>Next Review Date</strong> — Formula field calculated as: Approval Date + Review Period (e.g., Approval Date + 730 days for 2-year review cycle). Configurable per Document Type.</li>
+              <li><strong>Periodic Review Status</strong> — Picklist: Current, Due Soon, Overdue. Updated by a scheduled action comparing Next Review Date to TODAY().</li>
+            </ul>
+            <p><strong>Workflow trigger:</strong> When a document reaches "Due Soon" (e.g., 30 days before due), a workflow task is auto-created and assigned to the document owner: "Initiate Periodic Review." Owner reviews, decides: No Change Needed (re-approves to reset Next Review Date) or Initiate Revision (starts full change workflow).</p>
+            <p><strong>Overdue behavior:</strong> If task is not completed by Next Review Date, document status flags as Overdue. If your policy requires it, lifecycle can be configured to move the document to a "Requires Immediate Review" state, restricting it from being used in training assignments until resolved.</p>
+            <div class="critical"><strong>Regulatory risk:</strong> Having SOPs in Overdue status at the time of an FDA inspection is a significant finding. Your periodic review SOP must define the frequency, responsible parties, and what constitutes acceptable completion. The Vault report showing overdue documents is a key inspection-ready artifact.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         QMS — DEVIATIONS & CAPA
+    ═══════════════════════════════════════ -->
+    <div class="section" id="qms-deviation" data-section="qms">
+      <div class="section-header">
+        <span class="section-tag tag-qms">QMS</span>
+        <div>
+          <div class="section-title">Deviations, CAPAs &amp; Change Controls</div>
+          <div class="section-desc">Record lifecycle, root cause, linkages, and regulatory reporting</div>
+        </div>
+      </div>
+
+      <!-- Q10 -->
+      <div class="qa-card qms-card" data-tags="qms admin vallead">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q10</span><span class="level-badge badge-both2">Both</span></div>
+          <div class="q-text">How do you model the relationship between a Deviation, a CAPA, and a Change Control in Vault? Can one CAPA be linked to multiple deviations? How is this configured?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <div class="answer-label">Answer</div>
+          <div class="answer-body">
+            <p>These three objects are related through <strong>Object Relationships</strong> in Vault. The standard configuration:</p>
+            <ul>
+              <li><strong>Deviation → CAPA:</strong> Parent-Child. A Deviation can spawn one or more CAPAs. The CAPA has a "Source Deviation" lookup field. Multiple deviations can share one CAPA if root cause analysis identifies a common systemic issue — this is a <strong>many-to-many</strong> relationship, modeled via an intermediary relationship object or a multi-value object reference field.</li>
+              <li><strong>CAPA → Change Control:</strong> Lookup relationship. A CAPA's corrective action may require a formal Change Control to update an SOP, retrain staff, or modify a process. The CC record has a "Linked CAPA" reference field.</li>
+              <li><strong>Deviation → Change Control:</strong> Direct lookup for planned deviations that themselves are change events.</li>
+            </ul>
+            <p><strong>Closure dependency:</strong> Configure a lifecycle entry criterion on CAPA closure: "All linked Change Controls must be in state = Implemented." This is done via object lifecycle entry actions with a related record count validation.</p>
+            <div class="tip"><strong>Reports matter:</strong> Auditors request "Show me all open deviations with their linked CAPAs and CC status." Your Vault report must pull across these relationships. Build and validate a "QE Linkage Report" as part of your validation package.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q11 -->
+      <div class="qa-card qms-card" data-tags="qms vallead">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q11</span><span class="level-badge badge-val">Val Lead</span></div>
+          <div class="q-text">A QC lab migrates 3,000 historical deviation records from a legacy LIMS into Vault QMS. What validation activities are required for this data migration?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <div class="answer-label">Answer</div>
+          <div class="answer-body">
+            <p>Data migration of GxP records is a <strong>validated activity</strong> with its own protocol. Steps:</p>
+            <ol>
+              <li><strong>Data Migration Plan</strong> — Document scope (which records, which date range), source system extract method, field mapping (Source Field → Vault Field), data transformation rules (e.g., legacy status codes mapped to Vault picklist values), handling of incomplete legacy records.</li>
+              <li><strong>Field Mapping Specification</strong> — Every source field mapped to its Vault destination. Unmappable fields documented with disposition (discard, notes field, separate attachment).</li>
+              <li><strong>Extraction & Transformation (ETL)</strong> — Extract from legacy, apply transformations, load to Vault via Vault Loader (CSV bulk import) or API. Migration runs in DEV/QA vault first.</li>
+              <li><strong>Migration Verification Protocol (OQ-level)</strong> — Statistically sampled or 100% verification depending on risk:
+                <ul>
+                  <li>Record count: Source count = Vault count</li>
+                  <li>Field-level spot checks (randomized sample): 20–100 records</li>
+                  <li>Data integrity: Key identifiers match (deviation ID, date, owner, status)</li>
+                  <li>Relationships intact: CAPA links preserved</li>
+                  <li>Attachments migrated: PDF files attached to correct records</li>
+                </ul>
+              </li>
+              <li><strong>Cutover Plan</strong> — On go-live day: legacy system made read-only → final delta migration → verification run → sign-off to proceed to production load.</li>
+            </ol>
+            <div class="critical"><strong>Audit trail note:</strong> Migrated records will show the migration service account as the "Created By" user with the migration date — not the original author. You MUST document this in a Migration Addendum to your validation package, and store the original records (or a certified extract) as evidence. Never alter migrated records to fake original authorship.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         QMS — TRAINING MANAGEMENT
+    ═══════════════════════════════════════ -->
+    <div class="section" id="qms-training" data-section="qms">
+      <div class="section-header">
+        <span class="section-tag tag-qms">QMS</span>
+        <div>
+          <div class="section-title">Training Management</div>
+          <div class="section-desc">Training assignments, curricula, qualification records, and LMS-like functions</div>
+        </div>
+      </div>
+
+      <!-- Q12 -->
+      <div class="qa-card qms-card" data-tags="qms admin">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q12</span><span class="level-badge badge-admin">Admin</span></div>
+          <div class="q-text">How does Vault QMS Training module work? How are training assignments auto-generated when a new SOP version is approved?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <div class="answer-label">Answer</div>
+          <div class="answer-body">
+            <p>Vault Training is built on <strong>Training Assignments</strong> generated automatically based on:</p>
+            <ul>
+              <li><strong>Training Requirements (Curricula)</strong> — A set of documents that a specific job role must be trained on. Configured per Document Type + Job Role combination. When a user is assigned a Job Role, they're enrolled in the corresponding curriculum.</li>
+              <li><strong>Auto-Assignment on Approval</strong> — When a document moves to Approved state, Vault checks: "Which Job Roles have this document type in their curriculum?" It then auto-creates a Training Assignment for every user in those roles. The assignment has a due date calculated from the document Approval Date + Grace Period (configurable).</li>
+            </ul>
+            <p><strong>Training Assignment workflow:</strong></p>
+            <ol>
+              <li>User receives notification of new training assignment.</li>
+              <li>User reads the document (system can track "Read and Understood" acknowledgment — user clicks "Complete Training" after reading the linked document).</li>
+              <li>Optional: quiz/assessment configured (external LMS link, or built-in acknowledgment).</li>
+              <li>Training Assignment moves to "Complete" state with user's e-signature and timestamp.</li>
+            </ol>
+            <div class="tip"><strong>Key OQ test:</strong> Approve a test SOP version → verify training assignments auto-created for all users in the configured roles → verify no assignments created for users NOT in those roles → verify due date calculated correctly → user completes assignment → verify e-signature captured → verify assignment record reflects correct document version and approval date.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q13 -->
+      <div class="qa-card qms-card" data-tags="qms vallead">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q13</span><span class="level-badge badge-val">Val Lead</span></div>
+          <div class="q-text">A new employee starts but is given system access before completing their training curriculum. What are the GxP implications, and how should Vault be configured to prevent this?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <div class="answer-label">Answer</div>
+          <div class="answer-body">
+            <p><strong>GxP implication:</strong> An untrained user accessing a GxP system and performing regulated tasks is a <strong>critical data integrity violation</strong>. Any data they entered could be challenged in an inspection. Training records are a regulatory prerequisite to system access, not a post-access formality.</p>
+            <p><strong>Vault configuration to enforce this:</strong></p>
+            <ul>
+              <li><strong>Option 1 — Process control:</strong> Access provisioning SOP requires training completion before IT creates the Vault account. Training completion proof submitted with access request.</li>
+              <li><strong>Option 2 — Vault enforcement:</strong> User account created but in Inactive status. Activation is a manual step by the system admin, triggered only when the onboarding training workflow is complete. The workflow sends a notification to the admin to activate the account.</li>
+              <li><strong>Option 3 — Permission-based restriction:</strong> New users are provisioned with a "Trainee" Permission Set that allows read-only access. Upon training completion, the admin upgrades their Permission Set to their full operational role.</li>
+            </ul>
+            <div class="critical"><strong>Val Lead action:</strong> This requirement must be captured in the URS ("The system shall not permit users to perform GxP functions prior to completion of required training") and tested in OQ. The chosen mechanism — process-based or system-enforced — must be documented with justification in the Validation Plan.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         QMS — AUDITS & INSPECTIONS
+    ═══════════════════════════════════════ -->
+    <div class="section" id="qms-audit" data-section="qms">
+      <div class="section-header">
+        <span class="section-tag tag-qms">QMS</span>
+        <div>
+          <div class="section-title">Audits, Audit Trails &amp; Inspections</div>
+          <div class="section-desc">Audit management module, electronic audit trail, and inspection readiness</div>
+        </div>
+      </div>
+
+      <!-- Q14 -->
+      <div class="qa-card qms-card" data-tags="qms admin vallead">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q14</span><span class="level-badge badge-both2">Both</span></div>
+          <div class="q-text">How does Vault's audit trail work technically? What events are captured, who can access it, and how do you demonstrate audit trail integrity to an FDA inspector?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <div class="answer-label">Answer</div>
+          <div class="answer-body">
+            <p>Vault maintains a <strong>system-generated audit trail</strong> that cannot be disabled by any admin or user. It records:</p>
+            <ul>
+              <li>Every document and object <strong>create, edit, delete</strong></li>
+              <li>Every <strong>field value change</strong> (old value → new value)</li>
+              <li>Every <strong>lifecycle state transition</strong></li>
+              <li>Every <strong>e-signature</strong> event (user, meaning, date/time)</li>
+              <li>Every <strong>login/logout</strong> (in the user access audit log)</li>
+              <li>Every <strong>document download or view</strong> (document access log)</li>
+            </ul>
+            <p><strong>Access:</strong> The audit trail is viewable by System Admins via Admin → Audit Trail. Individual record audit trails are visible to users with the appropriate permission on the document/object itself. Standard users cannot view the system-wide audit log — only record-level history on records they have access to.</p>
+            <p><strong>Demonstrating integrity to FDA:</strong></p>
+            <ol>
+              <li>Show that the audit trail is ON by default and cannot be toggled off (this is documented in Veeva's 21 CFR Part 11 whitepaper — which should be in your validation package).</li>
+              <li>Show a live record where a field was edited — demonstrate the audit trail shows original value, new value, who made the change, and when.</li>
+              <li>Show that audit trail entries have no Edit button — they are read-only.</li>
+              <li>Provide your audit trail review SOP showing you periodically review the audit trail for anomalies.</li>
+            </ol>
+            <div class="tip"><strong>Vendor SOC 2 Report:</strong> Veeva provides a SOC 2 Type II report attesting to its infrastructure controls. This supplements your validation package and is often requested by auditors to verify Veeva's own controls over the platform infrastructure.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         QMS — VALIDATION & CSV
+    ═══════════════════════════════════════ -->
+    <div class="section" id="qms-val" data-section="qms">
+      <div class="section-header">
+        <span class="section-tag tag-qms">QMS</span>
+        <div>
+          <div class="section-title">Validation Strategy &amp; CSV for Vault QMS</div>
+          <div class="section-desc">GAMP category, validation approach, and Vault-specific validation considerations</div>
+        </div>
+      </div>
+
+      <!-- Q15 -->
+      <div class="qa-card qms-card" data-tags="qms vallead">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q15</span><span class="level-badge badge-val">Val Lead</span></div>
+          <div class="q-text">Vault QMS is a SaaS platform. How does your validation strategy differ from an on-premise system? What does Veeva provide and what do you still own?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <div class="answer-label">Answer</div>
+          <div class="answer-body">
+            <p>Vault QMS is <strong>GAMP Category 4</strong> (configured COTS). Being SaaS changes the validation boundary but not the obligation:</p>
+            <p><strong>What Veeva owns and provides:</strong></p>
+            <ul>
+              <li>IQ-equivalent evidence — Infrastructure qualification, datacenter certifications (SOC 2, ISO 27001), disaster recovery, backup.</li>
+              <li>Platform OQ — Veeva provides a "Test Factory" or their own validation documentation for core platform features (standard workflow engine, audit trail, e-sig). You can leverage these under a <strong>Vendor-Supplied Testing (VST)</strong> strategy with documented vendor assessment.</li>
+              <li>Release Notes — Veeva publishes detailed release notes for every sandbox and production release.</li>
+            </ul>
+            <p><strong>What YOU still own:</strong></p>
+            <ul>
+              <li><strong>Configuration OQ/PQ</strong> — Everything you configured (custom objects, workflows, lifecycles, notifications, formulas) must be tested by you. Veeva does not test your configuration.</li>
+              <li><strong>URS, FRS, RTM</strong> — Your business requirements, fully your responsibility.</li>
+              <li><strong>SOPs and Training</strong> — Process-level controls, your responsibility.</li>
+              <li><strong>Vendor Assessment</strong> — Formal assessment of Veeva as a GxP software supplier. Review their Quality Agreement, audit rights, SLA, and change notification processes.</li>
+            </ul>
+            <div class="critical"><strong>Critical SaaS risk:</strong> Veeva pushes updates (typically 3 major releases per year) to your PRODUCTION vault on a fixed schedule. You must assess each release for GxP impact, test in sandbox, and document regression testing BEFORE the release reaches production. This is an ongoing validation obligation — not a one-time activity.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q16 -->
+      <div class="qa-card qms-card" data-tags="qms vallead">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q16</span><span class="level-badge badge-val">Val Lead</span></div>
+          <div class="q-text">How do you structure regression testing for a Veeva Vault QMS release (e.g., the Spring '25 release)? What is your process from release notes to production go-live?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <div class="answer-label">Answer</div>
+          <div class="answer-body">
+            <ol>
+              <li><strong>Release Notes Review (4–6 weeks before prod release)</strong> — Review Veeva release notes line by line. Categorize each change: Platform core change, Feature enhancement, Bug fix, Security patch. Identify which items touch your configured GxP functions.</li>
+              <li><strong>Impact Assessment Document</strong> — For each impacted area, rate risk: High (re-test required), Medium (targeted regression), Low (no re-test, document rationale). Total up regression test scope.</li>
+              <li><strong>Sandbox Preview Testing (3–4 weeks before prod)</strong> — Veeva deploys the release to your sandbox vault first. Execute regression test scripts against sandbox. Log defects if any (raise Veeva support tickets for platform bugs).</li>
+              <li><strong>Regression Test Evidence</strong> — Pass/fail results documented. Any open issues either resolved, deferred with documented risk acceptance, or escalated to delay production release (via Veeva's controlled rollout options).</li>
+              <li><strong>Release Memo / Release Impact Assessment Report</strong> — Summary document signed by System Owner + QA: "Release X has been assessed. Regression testing completed. No critical issues. Approved for production."</li>
+              <li><strong>Production Release</strong> — Veeva applies the release. Post-release smoke testing: verify 5–10 critical workflows are functional. Documented in a post-deployment verification checklist.</li>
+            </ol>
+            <div class="tip"><strong>Efficiency tip:</strong> Maintain a <strong>core regression script library</strong> — a set of ~20–30 test cases covering your highest-risk configured functions. Run these on every release. Reserve deep testing for release-specific impacted areas. This prevents "test everything every time" fatigue while maintaining coverage.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         RIM — ARCHITECTURE & MODULES
+    ═══════════════════════════════════════ -->
+    <div class="section" id="rim-arch" data-section="rim">
+      <div class="section-header">
+        <span class="section-tag tag-rim">RIM</span>
+        <div>
+          <div class="section-title">RIM Architecture &amp; Modules</div>
+          <div class="section-desc">Vault RIM structure, core modules, and how they interconnect</div>
+        </div>
+      </div>
+
+      <!-- Q17 -->
+      <div class="qa-card rim-card" data-tags="rim admin">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q17</span><span class="level-badge badge-admin">Admin</span></div>
+          <div class="q-text">What are the four core modules of Vault RIM and how do they relate to each other? Walk through the data flow from a clinical trial to a regulatory submission.</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <div class="answer-label">Answer</div>
+          <div class="answer-body">
+            <p>Vault RIM consists of four integrated modules:</p>
+            <ul>
+              <li><strong>RIM Submissions</strong> — Central hub. Manages the submission object hierarchy: Application → Submission → Submission Document. Tracks what is being submitted, to which agency, in which market, and in what format (eCTD, paper, regional).</li>
+              <li><strong>RIM Submissions Archive</strong> — Stores the final published eDossier (eCTD sequences). The authoritative record of what was actually sent to regulatory agencies. Linked to Publishing outputs.</li>
+              <li><strong>RIM Registrations</strong> — Manages the registration status of products in each market. Tracks approvals, conditions of approval, lifecycle events (renewals, variations, withdrawals). Links back to the Submissions that achieved each registration.</li>
+              <li><strong>RIM Publishing</strong> — Manages the assembly and publishing of eDossier packages (eCTD). Takes source documents, applies STF (Submission Table of Figures) metadata, and generates eCTD sequences for electronic submission to agencies like FDA (ESG), EMA (CESP), or Health Canada.</li>
+            </ul>
+            <p><strong>Data flow for an NDA:</strong></p>
+            <div class="code-snippet">Clinical/CMC documents (in Vault or external)
+  → Authored, reviewed, approved in QMS/Vault Docs
+  → Linked to Submission (NDA) via Submission Document records in RIM Submissions
+  → Publishing team assembles eCTD sequence in RIM Publishing
+  → Published eCTD archived in RIM Submissions Archive
+  → Submitted to FDA via ESG
+  → Approval tracked in RIM Registrations (NDA Approval, conditions, labeling)
+  → Post-approval changes tracked as Variations/Supplements</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q18 -->
+      <div class="qa-card rim-card" data-tags="rim admin">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q18</span><span class="level-badge badge-admin">Admin</span></div>
+          <div class="q-text">What is the RIM object hierarchy — Application, Submission, Activity? How do you configure this structure for a global product with multiple markets?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <div class="answer-label">Answer</div>
+          <div class="answer-body">
+            <p>The RIM hierarchy in Vault is:</p>
+            <ul>
+              <li><strong>Product / Registered Product</strong> — Top level. Represents the drug product or medical device. Has fields for product name, active substance, therapeutic area, development stage.</li>
+              <li><strong>Application</strong> — Regulatory application per country and application type. E.g., NDA 123456 (US), MAA EU-2024-001 (EU), NDS 12345 (Canada). Each application belongs to one Product and one Country.</li>
+              <li><strong>Activity</strong> — An action within an application lifecycle. E.g., Initial Submission, Annual Report, Prior Approval Supplement, Labeling Update. Activities track the regulatory event lifecycle.</li>
+              <li><strong>Submission</strong> — The actual submission package sent to an agency. Linked to an Activity. Contains Submission Document records that link to the actual documents.</li>
+              <li><strong>Submission Document</strong> — Junction object linking a Submission to a Vault Document. Has metadata: CTD section (e.g., 3.2.S.1), document version, submission-specific title.</li>
+            </ul>
+            <p><strong>For a global product:</strong> One Product → Multiple Applications (one per country) → Each Application has its own Activity/Submission hierarchy. The same source documents can be linked to multiple submissions via separate Submission Document records — enforcing single source of truth without duplicating files.</p>
+            <div class="tip"><strong>Admin consideration:</strong> Picklist values for Country, Application Type, Activity Type, CTD Section must be configured in Admin and kept current with regulatory guidance changes. These are reference data — changes to picklist values require a change control.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         RIM — SUBMISSIONS
+    ═══════════════════════════════════════ -->
+    <div class="section" id="rim-submissions" data-section="rim">
+      <div class="section-header">
+        <span class="section-tag tag-rim">RIM</span>
+        <div>
+          <div class="section-title">Submissions Management</div>
+          <div class="section-desc">Submission planning, document management, agency communications, and sequence management</div>
+        </div>
+      </div>
+
+      <!-- Q19 -->
+      <div class="qa-card rim-card" data-tags="rim admin vallead">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q19</span><span class="level-badge badge-both2">Both</span></div>
+          <div class="q-text">How does Vault RIM manage the link between source documents and regulatory submissions? What happens to a submission when a source document is revised?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <div class="answer-label">Answer</div>
+          <div class="answer-body">
+            <p>Vault RIM maintains a <strong>version-specific link</strong> between submissions and documents. The Submission Document record references a specific version of the source document — not just the document itself.</p>
+            <p><strong>When a source document is revised:</strong></p>
+            <ol>
+              <li>The document moves through its authoring/review/approval lifecycle and a new major version is approved (e.g., v1.0 → v2.0).</li>
+              <li>The previous Submission Document record (pointing to v1.0) remains intact — preserving the historical record of what was actually submitted.</li>
+              <li>The Regulatory Affairs team assesses: Does this revision require a new submission (e.g., a CMC change that triggers a CBE-30 or PAS)? If yes, a new Activity and Submission are created, and a new Submission Document record is created pointing to v2.0.</li>
+              <li>Vault's <strong>Document Tracker</strong> (or custom report) highlights documents with new approved versions that have not yet been linked to an active submission — flagging potential regulatory obligations.</li>
+            </ol>
+            <div class="critical"><strong>Validation test:</strong> Approve a new version of a controlled document that is linked to an active submission. Verify the original Submission Document record still points to the old version. Verify the new version is flagged in the Document Tracker. This is a critical OQ test for data integrity of the submission record.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q20 -->
+      <div class="qa-card rim-card" data-tags="rim admin">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q20</span><span class="level-badge badge-admin">Admin</span></div>
+          <div class="q-text">How are Agency Correspondence and Regulatory Agency Commitments tracked in Vault RIM? What objects are used?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <div class="answer-label">Answer</div>
+          <div class="answer-body">
+            <p><strong>Agency Correspondence</strong> in RIM is tracked as a document type within the Submission hierarchy. Incoming agency communications (Complete Response Letters, Information Requests, FDA letters) are stored as documents linked to the relevant Application/Submission.</p>
+            <p><strong>Regulatory Commitments</strong> are tracked as a separate object type:</p>
+            <ul>
+              <li><strong>Commitment Object</strong> — Created when an agency issues a post-approval commitment. Fields: Commitment Text, Due Date, Responsible Party, Commitment Type (Post-Marketing Study, Labeling Update, Annual Report), Status (Open, In Progress, Fulfilled, Overdue).</li>
+              <li><strong>Link to Application</strong> — Each commitment linked to its parent Application (and specific Activity/Submission where it originated).</li>
+              <li><strong>Fulfillment tracking</strong> — When the commitment is fulfilled (a new submission made), the Commitment record is updated to link to the fulfilling Submission and status changed to Fulfilled.</li>
+            </ul>
+            <p><strong>Dashboard/Reports</strong> — Regulatory Operations teams run a Commitments Due Report showing all open commitments with upcoming due dates — a critical tool for proactive compliance management.</p>
+            <div class="tip"><strong>OQ test:</strong> Create a Commitment record, set Due Date to 30 days from today, verify it appears in the "Commitments Due in 30 Days" report. Mark as Fulfilled and verify it no longer appears as open. Test overdue notification fires when Due Date passes without fulfillment.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         RIM — REGISTRATIONS
+    ═══════════════════════════════════════ -->
+    <div class="section" id="rim-registrations" data-section="rim">
+      <div class="section-header">
+        <span class="section-tag tag-rim">RIM</span>
+        <div>
+          <div class="section-title">Registrations &amp; Product Lifecycle</div>
+          <div class="section-desc">Approval tracking, renewals, variations, and global registration status</div>
+        </div>
+      </div>
+
+      <!-- Q21 -->
+      <div class="qa-card rim-card" data-tags="rim admin vallead">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q21</span><span class="level-badge badge-both2">Both</span></div>
+          <div class="q-text">How does Vault RIM Registrations track the lifecycle of a product approval — from initial approval through renewals and post-approval variations?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <div class="answer-label">Answer</div>
+          <div class="answer-body">
+            <p>RIM Registrations uses the <strong>Registered Product</strong> object to track the approval status in each market:</p>
+            <ul>
+              <li><strong>Registration Record</strong> — Created when an approval is received. Fields: Approval Date, Approval Number (e.g., NDA 123456), Approved Indication, Approved Dosage Forms, Approved Labeling version, Renewal Due Date, Responsible RA Manager.</li>
+              <li><strong>Registration Status</strong> — Lifecycle: Pending Approval → Approved → Renewal Due → Renewed / Expired / Withdrawn.</li>
+              <li><strong>Renewal Management</strong> — Renewal Due Date field triggers scheduled notifications (e.g., 12 months before expiry → alert RA team, 6 months → escalate). Renewal submission tracked as a new Activity linked to the Registration.</li>
+              <li><strong>Post-Approval Variations</strong> — Each variation (Type IA, IB, II for EMA; CBE-30, PAS for FDA) is a new Activity with its own submission and approval tracking. Upon approval, the relevant Registration fields are updated (e.g., new labeling version, new indication).</li>
+              <li><strong>Approved Documents Snapshot</strong> — At the time of each approval/variation approval, the Registration record links to the specific approved document versions (labeling, SmPC, package insert). This creates an accurate regulatory state snapshot at each point in the product lifecycle.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q22 -->
+      <div class="qa-card rim-card" data-tags="rim admin">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q22</span><span class="level-badge badge-admin">Admin</span></div>
+          <div class="q-text">How do you configure RIM to support both FDA (US) and EMA (EU) submission types simultaneously for the same product? What are the key configuration differences?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <div class="answer-label">Answer</div>
+          <div class="answer-body">
+            <p>RIM handles multi-region submissions through <strong>country-specific configuration</strong> layered on the same object model. Key differences to configure:</p>
+            <p><strong>Application Type Picklists:</strong></p>
+            <ul>
+              <li>US: NDA, BLA, ANDA, IND, NDA-Supplement (CBE-0, CBE-30, PAS), Annual Report</li>
+              <li>EU: MAA, Type IA Variation, Type IB Variation, Type II Variation, Line Extension, Renewal</li>
+            </ul>
+            <p><strong>Submission Format fields:</strong></p>
+            <ul>
+              <li>US: eCTD (NDA/BLA), paper, non-eCTD electronic (for INDs)</li>
+              <li>EU: eCTD via CESP portal, XEVMPD data submission for EMA product database</li>
+            </ul>
+            <p><strong>CTD Section mapping</strong> — Same CTD structure (M1–M5) but M1 is region-specific. US M1 (1.0 cover letter, 1.12 proposed labeling) differs from EU M1 (1.0 regional admin forms, 1.3.1 SmPC, 1.3.2 Labeling). Configure separate Submission Document Type templates per region.</p>
+            <p><strong>Regulatory Agency records:</strong> Configure Agency object records for FDA, EMA, MHRA, Health Canada, etc., with their specific contact info, portal submission methods, and regulatory timelines.</p>
+            <div class="tip"><strong>Best practice:</strong> Use <strong>Submission Templates</strong> in RIM to pre-populate the standard set of required documents for each Application Type + Country combination. A US NDA template pre-creates the required CTD sections so RAs don't build from scratch each time.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         RIM — PUBLISHING
+    ═══════════════════════════════════════ -->
+    <div class="section" id="rim-publishing" data-section="rim">
+      <div class="section-header">
+        <span class="section-tag tag-rim">RIM</span>
+        <div>
+          <div class="section-title">Publishing &amp; eDossier Management</div>
+          <div class="section-desc">eCTD publishing, STF, sequence management, and electronic submission</div>
+        </div>
+      </div>
+
+      <!-- Q23 -->
+      <div class="qa-card rim-card" data-tags="rim admin">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q23</span><span class="level-badge badge-admin">Admin</span></div>
+          <div class="q-text">Explain the eCTD publishing process in Vault RIM Publishing. What is the role of the Submission Table of Figures (STF) and how does Vault manage sequence numbering?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <div class="answer-label">Answer</div>
+          <div class="answer-body">
+            <p><strong>eCTD (Electronic Common Technical Document)</strong> is the international regulatory data standard for structuring drug applications. Vault RIM Publishing manages the assembly process:</p>
+            <p><strong>Submission Table of Figures (STF) / Submission Table of Content:</strong></p>
+            <ul>
+              <li>Each document in the submission is assigned metadata: CTD section (e.g., 3.2.P.1), document title, file name, operation (New/Replace/Delete). This metadata tells the eCTD backbone where to place each document.</li>
+              <li>In Vault, the STF metadata is captured on the Submission Document record and validated against the eCTD specification before publishing.</li>
+            </ul>
+            <p><strong>Sequence Numbering:</strong></p>
+            <ul>
+              <li>eCTD submissions use sequential sequence numbers (0000 for initial, 0001, 0002, etc. for subsequent submissions).</li>
+              <li>Vault tracks the sequence history per Application. When a new submission is published, Vault auto-assigns the next sequence number, preventing gaps or duplicates which would fail agency validation.</li>
+            </ul>
+            <p><strong>Publishing workflow:</strong></p>
+            <ol>
+              <li>Publisher assembles the STF — links documents to CTD sections.</li>
+              <li>Vault validates the eCTD package structure (XML backbone validation, file naming checks).</li>
+              <li>Published eCTD is stored in <strong>RIM Submissions Archive</strong>.</li>
+              <li>Publisher exports the eCTD package and submits via FDA ESG, EMA CESP, or regional portals.</li>
+              <li>Agency acknowledgment receipt stored in Vault as a document linked to the Submission record.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q24 -->
+      <div class="qa-card rim-card" data-tags="rim vallead">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q24</span><span class="level-badge badge-val">Val Lead</span></div>
+          <div class="q-text">What are the specific OQ/PQ test cases required to validate RIM Publishing? What are the most commonly missed test scenarios?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <div class="answer-label">Answer</div>
+          <div class="answer-body">
+            <p><strong>Required OQ test cases for RIM Publishing:</strong></p>
+            <ul>
+              <li><strong>Sequence numbering</strong> — Publish sequence 0000 (initial), verify sequence 0001 is assigned for the next submission. Verify no duplicate sequence numbers are possible.</li>
+              <li><strong>eCTD backbone validation</strong> — Publish a package with an intentional error (missing required section), verify Vault rejects with appropriate error message.</li>
+              <li><strong>Replace operation</strong> — Document previously included in sequence 0000 is revised. Include in sequence 0001 with operation=Replace. Verify eCTD XML correctly marks the old leaf as superseded and new leaf as the current document.</li>
+              <li><strong>Delete operation</strong> — Verify a document can be deleted from the eCTD and that the XML backbone correctly marks it as deleted.</li>
+              <li><strong>Archive integrity</strong> — Published eCTD stored in Submissions Archive; verify file hashes/checksums to confirm the archived package matches what was published (no corruption).</li>
+              <li><strong>Access control</strong> — Only Publishing-role users can initiate and complete a publish action. Verify QA-only users cannot publish.</li>
+            </ul>
+            <p><strong>Commonly missed scenarios:</strong></p>
+            <ul>
+              <li>Testing the <strong>partial replace</strong> scenario — where only some sections of a large submission are updated.</li>
+              <li>Verifying <strong>Submissions Archive is read-only</strong> post-publish — no user should be able to edit an archived eCTD.</li>
+              <li>Testing <strong>agency acknowledgment receipt</strong> storage and linkage to the Submission record.</li>
+              <li><strong>Rendition generation</strong> — Verify PDFs are correctly generated from Word/Excel source files during publish.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         RIM — VALIDATION & CSV
+    ═══════════════════════════════════════ -->
+    <div class="section" id="rim-val" data-section="rim">
+      <div class="section-header">
+        <span class="section-tag tag-rim">RIM</span>
+        <div>
+          <div class="section-title">Validation &amp; CSV for Vault RIM</div>
+          <div class="section-desc">GxP applicability, validation scope, and RIM-specific validation challenges</div>
+        </div>
+      </div>
+
+      <!-- Q25 -->
+      <div class="qa-card rim-card" data-tags="rim vallead">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q25</span><span class="level-badge badge-val">Val Lead</span></div>
+          <div class="q-text">Is Vault RIM a GxP system requiring full CSV? How do you determine which RIM modules are GxP and which are not? What regulations govern it?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <div class="answer-label">Answer</div>
+          <div class="answer-body">
+            <p>This is a critical scoping question. <strong>Vault RIM is not uniformly GxP — you must assess each module:</strong></p>
+            <ul>
+              <li><strong>RIM Submissions Archive — GxP (High Priority)</strong>: Contains the official record of what was submitted to regulatory agencies. Regulatory records must meet data integrity requirements. 21 CFR Part 11 / EU Annex 11 applicable. Full CSV required.</li>
+              <li><strong>RIM Registrations — GxP</strong>: Tracks marketing authorization status. Incorrect data here can lead to unlicensed product on market or missed renewal deadlines — regulatory compliance risk. CSV required.</li>
+              <li><strong>RIM Publishing — GxP</strong>: Generates the eCTD submitted to agencies. Integrity of the published package is critical. Part 11 applicable (audit trail of who published what and when). CSV required.</li>
+              <li><strong>RIM Submissions (planning) — Arguable</strong>: The planning and tracking functions are lower risk, but if the system is the system of record for submission dates and regulatory commitments, treat as GxP.</li>
+            </ul>
+            <p><strong>Governing regulations:</strong></p>
+            <ul>
+              <li>21 CFR Part 11 (Electronic Records/Electronic Signatures — US)</li>
+              <li>EU GMP Annex 11 (Computerised Systems — EU)</li>
+              <li>ICH Q10 (Pharmaceutical Quality System)</li>
+              <li>FDA's eCTD guidance (M8 — eCTD technical specification)</li>
+              <li>EMA eCTD guidance and CESP submission requirements</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q26 -->
+      <div class="qa-card rim-card" data-tags="rim vallead">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q26</span><span class="level-badge badge-val">Val Lead</span></div>
+          <div class="q-text">RIM has a dependency on the regulatory agency portals (FDA ESG, EMA CESP). How do you validate the interface between Vault RIM and these external portals?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <div class="answer-label">Answer</div>
+          <div class="answer-body">
+            <p>This is an <strong>interface validation</strong> challenge — you're testing a connection to an external system you don't control.</p>
+            <p><strong>Validation approach:</strong></p>
+            <ol>
+              <li><strong>Scope definition:</strong> Your responsibility is to validate what Vault generates and sends. The agency portal's internal processing is outside your validation scope (but you document this boundary explicitly).</li>
+              <li><strong>Test environment consideration:</strong> FDA ESG has a <strong>Test ESG gateway</strong> for exactly this purpose. EMA CESP has a test environment. Your OQ should test the actual electronic submission to the test gateway — not just a mock.</li>
+              <li><strong>OQ test cases:</strong>
+                <ul>
+                  <li>Submit a test eCTD package to FDA Test ESG → Receive and archive the Technical Acknowledgment (TA) and Validation Acknowledgment (VA) → Verify they are stored in the correct Submission record in Vault.</li>
+                  <li>Test error handling: submit a malformed package → verify error is returned, logged, and the submission is not marked as "submitted" in Vault until a clean VA is received.</li>
+                  <li>Verify digital certificate used for FDA ESG authentication is configured correctly and certificate expiry is tracked.</li>
+                </ul>
+              </li>
+              <li><strong>Acknowledgment receipt workflow</strong> — Verify the workflow assigns a task to the publishing team to review and file the TA/VA received from the agency.</li>
+            </ol>
+            <div class="critical"><strong>Certificate management:</strong> FDA ESG requires a digital certificate (obtained from FDA) for authentication. Certificate expiry must be tracked in Vault (or via another system) and renewed before expiry. A lapsed certificate prevents electronic submissions — this is a regulatory compliance risk you must include in your periodic review checklist.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         CROSS-CUTTING — ADMIN BEST PRACTICES
+    ═══════════════════════════════════════ -->
+    <div class="section" id="cross-admin" data-section="both">
+      <div class="section-header">
+        <span class="section-tag tag-both">QMS + RIM</span>
+        <div>
+          <div class="section-title">Admin Best Practices &amp; Governance</div>
+          <div class="section-desc">Admin controls, configuration documentation, and day-to-day governance</div>
+        </div>
+      </div>
+
+      <!-- Q27 -->
+      <div class="qa-card both-card" data-tags="qms rim admin">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q27</span><span class="level-badge badge-admin">Admin</span></div>
+          <div class="q-text">What Admin controls should be in place to prevent unauthorized configuration changes in a validated Vault? Who should have System Admin access?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <div class="answer-label">Answer</div>
+          <div class="answer-body">
+            <p><strong>Vault Admin access is extremely powerful</strong> — an admin can change lifecycles, permissions, field definitions, and object configurations with immediate effect in production. This must be tightly controlled.</p>
+            <p><strong>Admin access controls:</strong></p>
+            <ul>
+              <li><strong>Minimum necessary access:</strong> Only designated System Admins have Admin panel access. Business users, RA scientists, and QC analysts should NEVER have Admin access.</li>
+              <li><strong>Named individuals:</strong> Admin access should be granted to 2–4 named individuals (primary + backup). No functional or shared admin accounts.</li>
+              <li><strong>Separation of duties:</strong> The person making a configuration change should not be the same person who approves the change control authorizing it.</li>
+              <li><strong>Admin audit trail review:</strong> Periodically review Admin Activity Audit Log (Admin → Audit Trail → Admin Actions) to confirm all admin-level changes have corresponding approved change controls. This is a key periodic review deliverable.</li>
+              <li><strong>DEV-only admin rule:</strong> Wherever possible, config changes are made ONLY in DEV by the admin, then promoted via migration package. Direct PROD admin changes are emergency only and require retrospective change control documentation.</li>
+            </ul>
+            <div class="critical"><strong>Common audit finding:</strong> Admin accounts found for former employees, or business users found with admin access "because they needed it once." Quarterly admin access review is a best practice that prevents this.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q28 -->
+      <div class="qa-card both-card" data-tags="qms rim admin">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q28</span><span class="level-badge badge-admin">Admin</span></div>
+          <div class="q-text">How do you use Vault's built-in tools — Vault Loader, API, and the Vault Java SDK — and in what admin scenarios would you use each?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <div class="answer-label">Answer</div>
+          <div class="answer-body">
+            <p>Vault provides multiple integration and bulk-operation tools, each suited to different scenarios:</p>
+            <ul>
+              <li><strong>Vault Loader (CSV-based)</strong> — GUI or CLI tool for bulk create/update/delete of documents and objects via CSV files. Best for: Data migrations, bulk user updates, mass document metadata updates. Requires admin knowledge of object field API names. Produces a results CSV showing success/failure per row. <em>Use when:</em> one-time or infrequent bulk data operations.</li>
+              <li><strong>Vault REST API</strong> — Full programmatic access to all Vault operations: CRUD on objects, document upload, workflow management, user management. Requires authentication (API credentials). Best for: System integrations (LIMS → Vault, ERP → Vault), automated data sync, building custom integration middleware. <em>Use when:</em> ongoing automated data exchange with other systems.</li>
+              <li><strong>Vault Java SDK (Vault Extensions)</strong> — For building custom server-side logic in Vault: custom triggers (execute code on object save), custom actions (button-triggered logic), custom jobs (scheduled automation). Runs inside Vault's sandbox environment. <em>Use when:</em> business logic too complex for native configuration, custom validation rules, complex auto-calculations.</li>
+            </ul>
+            <div class="critical"><strong>Validation implication:</strong> Any use of Vault Loader for GxP data migration must be validated (the migration itself is a validated activity). Vault Extensions (custom code) are Category 5 (custom software) and require their own code review, unit testing, and validation testing. Never deploy custom Vault SDK code to production without validated testing in QA vault first.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         CROSS-CUTTING — E-SIG & AUDIT TRAIL
+    ═══════════════════════════════════════ -->
+    <div class="section" id="cross-esig" data-section="both">
+      <div class="section-header">
+        <span class="section-tag tag-both">QMS + RIM</span>
+        <div>
+          <div class="section-title">Electronic Signatures &amp; 21 CFR Part 11</div>
+          <div class="section-desc">E-sig configuration, Part 11 compliance, and what inspectors examine</div>
+        </div>
+      </div>
+
+      <!-- Q29 -->
+      <div class="qa-card both-card" data-tags="qms rim admin vallead">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q29</span><span class="level-badge badge-both2">Both</span></div>
+          <div class="q-text">How does Vault implement 21 CFR Part 11 compliant electronic signatures? What are the technical requirements and how do you configure and test them?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <div class="answer-label">Answer</div>
+          <div class="answer-body">
+            <p>21 CFR Part 11 requires electronic signatures to be: <strong>unique to one individual, not reused or reassigned, linked to their respective electronic record, and include the printed name, date/time, and meaning of signature.</strong></p>
+            <p><strong>Vault E-Signature configuration:</strong></p>
+            <ul>
+              <li><strong>Signature meaning</strong> — Configured per workflow task or lifecycle transition. E.g., QA Approval signature meaning: "I approve this document as compliant with applicable procedures." This is displayed to the signer before they sign and permanently recorded in the audit trail.</li>
+              <li><strong>Authentication</strong> — Vault requires the user to re-enter their password at the point of signing (even though they're already logged in). This is the 21 CFR Part 11 §11.200 "biometric/non-biometric" requirement — re-authentication at time of signing.</li>
+              <li><strong>Signature record</strong> — The signed record stores: Username (unique ID), Full printed name, Date/time (UTC, then converted to user's timezone for display), Signature meaning, Document version that was signed. This is all part of the audit trail and is tamper-proof.</li>
+              <li><strong>Signature manifest</strong> — Documents with e-signatures generate a printable Signature Page (signature manifest) showing all signature events. This is included when generating a certified copy of the record.</li>
+            </ul>
+            <p><strong>OQ test cases:</strong></p>
+            <ul>
+              <li>Attempt to sign with incorrect password → system rejects. Correct password → signature recorded.</li>
+              <li>Verify signature record shows correct username, printed name, date/time, and meaning.</li>
+              <li>Verify the audit trail entry for the signature cannot be edited or deleted.</li>
+              <li>Sign as User A, log out, log in as User B, verify User B cannot sign with User A's credentials.</li>
+              <li>Verify printed signature manifest matches audit trail.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q30 -->
+      <div class="qa-card both-card" data-tags="qms rim vallead">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q30</span><span class="level-badge badge-val">Val Lead</span></div>
+          <div class="q-text">What does a 21 CFR Part 11 gap assessment for a new Vault implementation look like? What are the most common gaps found?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <div class="answer-label">Answer</div>
+          <div class="answer-body">
+            <p>A Part 11 gap assessment maps each §11.10 (controls for closed systems) and §11.200 (electronic signature) requirement against your Vault configuration. Format is a compliance matrix:</p>
+            <div class="code-snippet">§11.10(a) — Validation: COMPLIANT — System validated per CSV protocol.
+§11.10(b) — Accurate/complete copies: COMPLIANT — Vault generates printable records with e-sig manifest.
+§11.10(c) — Record protection/retrieval: COMPLIANT — Vault backup/DR, retention configured.
+§11.10(d) — System access limited to authorized users: COMPLIANT — Permission sets, unique IDs, password policy.
+§11.10(e) — Audit trail: COMPLIANT — System-generated, tamper-proof, reviewed per schedule.
+§11.10(f) — Operational system checks: REVIEW — Check all mandatory fields enforced.
+§11.10(g) — Authority checks: COMPLIANT — Role-based access prevents unauthorized signing.
+§11.10(h) — Device checks: COMPLIANT — Vault session management configured.
+§11.10(i) — Training: GAP — Training records not yet in the validated LMS. [ACTION]
+§11.10(j) — Policies: GAP — Part 11 policy SOP not yet drafted. [ACTION]
+§11.10(k) — Controls for distribution/use: COMPLIANT — Controlled document module active.</div>
+            <p><strong>Most common gaps found:</strong></p>
+            <ul>
+              <li>No formal <strong>Part 11 Policy SOP</strong> signed by management.</li>
+              <li>Users have not signed a <strong>Part 11 Commitment Statement</strong> (acknowledging their e-sig is legally binding).</li>
+              <li>Audit trail <strong>review cadence not defined</strong> — no SOP, no evidence of periodic review.</li>
+              <li>Shared accounts exist (even for admins — "we share the admin login for convenience").</li>
+              <li>Password policy configured but not formally documented as meeting §11.300 requirements.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         CROSS-CUTTING — UPGRADES & RELEASES
+    ═══════════════════════════════════════ -->
+    <div class="section" id="cross-upgrade" data-section="both">
+      <div class="section-header">
+        <span class="section-tag tag-both">QMS + RIM</span>
+        <div>
+          <div class="section-title">Vendor Upgrades, Releases &amp; Long-Term Maintenance</div>
+          <div class="section-desc">Managing Veeva's release cycle, long-term validation burden, and strategic maintenance</div>
+        </div>
+      </div>
+
+      <!-- Q31 -->
+      <div class="qa-card both-card" data-tags="qms rim admin vallead">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q31</span><span class="level-badge badge-both2">Both</span></div>
+          <div class="q-text">Veeva releases major updates ~3 times per year. How do you build a sustainable, resource-efficient release management program that doesn't burn out the validation team?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <div class="answer-label">Answer</div>
+          <div class="answer-body">
+            <p>This is a <strong>strategic operations question</strong> as much as a technical one. Key pillars:</p>
+            <ol>
+              <li><strong>Tiered regression library</strong> — Maintain 3 levels: Tier 1 (5–10 smoke tests, run in 30 minutes, every release), Tier 2 (20–30 targeted tests, run when release notes indicate impact), Tier 3 (full regression, run for major releases or when multiple GxP functions impacted).</li>
+              <li><strong>Impact assessment template</strong> — Standardized spreadsheet mapping each Veeva release note line item against your configured GxP functions. Built once, reused every release. Admin reviews release notes and color-codes (Green/Amber/Red) impact level in ~2 hours per release.</li>
+              <li><strong>Test automation</strong> — Invest in Vault's built-in test utilities or third-party tools (Selenium, or Veeva's own Vault Direct Data API) to automate Tier 1 smoke tests. Initial investment saves hours per release cycle.</li>
+              <li><strong>Business user partnership</strong> — Train power users in each department (QA, RA, QC) to run their own functional smoke tests after each release. Formalize this as a UAT step with a simple pass/fail checklist. Reduces load on the validation team.</li>
+              <li><strong>Veeva sandbox preview window</strong> — Veeva provides sandbox access 4–6 weeks before production release. Use this window proactively — don't wait until the week before production deployment.</li>
+              <li><strong>Release calendar integration</strong> — Subscribe to Veeva's release schedule and block time in the validation team's calendar each release cycle. Treat it as a recurring operational activity, not a surprise event.</li>
+            </ol>
+            <div class="tip"><strong>Metric to track:</strong> Time from sandbox availability to completed regression sign-off. Target: under 3 weeks. If consistently over, your regression library needs streamlining or you need additional resources.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q32 -->
+      <div class="qa-card both-card" data-tags="qms rim vallead">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q32</span><span class="level-badge badge-val">Val Lead</span></div>
+          <div class="q-text">An FDA inspector arrives and asks: "Show me evidence that your Vault QMS has been maintained in a validated state since go-live three years ago." Walk me through what you present.</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer">
+          <div class="answer-label">Answer</div>
+          <div class="answer-body">
+            <p>This is the ultimate "prove it" question. Your response is a structured walkthrough of your <strong>Validation Lifecycle Binder</strong>:</p>
+            <ol>
+              <li><strong>"We start with our Validation Summary Report from initial go-live."</strong> — Show the signed VSR confirming IQ/OQ/PQ complete, RTM 100% coverage, all deviations closed. This establishes the validated baseline.</li>
+              <li><strong>"Here is our Change Control Register — every change to the system over 3 years."</strong> — Show the CC log: date, change description, impact assessment, approval, test evidence reference, closure date. Demonstrate no changes were made outside of change control (admin audit trail confirms this).</li>
+              <li><strong>"For each major change, here is the re-validation evidence."</strong> — Pull 2–3 significant changes and show the full package: IA → updated RTM → OQ test scripts → executed results → closure.</li>
+              <li><strong>"We also manage Veeva's quarterly releases."</strong> — Show 3 years of Release Impact Assessments and regression test records. Demonstrate that every Veeva production release was assessed and tested before reaching the live system.</li>
+              <li><strong>"Annual Periodic Reviews confirm the system remains validated."</strong> — Show 3 years of Periodic Review reports. Each signed by Business Owner + QA. Each covers: change history, incident review, access review, SOP review.</li>
+              <li><strong>"User access records."</strong> — Show current user list with roles. Show the annual access review records. Show that terminated employee accounts were disabled (pull one example).</li>
+              <li><strong>"Training records."</strong> — Show training completion report for all current users against all current SOPs. No gaps.</li>
+            </ol>
+            <div class="critical"><strong>If you can't show this chain of evidence:</strong> Gaps are major or critical findings. The inspector will conclude the system has not been maintained in a validated state regardless of what it was at go-live. Validation is a continuous commitment, not a one-time event.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /layout -->
+
+<div class="page-footer">
+  <span>Veeva Vault QMS &amp; RIM · Interview Preparation Guide · Admin + Validation Lead Level</span>
+  <span>32 Questions · 21 CFR Part 11 · EU Annex 11 · GAMP 5 · ICH Q10</span>
+</div>
+
+<script>
+  // Toggle Q&A
+  function toggle(qEl) {
+    const card = qEl.closest('.qa-card');
+    card.classList.toggle('open');
+  }
+
+  // Filter logic
+  let activeSystem = 'all';
+  let activeLevel = 'all';
+
+  function filter(type, btn) {
+    const isSystem = ['all','qms','rim'].includes(type);
+    const isLevel = ['admin','vallead'].includes(type);
+
+    if (type === 'all') {
+      activeSystem = 'all';
+      activeLevel = 'all';
+    } else if (isSystem) {
+      activeSystem = type;
+    } else if (isLevel) {
+      activeLevel = activeLevel === type ? 'all' : type;
+    }
+
+    // Update button states
+    document.querySelectorAll('.filter-btn').forEach(b => {
+      b.className = 'filter-btn';
+    });
+    if (activeSystem === 'all' && activeLevel === 'all') {
+      document.querySelector('[onclick="filter(\'all\', this)"]').classList.add('active-all');
+    }
+    if (activeSystem === 'qms') document.querySelector('[onclick="filter(\'qms\', this)"]').classList.add('active-qms');
+    if (activeSystem === 'rim') document.querySelector('[onclick="filter(\'rim\', this)"]').classList.add('active-rim');
+    if (activeLevel === 'admin') document.querySelector('[onclick="filter(\'admin\', this)"]').classList.add('active-admin');
+    if (activeLevel === 'vallead') document.querySelector('[onclick="filter(\'vallead\', this)"]').classList.add('active-vallead');
+
+    applyFilters();
+  }
+
+  function applyFilters() {
+    let visibleCount = 0;
+
+    document.querySelectorAll('.qa-card').forEach(card => {
+      const tags = card.dataset.tags || '';
+      const systemMatch = activeSystem === 'all' || tags.includes(activeSystem);
+      const levelMatch = activeLevel === 'all' || tags.includes(activeLevel) || tags.includes('both');
+      const show = systemMatch && levelMatch;
+      card.classList.toggle('hidden', !show);
+      if (show) visibleCount++;
+    });
+
+    // Hide/show sections
+    document.querySelectorAll('.section').forEach(sec => {
+      const secType = sec.dataset.section;
+      const systemMatch = activeSystem === 'all' || secType === activeSystem || secType === 'both';
+      const hasVisible = [...sec.querySelectorAll('.qa-card:not(.hidden)')].length > 0;
+      sec.classList.toggle('hidden', !hasVisible);
+    });
+
+    document.getElementById('qcount').textContent = `${visibleCount} question${visibleCount !== 1 ? 's' : ''}`;
+  }
+
+  function jumpTo(id) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Update nav active state
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active-qms', 'active-rim'));
+      event.currentTarget.classList.add(id.startsWith('qms') ? 'active-qms' : 'active-rim');
+    }
+  }
+
+  // Init count
+  applyFilters();
+</script>
+</body>
+</html>

@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GxP System Lifecycle — Validation Reference</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,300&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg: #0d0f14;
+    --surface: #13161d;
+    --surface2: #1a1e28;
+    --border: #252a38;
+    --border2: #2e3448;
+    --accent: #4fffb0;
+    --accent2: #00d4ff;
+    --accent3: #ff9d4d;
+    --accent4: #c87dff;
+    --text: #e8eaf0;
+    --text2: #8b90a8;
+    --text3: #555c78;
+    --danger: #ff5f6d;
+    --warn: #ffd166;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ─── HEADER ─── */
+  .header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 32px 48px 28px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .header-badge {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #000;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    padding: 4px 10px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+
+  .header h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+
+  .header p {
+    color: var(--text2);
+    font-size: 13px;
+    margin-top: 2px;
+  }
+
+  /* ─── LAYOUT ─── */
+  .layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: calc(100vh - 82px);
+  }
+
+  /* ─── SIDEBAR NAV ─── */
+  .sidebar {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 28px 0;
+    position: sticky;
+    top: 82px;
+    height: calc(100vh - 82px);
+    overflow-y: auto;
+  }
+
+  .sidebar::-webkit-scrollbar { width: 4px; }
+  .sidebar::-webkit-scrollbar-track { background: transparent; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+  .nav-section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--text3);
+    padding: 16px 24px 6px;
+    text-transform: uppercase;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 24px;
+    cursor: pointer;
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+    font-size: 13.5px;
+    color: var(--text2);
+  }
+
+  .nav-item:hover { background: var(--surface2); color: var(--text); }
+  .nav-item.active {
+    background: var(--surface2);
+    color: var(--accent);
+    border-left-color: var(--accent);
+  }
+
+  .nav-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--text3);
+    flex-shrink: 0;
+    transition: background 0.15s;
+  }
+  .nav-item.active .nav-dot { background: var(--accent); }
+  .nav-item:hover .nav-dot { background: var(--text); }
+
+  /* ─── CONTENT ─── */
+  .content {
+    padding: 40px 52px;
+    max-width: 960px;
+  }
+
+  .phase {
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+  .phase.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── PHASE HEADER ─── */
+  .phase-header {
+    margin-bottom: 36px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .phase-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--accent2);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .phase-title {
+    font-family: 'Fraunces', serif;
+    font-size: 34px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  .phase-subtitle {
+    color: var(--text2);
+    font-size: 15px;
+    max-width: 620px;
+    line-height: 1.65;
+  }
+
+  /* ─── CARDS ─── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin: 28px 0;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 22px;
+    transition: border-color 0.2s;
+  }
+
+  .card:hover { border-color: var(--border2); }
+
+  .card-icon {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  .card-title {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  .card-body {
+    font-size: 13.5px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+
+  /* ─── SECTION BLOCKS ─── */
+  .section {
+    margin: 36px 0;
+  }
+
+  .section-title {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ─── STEP LIST ─── */
+  .step-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .step {
+    display: flex;
+    gap: 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 22px;
+    align-items: flex-start;
+    transition: border-color 0.15s;
+  }
+
+  .step:hover { border-color: var(--accent); }
+
+  .step-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--accent);
+    background: rgba(79, 255, 176, 0.08);
+    border: 1px solid rgba(79, 255, 176, 0.2);
+    border-radius: 4px;
+    padding: 4px 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .step-content {}
+  .step-name {
+    font-weight: 600;
+    font-size: 14.5px;
+    margin-bottom: 4px;
+    color: var(--text);
+  }
+  .step-desc {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+
+  /* ─── DELIVERABLE TABLE ─── */
+  .deliv-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+
+  .deliv-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text3);
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+  }
+
+  .deliv-table td {
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    color: var(--text2);
+  }
+
+  .deliv-table tr:hover td { background: var(--surface); color: var(--text); }
+
+  .deliv-table td:first-child {
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  /* ─── BADGES ─── */
+  .badge {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-weight: 500;
+  }
+
+  .badge-green { background: rgba(79,255,176,0.12); color: var(--accent); border: 1px solid rgba(79,255,176,0.25); }
+  .badge-blue { background: rgba(0,212,255,0.1); color: var(--accent2); border: 1px solid rgba(0,212,255,0.2); }
+  .badge-orange { background: rgba(255,157,77,0.1); color: var(--accent3); border: 1px solid rgba(255,157,77,0.2); }
+  .badge-purple { background: rgba(200,125,255,0.1); color: var(--accent4); border: 1px solid rgba(200,125,255,0.2); }
+  .badge-red { background: rgba(255,95,109,0.1); color: var(--danger); border: 1px solid rgba(255,95,109,0.2); }
+  .badge-yellow { background: rgba(255,209,102,0.1); color: var(--warn); border: 1px solid rgba(255,209,102,0.2); }
+
+  /* ─── CALLOUT ─── */
+  .callout {
+    border-left: 3px solid var(--accent3);
+    background: rgba(255,157,77,0.06);
+    border-radius: 0 6px 6px 0;
+    padding: 14px 18px;
+    margin: 18px 0;
+    font-size: 13.5px;
+    color: var(--text2);
+  }
+
+  .callout strong { color: var(--accent3); }
+
+  .callout-blue {
+    border-left-color: var(--accent2);
+    background: rgba(0,212,255,0.05);
+  }
+  .callout-blue strong { color: var(--accent2); }
+
+  .callout-green {
+    border-left-color: var(--accent);
+    background: rgba(79,255,176,0.04);
+  }
+  .callout-green strong { color: var(--accent); }
+
+  /* ─── FLOW DIAGRAM ─── */
+  .flow {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin: 20px 0;
+  }
+
+  .flow-box {
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 12.5px;
+    font-weight: 500;
+    white-space: nowrap;
+    color: var(--text);
+  }
+
+  .flow-arrow {
+    color: var(--text3);
+    font-size: 14px;
+  }
+
+  .flow-box.accent { border-color: var(--accent); color: var(--accent); background: rgba(79,255,176,0.06); }
+  .flow-box.blue { border-color: var(--accent2); color: var(--accent2); background: rgba(0,212,255,0.06); }
+  .flow-box.orange { border-color: var(--accent3); color: var(--accent3); background: rgba(255,157,77,0.06); }
+  .flow-box.purple { border-color: var(--accent4); color: var(--accent4); background: rgba(200,125,255,0.06); }
+  .flow-box.red { border-color: var(--danger); color: var(--danger); background: rgba(255,95,109,0.06); }
+
+  /* ─── CHECKLIST ─── */
+  .checklist {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 13.5px;
+    color: var(--text2);
+  }
+
+  .checklist li::before {
+    content: '◆';
+    color: var(--accent);
+    font-size: 8px;
+    margin-top: 5px;
+    flex-shrink: 0;
+  }
+
+  /* ─── TWO-COL ─── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 20px 0;
+  }
+
+  @media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* ─── HORIZONTAL RULE ─── */
+  hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+  /* ─── FOOTER ─── */
+  .footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text3);
+    font-family: 'DM Mono', monospace;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="header-badge">GXP · CSV · 21 CFR PART 11</div>
+  </div>
+  <div>
+    <h1>GxP System Lifecycle Reference</h1>
+    <p>Onboarding · Validation · Enhancement · Maintenance</p>
+  </div>
+</div>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="nav-section-label">Onboarding</div>
+    <div class="nav-item active" onclick="show('phase1', this)"><div class="nav-dot"></div>System Categorization</div>
+    <div class="nav-item" onclick="show('phase2', this)"><div class="nav-dot"></div>Validation Planning</div>
+
+    <div class="nav-section-label">Validation Phases</div>
+    <div class="nav-item" onclick="show('phase3', this)"><div class="nav-dot"></div>IQ — Installation Qual.</div>
+    <div class="nav-item" onclick="show('phase4', this)"><div class="nav-dot"></div>OQ — Operational Qual.</div>
+    <div class="nav-item" onclick="show('phase5', this)"><div class="nav-dot"></div>PQ — Performance Qual.</div>
+    <div class="nav-item" onclick="show('phase6', this)"><div class="nav-dot"></div>UAT & Traceability</div>
+
+    <div class="nav-section-label">Change Control</div>
+    <div class="nav-item" onclick="show('phase7', this)"><div class="nav-dot"></div>Change Control Process</div>
+    <div class="nav-item" onclick="show('phase8', this)"><div class="nav-dot"></div>Enhancement Requests</div>
+
+    <div class="nav-section-label">Ongoing Operations</div>
+    <div class="nav-item" onclick="show('phase9', this)"><div class="nav-dot"></div>Periodic Review</div>
+    <div class="nav-item" onclick="show('phase10', this)"><div class="nav-dot"></div>SOPs & Training</div>
+    <div class="nav-item" onclick="show('phase11', this)"><div class="nav-dot"></div>Audit Readiness</div>
+    <div class="nav-item" onclick="show('phase12', this)"><div class="nav-dot"></div>Decommissioning</div>
+  </nav>
+
+  <!-- CONTENT -->
+  <main class="content">
+
+    <!-- PHASE 1 -->
+    <div id="phase1" class="phase active">
+      <div class="phase-header">
+        <div class="phase-tag">Step 01 · Onboarding</div>
+        <div class="phase-title">System Categorization<br>& GxP Assessment</div>
+        <div class="phase-subtitle">Before any validation begins, determine whether the system is GxP-relevant, classify it under GAMP 5, and assess regulatory impact. This defines your entire validation strategy.</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">GxP Impact Assessment</div>
+        <p style="color:var(--text2); font-size:14px; margin-bottom:16px;">Ask these questions for any new system. If any answer is YES, the system requires formal validation.</p>
+        <div class="step-list">
+          <div class="step"><span class="step-num">Q1</span><div class="step-content"><div class="step-name">Does the system create, modify, or archive regulated records?</div><div class="step-desc">Lab results, batch records, QC data, electronic submissions, audit trails — 21 CFR Part 11 / Annex 11 applicability.</div></div></div>
+          <div class="step"><span class="step-num">Q2</span><div class="step-content"><div class="step-name">Is it used to make quality or safety decisions?</div><div class="step-desc">LIMS releasing a batch, ERP triggering release, QMS routing deviations and CAPAs.</div></div></div>
+          <div class="step"><span class="step-num">Q3</span><div class="step-content"><div class="step-name">Does it control or monitor GMP equipment or processes?</div><div class="step-desc">DCS, SCADA, environmental monitoring systems, autoclave controllers.</div></div></div>
+          <div class="step"><span class="step-num">Q4</span><div class="step-content"><div class="step-name">Is it used in regulatory submissions?</div><div class="step-desc">Veeva Vault RIM, document management systems, CTD authoring tools.</div></div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">GAMP 5 Software Categories</div>
+        <table class="deliv-table">
+          <thead><tr><th>Category</th><th>Type</th><th>Examples</th><th>Validation Effort</th></tr></thead>
+          <tbody>
+            <tr><td><span class="badge badge-green">Cat 1</span></td><td>Infrastructure</td><td>OS, network, antivirus</td><td>Low — qualification only</td></tr>
+            <tr><td><span class="badge badge-blue">Cat 3</span></td><td>Non-configured COTS</td><td>MS Word, Adobe, standard lab instruments</td><td>Low — OQ/vendor assessment</td></tr>
+            <tr><td><span class="badge badge-orange">Cat 4</span></td><td>Configured COTS</td><td>LabWare LIMS, Veeva Vault, SAP, Trackwise</td><td>Medium-High — full V-model</td></tr>
+            <tr><td><span class="badge badge-purple">Cat 5</span></td><td>Custom / Bespoke</td><td>In-house apps, custom scripts for regulated use</td><td>Highest — full SDLC + validation</td></tr>
+          </tbody>
+        </table>
+        <div class="callout"><strong>Key Point:</strong> Most pharma enterprise systems (LIMS, QMS, Veeva) fall under Cat 4. Custom tools built internally are Cat 5 and require the most documentation. A pure off-the-shelf tool used without configuration may be Cat 3.</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">System Onboarding Checklist</div>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title">📋 Governance Documents</div>
+            <ul class="checklist">
+              <li>System Impact Assessment (SIA)</li>
+              <li>Business Owner designation</li>
+              <li>System Owner / IT Owner designation</li>
+              <li>Vendor Audit / Qualification (if applicable)</li>
+              <li>Data Privacy impact assessment</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="card-title">🔒 Security & Access</div>
+            <ul class="checklist">
+              <li>Roles & Permissions matrix defined</li>
+              <li>Access provisioning SOP drafted</li>
+              <li>Audit trail configuration confirmed</li>
+              <li>Electronic signature (e-sig) requirements</li>
+              <li>Password policy aligned with 21 CFR 11</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div id="phase2" class="phase">
+      <div class="phase-header">
+        <div class="phase-tag">Step 02 · Onboarding</div>
+        <div class="phase-title">Validation Planning<br>& Master Plan</div>
+        <div class="phase-subtitle">The Validation Master Plan (VMP) or System Validation Plan (SVP) is the governing document. It defines scope, approach, responsibilities, and acceptance criteria before any testing begins.</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Validation Plan — Key Components</div>
+        <div class="step-list">
+          <div class="step"><span class="step-num">1</span><div class="step-content"><div class="step-name">Scope & System Description</div><div class="step-desc">System name, version, hosting environment, intended use, regulated functions, interfaces with other systems.</div></div></div>
+          <div class="step"><span class="step-num">2</span><div class="step-content"><div class="step-name">Regulatory References</div><div class="step-desc">21 CFR Part 11, 21 CFR Part 211, EU GMP Annex 11, ICH Q10, GAMP 5, applicable USP/EP chapters.</div></div></div>
+          <div class="step"><span class="step-num">3</span><div class="step-content"><div class="step-name">Validation Approach & Strategy</div><div class="step-desc">Risk-based approach statement, GAMP category, IQ/OQ/PQ breakdown, vendor documentation leveraged.</div></div></div>
+          <div class="step"><span class="step-num">4</span><div class="step-content"><div class="step-name">Roles & Responsibilities</div><div class="step-desc">Validation owner, SMEs, IT, QA reviewer/approver, vendor contacts. RACI matrix often included.</div></div></div>
+          <div class="step"><span class="step-num">5</span><div class="step-content"><div class="step-name">Deliverables List</div><div class="step-desc">All documents to be produced: URS, FRS, DS, RTM, IQ, OQ, PQ protocols and reports, SOPs, training records.</div></div></div>
+          <div class="step"><span class="step-num">6</span><div class="step-content"><div class="step-name">Risk Assessment</div><div class="step-desc">System-level risk assessment, GxP risk score, identification of critical functions requiring higher test rigor.</div></div></div>
+          <div class="step"><span class="step-num">7</span><div class="step-content"><div class="step-name">Timeline & Milestones</div><div class="step-desc">Projected start/end dates, phase gates, QA review checkpoints, go-live date.</div></div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Requirements Documentation Hierarchy</div>
+        <div class="flow">
+          <div class="flow-box accent">URS<br><span style="font-size:10px;opacity:0.7">User Requirements Spec</span></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box blue">FRS<br><span style="font-size:10px;opacity:0.7">Functional Requirements</span></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box orange">DS<br><span style="font-size:10px;opacity:0.7">Design Specification</span></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box purple">CS<br><span style="font-size:10px;opacity:0.7">Configuration Spec</span></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box red">RTM<br><span style="font-size:10px;opacity:0.7">Traceability Matrix</span></div>
+        </div>
+        <div class="callout callout-blue"><strong>RTM:</strong> The Requirements Traceability Matrix links every URS requirement → FRS → test script → test result. Gaps in the RTM are major audit findings. Every requirement must have at least one test case, and every test must trace back to a requirement.</div>
+      </div>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div id="phase3" class="phase">
+      <div class="phase-header">
+        <div class="phase-tag">Step 03 · Validation Phase</div>
+        <div class="phase-title">IQ — Installation<br>Qualification</div>
+        <div class="phase-subtitle">Verifies that the system is installed correctly and according to vendor specifications, and that the environment meets all prerequisites before functional testing begins.</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">IQ Protocol Contents</div>
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-icon">🖥️</div>
+            <div class="card-title">Hardware Verification</div>
+            <div class="card-body">Server specs vs. vendor minimum requirements. CPU, RAM, disk, network configuration. Rack location, physical access controls.</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">⚙️</div>
+            <div class="card-title">Software Installation</div>
+            <div class="card-body">Application version confirmed, installation path documented, license keys recorded, all components installed per runbook.</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">🔧</div>
+            <div class="card-title">Configuration Baseline</div>
+            <div class="card-body">Initial configuration screenshots, config files archived, database schema version, service account setup, firewall rules documented.</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">🌐</div>
+            <div class="card-title">Network & Interfaces</div>
+            <div class="card-body">Network diagrams, interface connections to other systems, SSL/TLS certificates, port configurations, data flow diagrams.</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">📁</div>
+            <div class="card-title">Backup & DR</div>
+            <div class="card-body">Backup schedule configured and tested, disaster recovery procedures documented, RTO/RPO confirmed for the system.</div>
+          </div>
+          <div class="card">
+            <div class="card-icon">🛡️</div>
+            <div class="card-title">Security Configuration</div>
+            <div class="card-body">Audit trail enabled and tested, e-signature configuration, password policy settings, inactivity timeout confirmed.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">IQ Report — Acceptance Criteria</div>
+        <div class="callout callout-green"><strong>PASSED:</strong> All IQ test steps executed. All actual results match expected. No open critical/major deviations. Deviations (if any) have approved resolutions. IQ Summary Report signed by Validation Owner and QA.</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">IQ Deliverables</div>
+        <table class="deliv-table">
+          <thead><tr><th>Document</th><th>Description</th><th>Approval Required</th></tr></thead>
+          <tbody>
+            <tr><td>IQ Protocol</td><td>Pre-approved test plan with all steps and expected results</td><td>Validation Owner + QA</td></tr>
+            <tr><td>IQ Execution Records</td><td>Completed test steps with actual results, tester initials, dates</td><td>Tester + Reviewer</td></tr>
+            <tr><td>Deviation Log</td><td>Any step that did not pass, root cause, resolution</td><td>QA</td></tr>
+            <tr><td>IQ Summary Report</td><td>Pass/fail verdict, open items, recommendation to proceed to OQ</td><td>Validation Owner + QA</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PHASE 4 -->
+    <div id="phase4" class="phase">
+      <div class="phase-header">
+        <div class="phase-tag">Step 04 · Validation Phase</div>
+        <div class="phase-title">OQ — Operational<br>Qualification</div>
+        <div class="phase-subtitle">Verifies that the system functions as designed across its full operational range — all configured features, business logic, and system behaviors are tested against the FRS and design specification.</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">OQ Scope — What Gets Tested</div>
+        <div class="step-list">
+          <div class="step"><span class="step-num">F1</span><div class="step-content"><div class="step-name">Core Functional Workflows</div><div class="step-desc">Every configured business workflow per the FRS. For a LIMS: sample login, analysis assignment, result entry, result review, approval, reporting. For Veeva: document lifecycle (Draft → Review → Approved → Superseded).</div></div></div>
+          <div class="step"><span class="step-num">F2</span><div class="step-content"><div class="step-name">User Roles & Permissions</div><div class="step-desc">Verify each role can only perform permitted actions. Negative testing critical: an Analyst cannot approve results, a Read-Only user cannot create records.</div></div></div>
+          <div class="step"><span class="step-num">F3</span><div class="step-content"><div class="step-name">Electronic Signatures & Audit Trail</div><div class="step-desc">E-sig triggers correct (meaning, date/time, user ID). Audit trail captures all creates/edits/deletes. Audit trail is tamper-evident and not modifiable by end users.</div></div></div>
+          <div class="step"><span class="step-num">F4</span><div class="step-content"><div class="step-name">Calculations & Business Rules</div><div class="step-desc">Configured calculations verified with known inputs/outputs. OOS/OOT flags trigger at correct thresholds. Workflow routing logic verified.</div></div></div>
+          <div class="step"><span class="step-num">F5</span><div class="step-content"><div class="step-name">Interface / Integration Testing</div><div class="step-desc">Data transfers between integrated systems verified. LIMS ↔ ERP, Veeva ↔ regulatory portals. Verify data completeness, integrity, and error handling.</div></div></div>
+          <div class="step"><span class="step-num">F6</span><div class="step-content"><div class="step-name">Negative / Error Path Testing</div><div class="step-desc">System behavior on invalid inputs, mandatory field enforcement, duplicate record handling, session timeout, and concurrent user conflicts.</div></div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">OQ Test Script Structure</div>
+        <div class="callout"><strong>Each test script must contain:</strong> Test Case ID · Requirement ID (links to RTM) · Objective · Prerequisites / Test Data · Step-by-step actions · Expected Result (pre-defined) · Actual Result (filled during execution) · Pass/Fail · Tester + Date · Reviewer sign-off.</div>
+      </div>
+    </div>
+
+    <!-- PHASE 5 -->
+    <div id="phase5" class="phase">
+      <div class="phase-header">
+        <div class="phase-tag">Step 05 · Validation Phase</div>
+        <div class="phase-title">PQ — Performance<br>Qualification</div>
+        <div class="phase-subtitle">Demonstrates that the system consistently performs as intended in the actual operational environment, using real or representative data, by actual end users under real-world conditions.</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">PQ vs. OQ — Key Difference</div>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title">⚗️ OQ Focus</div>
+            <div class="card-body">Configured features tested by the validation team. Synthetic test data. Controlled environment. Proves the system <em>can</em> do what it's configured to do.</div>
+          </div>
+          <div class="card">
+            <div class="card-title">🏭 PQ Focus</div>
+            <div class="card-body">End-to-end business processes run by actual users. Production-like or real data. Proves the system <em>will</em> work in day-to-day operation.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">PQ Execution Elements</div>
+        <div class="step-list">
+          <div class="step"><span class="step-num">P1</span><div class="step-content"><div class="step-name">End-to-End Process Scenarios</div><div class="step-desc">Complete business scenarios from initiation to final output. E.g., Full sample lifecycle in LIMS from receipt to COA generation. Full document lifecycle in Veeva from draft to regulatory submission.</div></div></div>
+          <div class="step"><span class="step-num">P2</span><div class="step-content"><div class="step-name">Volume / Load Testing (if applicable)</div><div class="step-desc">If system processes high data volumes, verify performance under expected peak load. Response times documented and compared to acceptance criteria.</div></div></div>
+          <div class="step"><span class="step-num">P3</span><div class="step-content"><div class="step-name">Executed by End Users</div><div class="step-desc">Business users (not the validation team) run the tests. This also serves as hands-on training. Observed by the validation lead.</div></div></div>
+          <div class="step"><span class="step-num">P4</span><div class="step-content"><div class="step-name">Data Integrity Verification</div><div class="step-desc">Verify that data entered is accurately stored, retrieved, reported, and archived. ALCOA+ principles confirmed: Attributable, Legible, Contemporaneous, Original, Accurate.</div></div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">ALCOA+ Principles</div>
+        <div class="card-grid">
+          <div class="card"><div class="card-title">A — Attributable</div><div class="card-body">Who performed the action and when. Unique user IDs, no shared logins, audit trail captures username.</div></div>
+          <div class="card"><div class="card-title">L — Legible</div><div class="card-body">Data is readable and permanent. No overwriting without audit trail. Timestamps in unambiguous format.</div></div>
+          <div class="card"><div class="card-title">C — Contemporaneous</div><div class="card-body">Recorded at the time the activity occurs, not retrospectively.</div></div>
+          <div class="card"><div class="card-title">O — Original</div><div class="card-body">First capture is preserved. Source data retained. No transcription errors from paper to electronic.</div></div>
+          <div class="card"><div class="card-title">A — Accurate</div><div class="card-body">Data reflects the actual event. Calculations verified. No rounding errors. Instrument calibration confirmed.</div></div>
+          <div class="card"><div class="card-title">+ Complete, Consistent, Enduring, Available</div><div class="card-body">All data present, time-consistent, retained for required retention period, accessible to authorized users.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 6 -->
+    <div id="phase6" class="phase">
+      <div class="phase-header">
+        <div class="phase-tag">Step 06 · Validation Phase</div>
+        <div class="phase-title">UAT & Requirements<br>Traceability Matrix</div>
+        <div class="phase-subtitle">User Acceptance Testing is the final gate before go-live. The RTM ties every requirement to its test evidence. These two together form the core of your validation package.</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">UAT Process</div>
+        <div class="step-list">
+          <div class="step"><span class="step-num">1</span><div class="step-content"><div class="step-name">UAT Planning</div><div class="step-desc">Business users define acceptance criteria. UAT scripts written based on real workflows. Test environment mirrors production. UAT plan approved by Business Owner and QA.</div></div></div>
+          <div class="step"><span class="step-num">2</span><div class="step-content"><div class="step-name">UAT Execution</div><div class="step-desc">Business stakeholders execute scenarios. Issues logged in defect tracker with priority (Critical / Major / Minor). No critical or major open defects at go-live.</div></div></div>
+          <div class="step"><span class="step-num">3</span><div class="step-content"><div class="step-name">Defect Resolution Cycle</div><div class="step-desc">Developer fixes → re-test in same environment → regression testing for impacted areas → QA review of fix. If fix requires configuration change, assess whether re-validation is required.</div></div></div>
+          <div class="step"><span class="step-num">4</span><div class="step-content"><div class="step-name">UAT Sign-Off</div><div class="step-desc">Business Owner signs UAT completion. All critical/major defects resolved. Minor defects either resolved or accepted with documented justification.</div></div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">RTM Structure</div>
+        <table class="deliv-table">
+          <thead><tr><th>Column</th><th>Content</th></tr></thead>
+          <tbody>
+            <tr><td>URS ID</td><td>Unique ID from User Requirements Spec (e.g., URS-001)</td></tr>
+            <tr><td>URS Description</td><td>The requirement statement</td></tr>
+            <tr><td>FRS ID</td><td>Functional requirement that fulfills the URS</td></tr>
+            <tr><td>Design Reference</td><td>Where in the design spec this is addressed</td></tr>
+            <tr><td>Test Script ID(s)</td><td>IQ / OQ / PQ / UAT test case(s) covering this requirement</td></tr>
+            <tr><td>Test Result</td><td>Pass / Fail / N/A with report reference</td></tr>
+            <tr><td>Deviation Ref</td><td>If failed, cross-reference to deviation record</td></tr>
+          </tbody>
+        </table>
+        <div class="callout"><strong>Audit Rule:</strong> 100% of requirements must have test coverage. Any gap requires a documented justification (e.g., "Not Testable — verified via design review"). Auditors specifically look for RTM completeness.</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Validation Package — Complete Document List</div>
+        <div class="two-col">
+          <ul class="checklist">
+            <li>System Impact Assessment</li>
+            <li>Validation Master Plan / SVP</li>
+            <li>User Requirements Spec (URS)</li>
+            <li>Functional Requirements Spec (FRS)</li>
+            <li>Design / Configuration Spec</li>
+            <li>Risk Assessment</li>
+            <li>Requirements Traceability Matrix (RTM)</li>
+          </ul>
+          <ul class="checklist">
+            <li>IQ Protocol + Execution + Report</li>
+            <li>OQ Protocol + Execution + Report</li>
+            <li>PQ Protocol + Execution + Report</li>
+            <li>UAT Plan + Execution + Sign-off</li>
+            <li>Deviation / Defect Log</li>
+            <li>Validation Summary Report</li>
+            <li>SOPs + Training Records</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 7 -->
+    <div id="phase7" class="phase">
+      <div class="phase-header">
+        <div class="phase-tag">Step 07 · Change Control</div>
+        <div class="phase-title">Change Control<br>Process</div>
+        <div class="phase-subtitle">Every change to a validated GxP system — whether a configuration update, vendor patch, interface change, or procedural change — must go through formal change control. No exceptions.</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Change Control Lifecycle</div>
+        <div class="flow">
+          <div class="flow-box orange">Change Request<br>Initiated</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box blue">Impact<br>Assessment</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box purple">CC Review<br>Board</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box accent">Implementation<br>& Testing</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box red">QA Review<br>& Closure</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Change Impact Assessment — Key Questions</div>
+        <div class="step-list">
+          <div class="step"><span class="step-num">IA1</span><div class="step-content"><div class="step-name">What is the nature of the change?</div><div class="step-desc">Configuration change? Software upgrade? New interface? SOP update? Infrastructure change? Hardware replacement?</div></div></div>
+          <div class="step"><span class="step-num">IA2</span><div class="step-content"><div class="step-name">What GxP functions are affected?</div><div class="step-desc">List all impacted validated functions. Assess risk level: High / Medium / Low.</div></div></div>
+          <div class="step"><span class="step-num">IA3</span><div class="step-content"><div class="step-name">Does the change require re-validation?</div><div class="step-desc">High-risk changes to validated functions typically require OQ/PQ re-execution. Low-risk changes may need only regression testing or impact assessment documentation.</div></div></div>
+          <div class="step"><span class="step-num">IA4</span><div class="step-content"><div class="step-name">Does the change require SOP updates?</div><div class="step-desc">If business workflows change, affected SOPs must be updated, reviewed, approved, and users retrained before go-live.</div></div></div>
+          <div class="step"><span class="step-num">IA5</span><div class="step-content"><div class="step-name">Is rollback possible?</div><div class="step-desc">Define rollback plan before implementation. Backup taken and verified. Rollback tested in non-prod if high risk.</div></div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Change Categories</div>
+        <table class="deliv-table">
+          <thead><tr><th>Category</th><th>Description</th><th>Required Actions</th></tr></thead>
+          <tbody>
+            <tr><td><span class="badge badge-red">Major</span></td><td>New GxP functionality, core workflow change, system upgrade, new integration</td><td>Full re-validation (OQ/PQ), SOP updates, training, QA approval</td></tr>
+            <tr><td><span class="badge badge-orange">Moderate</span></td><td>Configuration update, report change, non-core workflow modification</td><td>Regression OQ, impact assessment, QA review</td></tr>
+            <tr><td><span class="badge badge-green">Minor</span></td><td>Cosmetic UI changes, label updates, non-GxP function changes</td><td>Documented impact assessment, approval, no re-validation required</td></tr>
+            <tr><td><span class="badge badge-blue">Emergency</span></td><td>Critical system failure, security patch requiring immediate action</td><td>Expedited approval path, full retrospective documentation, QA sign-off within defined timeframe</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PHASE 8 -->
+    <div id="phase8" class="phase">
+      <div class="phase-header">
+        <div class="phase-tag">Step 08 · Enhancement Requests</div>
+        <div class="phase-title">User Enhancement<br>Request Process</div>
+        <div class="phase-subtitle">Enhancement requests (ERs) are formal requests for new features or functional improvements from end users. Unlike bug fixes, ERs represent planned changes that enhance system capabilities and must follow a structured lifecycle.</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">ER Intake & Prioritization</div>
+        <div class="step-list">
+          <div class="step"><span class="step-num">1</span><div class="step-content"><div class="step-name">Enhancement Request Submission</div><div class="step-desc">User submits via formal channel (QMS, ITSM like ServiceNow, or change management module). ER must include: business justification, current state vs. desired state, regulatory impact if any, priority (High/Med/Low), and requesting department.</div></div></div>
+          <div class="step"><span class="step-num">2</span><div class="step-content"><div class="step-name">Business Owner Review</div><div class="step-desc">Business Owner confirms business need, checks for duplicates or related open changes, assigns initial priority.</div></div></div>
+          <div class="step"><span class="step-num">3</span><div class="step-content"><div class="step-name">Technical Feasibility Assessment</div><div class="step-desc">System/IT Owner assesses: Is this configurable or does it require custom development? Estimated effort. Dependencies. Impact on existing validated functions.</div></div></div>
+          <div class="step"><span class="step-num">4</span><div class="step-content"><div class="step-name">GxP / Validation Impact Assessment</div><div class="step-desc">Validation team or QA determines: Does this affect validated functions? What re-testing is required? RTM update needed? SOP/training update required?</div></div></div>
+          <div class="step"><span class="step-num">5</span><div class="step-content"><div class="step-name">Change Control Board (CCB) Approval</div><div class="step-desc">CCB reviews ER with impact assessment. Approves for implementation with defined scope, timeline, and re-validation requirements. Formally opens a Change Control record.</div></div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Implementation Workflow</div>
+        <div class="flow">
+          <div class="flow-box accent">Config / Dev<br>in DEV env</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box blue">QA Testing<br>in QA/TEST env</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box orange">UAT in<br>Staging/UAT env</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box purple">Validation<br>Evidence</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-box accent">Deploy<br>to PROD</div>
+        </div>
+        <div class="callout callout-blue"><strong>Environment Strategy:</strong> GxP systems must have separate DEV / TEST / UAT / PROD environments. Changes must never be made directly in PROD without following the promotion workflow. Environment qualification (EQ) should be documented for each environment.</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Vendor-Managed Systems (e.g., Veeva Vault)</div>
+        <div class="callout"><strong>SaaS / Cloud considerations:</strong> For vendor-managed systems (Veeva, Salesforce, cloud LIMS), vendor patches and upgrades are pushed on a schedule. You must: (1) monitor vendor release notes, (2) assess GxP impact of each release, (3) run regression testing in sandbox before accepting in production, (4) maintain documentation of your assessment and testing. This is critical — vendor upgrades ARE changes to your validated system.</div>
+      </div>
+    </div>
+
+    <!-- PHASE 9 -->
+    <div id="phase9" class="phase">
+      <div class="phase-header">
+        <div class="phase-tag">Step 09 · Ongoing Operations</div>
+        <div class="phase-title">Periodic Review &<br>Revalidation</div>
+        <div class="phase-subtitle">Validated GxP systems require ongoing oversight. Periodic review confirms the system remains in a validated state, identifies configuration drift, and captures the cumulative impact of changes since last review.</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Periodic Review Components</div>
+        <div class="step-list">
+          <div class="step"><span class="step-num">PR1</span><div class="step-content"><div class="step-name">Review Frequency</div><div class="step-desc">Typically annual, though risk-based frequency is acceptable. High-criticality systems (e.g., batch release LIMS) reviewed annually. Lower-risk systems may be 18–24 months with justification.</div></div></div>
+          <div class="step"><span class="step-num">PR2</span><div class="step-content"><div class="step-name">Change History Review</div><div class="step-desc">Review all changes implemented since last periodic review. Confirm all changes went through change control. No undocumented changes (configuration drift check).</div></div></div>
+          <div class="step"><span class="step-num">PR3</span><div class="step-content"><div class="step-name">Incident / Deviation Review</div><div class="step-desc">Review all system-related incidents, deviations, and CAPAs. Trends identified. Open CAPAs assessed for resolution status.</div></div></div>
+          <div class="step"><span class="step-num">PR4</span><div class="step-content"><div class="step-name">User Access Review</div><div class="step-desc">Review all active user accounts. Confirm roles are appropriate. Remove or disable stale accounts (terminated employees, role changes). Review privileged access.</div></div></div>
+          <div class="step"><span class="step-num">PR5</span><div class="step-content"><div class="step-name">Validation Status Confirmation</div><div class="step-desc">Declare the system remains in a validated state (or identify what re-validation is needed). Sign-off by System Owner, Business Owner, and QA.</div></div></div>
+          <div class="step"><span class="step-num">PR6</span><div class="step-content"><div class="step-name">SOP Effectiveness Review</div><div class="step-desc">Are SOPs being followed? Are there recurring issues that suggest SOP gaps? Confirm SOP revision dates are current.</div></div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Revalidation Triggers</div>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title">⚠️ Always Requires Re-validation</div>
+            <ul class="checklist" style="margin-top:10px">
+              <li>Major software version upgrade</li>
+              <li>Migration to new hardware or cloud platform</li>
+              <li>Major new functionality for GxP use</li>
+              <li>Change to audit trail mechanism</li>
+              <li>Change to e-signature implementation</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="card-title">📋 Risk-Based Assessment</div>
+            <ul class="checklist" style="margin-top:10px">
+              <li>Minor version / patch upgrades</li>
+              <li>Configuration changes in GxP areas</li>
+              <li>OS or database upgrades</li>
+              <li>New interface to another system</li>
+              <li>Significant SOP changes</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 10 -->
+    <div id="phase10" class="phase">
+      <div class="phase-header">
+        <div class="phase-tag">Step 10 · Ongoing Operations</div>
+        <div class="phase-title">SOPs, Training<br>& Competency</div>
+        <div class="phase-subtitle">SOPs and training records are not administrative overhead — they are part of the validated state. An auditor will check that users are trained, SOPs are current, and training is documented before looking at anything else.</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Required SOPs for a Validated System</div>
+        <div class="card-grid">
+          <div class="card"><div class="card-icon">👤</div><div class="card-title">Access Control SOP</div><div class="card-body">User provisioning, role assignment, access removal (leavers/movers), periodic access review, emergency access procedure.</div></div>
+          <div class="card"><div class="card-icon">🔄</div><div class="card-title">Change Control SOP</div><div class="card-body">How changes are requested, assessed, approved, implemented, and documented. Environment promotion workflow.</div></div>
+          <div class="card"><div class="card-icon">💾</div><div class="card-title">Backup & Recovery SOP</div><div class="card-body">Backup schedule, verification, restoration testing frequency, off-site storage, recovery time objective.</div></div>
+          <div class="card"><div class="card-icon">🚨</div><div class="card-title">Incident Management SOP</div><div class="card-body">How system incidents are logged, triaged, investigated, and resolved. Link to deviation management system.</div></div>
+          <div class="card"><div class="card-icon">📊</div><div class="card-title">Periodic Review SOP</div><div class="card-body">Frequency, scope, responsibilities, and documentation requirements for periodic review of validated systems.</div></div>
+          <div class="card"><div class="card-icon">📋</div><div class="card-title">System Use SOPs</div><div class="card-body">Work instructions for each GxP workflow: how to enter data, review, approve, generate reports, handle errors.</div></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Training Program Requirements</div>
+        <div class="step-list">
+          <div class="step"><span class="step-num">T1</span><div class="step-content"><div class="step-name">Role-Based Training Curriculum</div><div class="step-desc">Each role has a defined training curriculum. Analysts train on different SOPs than Reviewers or Admins. Training matrix maintained.</div></div></div>
+          <div class="step"><span class="step-num">T2</span><div class="step-content"><div class="step-name">Training Before System Access</div><div class="step-desc">Users must complete required training and demonstrate competency before being granted access. Training records must be complete before access request is approved.</div></div></div>
+          <div class="step"><span class="step-num">T3</span><div class="step-content"><div class="step-name">Retraining on Change</div><div class="step-desc">When SOPs are updated due to system changes, affected users must be retrained. Go-live of a change cannot precede completion of retraining.</div></div></div>
+          <div class="step"><span class="step-num">T4</span><div class="step-content"><div class="step-name">Training Record Retention</div><div class="step-desc">Training records retained for the life of the system plus applicable regulatory retention period. Typically electronic, stored in LMS or QMS with audit trail.</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 11 -->
+    <div id="phase11" class="phase">
+      <div class="phase-header">
+        <div class="phase-tag">Step 11 · Ongoing Operations</div>
+        <div class="phase-title">Audit Readiness &<br>21 CFR Part 11</div>
+        <div class="phase-subtitle">Be inspection-ready at all times. FDA, EMA, and internal auditors will examine your validation documentation, change history, user access records, and audit trail integrity.</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">21 CFR Part 11 / Annex 11 Requirements</div>
+        <table class="deliv-table">
+          <thead><tr><th>Requirement</th><th>What Auditors Check</th></tr></thead>
+          <tbody>
+            <tr><td>Audit Trail</td><td>Enabled for all GxP records. Captures who, what, when, original value, new value. Not editable by users. Reviewed regularly.</td></tr>
+            <tr><td>Electronic Signatures</td><td>Unique to individual, not shared. Linked to signed record. Signatories have signed their Part 11 commitment statement. Includes meaning, date/time.</td></tr>
+            <tr><td>Access Controls</td><td>Unique user IDs. No shared accounts. Appropriate role-based access. Terminated user accounts disabled promptly.</td></tr>
+            <tr><td>Validation</td><td>System validated before use. Validation documentation current and complete. Validation status re-confirmed after changes.</td></tr>
+            <tr><td>System Controls</td><td>Password aging, inactivity timeout, login attempt limits. Session locking. Backup and recovery tested.</td></tr>
+            <tr><td>Copies of Records</td><td>Ability to generate accurate and complete copies of records in both human-readable and electronic form (for inspection).</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Audit-Ready Document Checklist</div>
+        <div class="two-col">
+          <ul class="checklist">
+            <li>Current Validation Master Plan</li>
+            <li>Complete Validation Package (IQ/OQ/PQ)</li>
+            <li>Current RTM showing 100% coverage</li>
+            <li>All Change Control records (open + closed)</li>
+            <li>Current user access list with roles</li>
+            <li>Periodic Review report (most recent)</li>
+          </ul>
+          <ul class="checklist">
+            <li>All current SOPs (approved, in-date)</li>
+            <li>Training records for all current users</li>
+            <li>Incident / deviation log</li>
+            <li>Audit trail review records</li>
+            <li>Backup test records</li>
+            <li>Vendor qualification / audit records</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 12 -->
+    <div id="phase12" class="phase">
+      <div class="phase-header">
+        <div class="phase-tag">Step 12 · End of Life</div>
+        <div class="phase-title">System Retirement &<br>Decommissioning</div>
+        <div class="phase-subtitle">Decommissioning a GxP system is a formal, validated activity. Data must be migrated or archived in a retrievable format for the required regulatory retention period before the system is shut down.</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Decommissioning Plan — Key Elements</div>
+        <div class="step-list">
+          <div class="step"><span class="step-num">D1</span><div class="step-content"><div class="step-name">Retirement Decision & Justification</div><div class="step-desc">Formal decision with business rationale. New system to replace (if applicable) must be fully validated before old system is decommissioned.</div></div></div>
+          <div class="step"><span class="step-num">D2</span><div class="step-content"><div class="step-name">Data Retention Assessment</div><div class="step-desc">Identify all regulated records in the system. Determine regulatory retention requirements (FDA: batch records 3 yrs post expiry, for example). Define archive format and access method for the retention period.</div></div></div>
+          <div class="step"><span class="step-num">D3</span><div class="step-content"><div class="step-name">Data Migration or Archive</div><div class="step-desc">Migrate to new system OR archive to validated archive solution. Data migration validation required if migrating to a new GxP system (verify completeness, integrity, no corruption).</div></div></div>
+          <div class="step"><span class="step-num">D4</span><div class="step-content"><div class="step-name">Validation Package Archive</div><div class="step-desc">All validation documentation (IQ/OQ/PQ, SOPs, change records, training, periodic reviews) must be archived and retrievable for the retention period, even after the system is gone.</div></div></div>
+          <div class="step"><span class="step-num">D5</span><div class="step-content"><div class="step-name">Decommissioning Report</div><div class="step-desc">Formal report confirming: data migrated/archived successfully, system shut down, licenses returned, infrastructure decommissioned, documentation archived. Signed by System Owner, Business Owner, and QA.</div></div></div>
+        </div>
+      </div>
+
+      <div class="callout callout-green"><strong>Key Principle:</strong> You must be able to reproduce a GxP record from a decommissioned system during a regulatory inspection 10+ years later. Plan your archival strategy accordingly — including the ability to render archived data in human-readable form even when the original software no longer exists.</div>
+
+      <div class="footer">
+        GxP System Lifecycle Reference · Based on GAMP 5, 21 CFR Part 11, EU GMP Annex 11, ICH Q10 · For internal reference and training use.
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  function show(phaseId, navEl) {
+    document.querySelectorAll('.phase').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById(phaseId).classList.add('active');
+    navEl.classList.add('active');
+    document.querySelector('.content').scrollTop = 0;
+  }
+</script>
+</body>
+</html>
