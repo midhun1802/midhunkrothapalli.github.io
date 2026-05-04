@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LabWare LIMS · Biovia ELN · LIS — Interview Prep</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Literata:ital,opsz,wght@0,7..72,300;0,7..72,400;1,7..72,300&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #f5f2eb;
+    --surface: #faf8f3;
+    --surface2: #f0ece2;
+    --border: #e2ddd0;
+    --border2: #cdc8b8;
+    --ink: #1c1a16;
+    --ink2: #4a4639;
+    --ink3: #8a8270;
+    /* LabWare = deep teal */
+    --lw: #0d3a38;
+    --lw-light: #1a6b66;
+    --lw-pale: #e6f4f3;
+    /* Biovia ELN = indigo */
+    --eln: #1a1a3a;
+    --eln-light: #3a3a8a;
+    --eln-pale: #ebebf8;
+    /* LIS = burgundy */
+    --lis: #3a0d1a;
+    --lis-light: #8a1a3a;
+    --lis-pale: #f8e6ec;
+    /* cross-cutting = slate */
+    --cross: #1a2a3a;
+    --cross-light: #2d5070;
+    --cross-pale: #e6eef5;
+    --gold: #b8860b;
+    --gold-pale: #fdf6e3;
+    --red: #8b1a1a;
+    --red-pale: #fdf0f0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Literata', Georgia, serif;
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  /* ══ MASTHEAD ══ */
+  .masthead {
+    background: var(--ink);
+    color: var(--bg);
+    overflow: hidden;
+  }
+
+  .masthead-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    min-height: 148px;
+  }
+
+  .masthead-lw   { background: var(--lw);  padding: 30px 32px; }
+  .masthead-eln  { background: var(--eln); padding: 30px 32px; border-left: 1px solid rgba(255,255,255,0.08); border-right: 1px solid rgba(255,255,255,0.08); }
+  .masthead-lis  { background: var(--lis); padding: 30px 32px; }
+
+  .masthead-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.2em;
+    opacity: 0.55;
+    margin-bottom: 7px;
+    text-transform: uppercase;
+  }
+
+  .masthead-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .masthead-sub {
+    font-size: 11.5px;
+    opacity: 0.6;
+    margin-top: 6px;
+    font-style: italic;
+  }
+
+  /* ══ CONTROLS ══ */
+  .controls {
+    background: var(--surface);
+    border-bottom: 2px solid var(--border);
+    padding: 14px 36px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .filter-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--ink3);
+    text-transform: uppercase;
+    margin-right: 4px;
+  }
+
+  .filter-btn {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 3px;
+    border: 1.5px solid var(--border2);
+    background: var(--surface);
+    color: var(--ink2);
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.03em;
+  }
+
+  .filter-btn:hover { background: var(--surface2); border-color: var(--ink3); }
+  .filter-btn.active-all   { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .filter-btn.active-lw    { background: var(--lw); color: #fff; border-color: var(--lw); }
+  .filter-btn.active-eln   { background: var(--eln-light); color: #fff; border-color: var(--eln-light); }
+  .filter-btn.active-lis   { background: var(--lis-light); color: #fff; border-color: var(--lis-light); }
+  .filter-btn.active-admin { background: var(--gold); color: #fff; border-color: var(--gold); }
+  .filter-btn.active-val   { background: var(--cross-light); color: #fff; border-color: var(--cross-light); }
+
+  .sep { width: 1px; height: 22px; background: var(--border2); margin: 0 4px; }
+
+  .q-count { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink3); margin-left: auto; }
+
+  /* ══ LAYOUT ══ */
+  .layout { display: grid; grid-template-columns: 234px 1fr; max-width: 1300px; margin: 0 auto; }
+
+  /* ══ SIDEBAR ══ */
+  .sidebar {
+    padding: 24px 0;
+    border-right: 1px solid var(--border);
+    position: sticky;
+    top: 57px;
+    height: calc(100vh - 57px);
+    overflow-y: auto;
+    background: var(--surface);
+  }
+
+  .sidebar::-webkit-scrollbar { width: 3px; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border2); }
+
+  .nav-group-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    color: var(--ink3);
+    text-transform: uppercase;
+    padding: 14px 20px 5px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px 20px;
+    cursor: pointer;
+    transition: all 0.12s;
+    font-size: 12.5px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    color: var(--ink2);
+    border-left: 3px solid transparent;
+    line-height: 1.3;
+  }
+
+  .nav-item:hover { background: var(--surface2); color: var(--ink); }
+  .nav-item.active-lw  { color: var(--lw-light);  border-left-color: var(--lw-light);  background: var(--lw-pale); }
+  .nav-item.active-eln { color: var(--eln-light); border-left-color: var(--eln-light); background: var(--eln-pale); }
+  .nav-item.active-lis { color: var(--lis-light); border-left-color: var(--lis-light); background: var(--lis-pale); }
+  .nav-item.active-cross { color: var(--cross-light); border-left-color: var(--cross-light); background: var(--cross-pale); }
+
+  .nav-pip { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+  .pip-lw  { background: var(--lw-light); }
+  .pip-eln { background: var(--eln-light); }
+  .pip-lis { background: var(--lis-light); }
+  .pip-cross { background: var(--cross-light); }
+
+  /* ══ CONTENT ══ */
+  .content { padding: 40px 52px 80px; max-width: 920px; }
+
+  .section { margin-bottom: 56px; animation: fadeUp 0.4s ease both; }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+  .section-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 28px; padding-bottom: 16px; border-bottom: 2px solid var(--border); }
+
+  .section-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; padding: 4px 10px; border-radius: 2px; text-transform: uppercase; white-space: nowrap; margin-top: 6px; flex-shrink: 0; }
+
+  .tag-lw    { background: var(--lw);       color: #fff; }
+  .tag-eln   { background: var(--eln-light); color: #fff; }
+  .tag-lis   { background: var(--lis-light); color: #fff; }
+  .tag-cross { background: var(--cross);     color: #fff; }
+
+  .section-title { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.2; color: var(--ink); }
+  .section-desc  { font-size: 13.5px; color: var(--ink3); font-style: italic; margin-top: 4px; line-height: 1.5; }
+
+  /* ══ Q&A CARDS ══ */
+  .qa-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 6px; margin-bottom: 16px; overflow: hidden; transition: border-color 0.15s; }
+  .qa-card:hover { border-color: var(--border2); }
+  .qa-card.lw-card    { border-left: 4px solid var(--lw-light); }
+  .qa-card.eln-card   { border-left: 4px solid var(--eln-light); }
+  .qa-card.lis-card   { border-left: 4px solid var(--lis-light); }
+  .qa-card.cross-card { border-left: 4px solid var(--cross-light); }
+
+  .qa-question { padding: 18px 22px 16px; cursor: pointer; display: flex; gap: 14px; align-items: flex-start; user-select: none; }
+  .qa-question:hover { background: var(--surface2); }
+
+  .q-meta { display: flex; flex-direction: column; gap: 5px; flex-shrink: 0; min-width: 56px; align-items: flex-start; }
+  .q-num  { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink3); }
+
+  .level-badge { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.08em; padding: 2px 6px; border-radius: 2px; text-transform: uppercase; }
+  .badge-admin  { background: var(--gold-pale);  color: var(--gold);       border: 1px solid #e8c96a; }
+  .badge-val    { background: var(--cross-pale);  color: var(--cross-light); border: 1px solid #a0c0d4; }
+  .badge-both2  { background: var(--red-pale);    color: var(--red);         border: 1px solid #e8a0a0; }
+
+  .q-text    { font-family: 'Syne', sans-serif; font-size: 14.5px; font-weight: 700; color: var(--ink); line-height: 1.4; flex: 1; }
+  .q-chevron { font-size: 12px; color: var(--ink3); transition: transform 0.2s; margin-top: 3px; flex-shrink: 0; }
+  .qa-card.open .q-chevron { transform: rotate(180deg); }
+
+  .qa-answer { display: none; padding: 0 22px 22px 22px; border-top: 1px solid var(--border); }
+  .qa-card.open .qa-answer { display: block; }
+
+  .answer-label { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.14em; color: var(--ink3); text-transform: uppercase; margin: 16px 0 10px; }
+
+  .answer-body { font-size: 14px; color: var(--ink2); line-height: 1.8; }
+  .answer-body p { margin-bottom: 10px; }
+  .answer-body p:last-child { margin-bottom: 0; }
+  .answer-body strong { color: var(--ink); font-weight: 600; }
+  .answer-body ul { list-style: none; padding: 0; margin: 10px 0; display: flex; flex-direction: column; gap: 6px; }
+  .answer-body ul li { display: flex; gap: 10px; align-items: flex-start; font-size: 13.5px; }
+  .answer-body ul li::before { content: '▸'; color: var(--ink3); font-size: 10px; margin-top: 5px; flex-shrink: 0; }
+  .answer-body ol { padding-left: 20px; margin: 10px 0; display: flex; flex-direction: column; gap: 6px; }
+  .answer-body ol li { font-size: 13.5px; color: var(--ink2); }
+
+  .tip { background: var(--gold-pale); border-left: 3px solid var(--gold); border-radius: 0 4px 4px 0; padding: 12px 16px; margin: 12px 0; font-size: 13px; color: var(--ink2); font-style: italic; }
+  .tip strong { color: var(--gold); font-style: normal; }
+
+  .critical { background: var(--red-pale); border-left: 3px solid var(--red); border-radius: 0 4px 4px 0; padding: 12px 16px; margin: 12px 0; font-size: 13px; color: var(--ink2); }
+  .critical strong { color: var(--red); }
+
+  .code-snippet { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 12px 16px; margin: 10px 0; color: var(--ink2); white-space: pre-wrap; line-height: 1.6; }
+
+  .section.hidden { display: none; }
+  .qa-card.hidden { display: none; }
+
+  /* ══ PAGE FOOTER ══ */
+  .page-footer { border-top: 2px solid var(--border); padding: 22px 48px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink3); display: flex; justify-content: space-between; align-items: center; background: var(--surface); flex-wrap: wrap; gap: 8px; }
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <div class="masthead-inner">
+    <div class="masthead-lw">
+      <div class="masthead-label">Module 01</div>
+      <div class="masthead-title">LabWare<br>LIMS</div>
+      <div class="masthead-sub">Admin &amp; Validation Lead Level</div>
+    </div>
+    <div class="masthead-eln">
+      <div class="masthead-label">Module 02</div>
+      <div class="masthead-title">Biovia<br>ELN</div>
+      <div class="masthead-sub">Admin &amp; Validation Lead Level</div>
+    </div>
+    <div class="masthead-lis">
+      <div class="masthead-label">Module 03</div>
+      <div class="masthead-title">LIS<br>Systems</div>
+      <div class="masthead-sub">LabWare LIS · SCC · Cerner</div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTROLS -->
+<div class="controls">
+  <span class="filter-label">Filter</span>
+  <button class="filter-btn active-all" onclick="filter('all',this)">All Questions</button>
+  <div class="sep"></div>
+  <button class="filter-btn" onclick="filter('lw',this)">LabWare LIMS</button>
+  <button class="filter-btn" onclick="filter('eln',this)">Biovia ELN</button>
+  <button class="filter-btn" onclick="filter('lis',this)">LIS Systems</button>
+  <div class="sep"></div>
+  <button class="filter-btn" onclick="filter('admin',this)">Admin Level</button>
+  <button class="filter-btn" onclick="filter('val',this)">Val Lead Level</button>
+  <span class="q-count" id="qcount">Loading...</span>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
+    <div class="nav-group-label">LabWare LIMS</div>
+    <div class="nav-item" onclick="jumpTo('lw-arch')"><div class="nav-pip pip-lw"></div>Architecture &amp; Config</div>
+    <div class="nav-item" onclick="jumpTo('lw-sample')"><div class="nav-pip pip-lw"></div>Sample &amp; Test Management</div>
+    <div class="nav-item" onclick="jumpTo('lw-results')"><div class="nav-pip pip-lw"></div>Results &amp; Calculations</div>
+    <div class="nav-item" onclick="jumpTo('lw-instruments')"><div class="nav-pip pip-lw"></div>Instrument Integration</div>
+    <div class="nav-item" onclick="jumpTo('lw-val')"><div class="nav-pip pip-lw"></div>Validation &amp; CSV</div>
+
+    <div class="nav-group-label">Biovia ELN</div>
+    <div class="nav-item" onclick="jumpTo('eln-arch')"><div class="nav-pip pip-eln"></div>Architecture &amp; Notebooks</div>
+    <div class="nav-item" onclick="jumpTo('eln-workflow')"><div class="nav-pip pip-eln"></div>Workflows &amp; Experiments</div>
+    <div class="nav-item" onclick="jumpTo('eln-data')"><div class="nav-pip pip-eln"></div>Data Integrity &amp; E-Sig</div>
+    <div class="nav-item" onclick="jumpTo('eln-val')"><div class="nav-pip pip-eln"></div>Validation &amp; CSV</div>
+
+    <div class="nav-group-label">LIS Systems</div>
+    <div class="nav-item" onclick="jumpTo('lis-arch')"><div class="nav-pip pip-lis"></div>LIS vs LIMS — Key Differences</div>
+    <div class="nav-item" onclick="jumpTo('lis-hl7')"><div class="nav-pip pip-lis"></div>HL7, Interfaces &amp; Integrations</div>
+    <div class="nav-item" onclick="jumpTo('lis-val')"><div class="nav-pip pip-lis"></div>Validation &amp; CSV</div>
+
+    <div class="nav-group-label">Cross-Cutting</div>
+    <div class="nav-item" onclick="jumpTo('cross-oos')"><div class="nav-pip pip-cross"></div>OOS / OOT Handling</div>
+    <div class="nav-item" onclick="jumpTo('cross-data')"><div class="nav-pip pip-cross"></div>Data Integrity &amp; ALCOA+</div>
+    <div class="nav-item" onclick="jumpTo('cross-upgrade')"><div class="nav-pip pip-cross"></div>Upgrades &amp; Maintenance</div>
+  </nav>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- ═══════════════════════════
+         LABWARE — ARCHITECTURE
+    ═══════════════════════════ -->
+    <div class="section" id="lw-arch" data-section="lw">
+      <div class="section-header">
+        <span class="section-tag tag-lw">LabWare LIMS</span>
+        <div>
+          <div class="section-title">Architecture &amp; Configuration</div>
+          <div class="section-desc">Database model, LBMS scripting, security, and admin fundamentals</div>
+        </div>
+      </div>
+
+      <div class="qa-card lw-card" data-tags="lw admin">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q01</span><span class="level-badge badge-admin">Admin</span></div>
+          <div class="q-text">Explain the LabWare LIMS data architecture. What are the core objects — Samples, Tests, Components, Results — and how do they relate?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>LabWare uses a <strong>hierarchical object model</strong> built on an Oracle or SQL Server relational database, but abstracted through LabWare's own metadata layer:</p>
+          <ul>
+            <li><strong>Sample</strong> — The top-level GxP object. Represents a physical item submitted for analysis. Contains fields for product name, lot number, source, collection date, login date, status. Every analytical result in LabWare traces back to a Sample.</li>
+            <li><strong>Test</strong> — An analytical procedure assigned to a sample. Each test maps to a method (pH, HPLC assay, microbial count). A sample can have many tests. Tests have their own lifecycle: Scheduled → In Progress → Completed → Approved.</li>
+            <li><strong>Component</strong> — The individual measurable parameter within a test. E.g., within "HPLC Assay" test, components might be "Active Ingredient %", "Impurity A %", "Impurity B %". Each component has a specification limit (min/max) and a result value.</li>
+            <li><strong>Result</strong> — The actual recorded value for a component. Result stores: entered value, calculated value (if formula applied), entered by, entered date, reviewed by, approved by, audit trail of any changes. The result object is the atomic unit of GxP data in LabWare.</li>
+          </ul>
+          <p><strong>Relationship chain:</strong> Sample → (has many) Tests → (has many) Components → (has one) Result per entry. Specifications are defined at the Product + Component level and evaluated at Result entry time.</p>
+          <div class="tip"><strong>Val Lead view:</strong> Every level of this hierarchy is a GxP record requiring audit trail, e-signature for key state changes, and data integrity controls. Your OQ must test all four levels — sample creation, test assignment, result entry, and approval — as distinct validated functions.</div>
+        </div></div>
+      </div>
+
+      <div class="qa-card lw-card" data-tags="lw admin">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q02</span><span class="level-badge badge-admin">Admin</span></div>
+          <div class="q-text">What is LBMS (LabWare Basic for Microsoft) and how is it used in configuration vs. custom development? What are the GxP implications?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p><strong>LBMS (LabWare Basic for Microsoft)</strong> is LabWare's built-in scripting language — a VBA-like syntax that runs inside the LabWare application server. It is used for:</p>
+          <ul>
+            <li><strong>Formula calculations</strong> — Custom result calculations beyond simple arithmetic (e.g., multi-component assay calculations, recovery corrections, statistical analysis)</li>
+            <li><strong>Event triggers</strong> — Execute logic on save, on state change, on login (e.g., auto-assign tests based on product type, send notifications when results are OOS)</li>
+            <li><strong>Data validation rules</strong> — Enforce business rules at entry time (e.g., require a specific field when another field has a particular value)</li>
+            <li><strong>Interface scripts</strong> — Parse incoming instrument data files, map fields, handle errors</li>
+            <li><strong>Report generation</strong> — Custom Crystal Reports or LBMS-driven output documents</li>
+          </ul>
+          <p><strong>Configuration vs. custom development:</strong> Standard LabWare configuration (product setup, test definitions, specification limits, user roles) is GAMP Cat 4. Any LBMS script written by your team is <strong>GAMP Cat 5</strong> — custom code — and requires its own code review, unit test documentation, and formal validation (OQ testing of every script that affects GxP data).</p>
+          <div class="critical"><strong>Key risk:</strong> LBMS scripts are often written incrementally by administrators over years without formal change control. In a validated environment, every LBMS script must be version-controlled, documented in a Configuration Spec, and tested in the OQ. Undocumented scripts found during audit are a major finding. Conduct a script inventory as part of any periodic review.</div>
+        </div></div>
+      </div>
+
+      <div class="qa-card lw-card" data-tags="lw admin">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q03</span><span class="level-badge badge-admin">Admin</span></div>
+          <div class="q-text">How does LabWare handle user security — login groups, roles, and field-level access? How do you restrict a user from editing approved results?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>LabWare security is layered through <strong>Login Groups</strong> and <strong>Access Profiles</strong>:</p>
+          <ul>
+            <li><strong>Login Groups</strong> — Users are assigned to a group (e.g., QC Analyst, QC Supervisor, QA Reviewer, Admin). Groups define what menus, modules, and functions are visible.</li>
+            <li><strong>Access Profiles</strong> — Control CRUD permissions per object type per group. Can be configured to table level, form level, and field level. E.g., QC Analyst can INSERT results but cannot UPDATE results that have already been approved.</li>
+            <li><strong>Status-based locking</strong> — LabWare ties access to object status. Once a result is in "Approved" status, the status-based lock prevents any user (including admins) from editing the value without a formal data correction workflow that generates an audit trail entry.</li>
+          </ul>
+          <p><strong>Restricting edit of approved results:</strong></p>
+          <div class="code-snippet">Access Profile: QC Analyst
+Table: RESULT
+  INSERT: YES (can enter new results)
+  UPDATE: YES — only when STATUS = 'S' (Scheduled/In Progress)
+  UPDATE: NO  — when STATUS = 'A' (Approved) or 'C' (Completed)
+
+Override rule: Data Correction workflow required for post-approval edits
+  → Creates new result record with audit trail linking to original
+  → Requires Supervisor + QA e-signature
+  → Original result preserved and marked as superseded</div>
+          <div class="tip"><strong>OQ test:</strong> Log in as QC Analyst, approve a result, attempt to edit the result value directly — verify system blocks. Then initiate the Data Correction workflow — verify it creates an audit trail entry capturing original value, new value, reason, and requires elevated sign-off.</div>
+        </div></div>
+      </div>
+
+    </div><!-- /lw-arch -->
+
+    <!-- ═══════════════════════════
+         LABWARE — SAMPLE & TEST MGMT
+    ═══════════════════════════ -->
+    <div class="section" id="lw-sample" data-section="lw">
+      <div class="section-header">
+        <span class="section-tag tag-lw">LabWare LIMS</span>
+        <div>
+          <div class="section-title">Sample &amp; Test Management</div>
+          <div class="section-desc">Sample login, test assignment, worksheet management, and sample lifecycle</div>
+        </div>
+      </div>
+
+      <div class="qa-card lw-card" data-tags="lw admin">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q04</span><span class="level-badge badge-admin">Admin</span></div>
+          <div class="q-text">How do you configure a product's testing profile in LabWare — from product setup through automatic test assignment on sample login?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>The setup follows a <strong>Product → Analysis → Test → Component</strong> hierarchy:</p>
+          <ol>
+            <li><strong>Product/Matrix definition</strong> — Create the product record (e.g., Drug Product Tablet 500mg). Fields: product name, product code, matrix type (raw material, in-process, finished product, stability), storage conditions.</li>
+            <li><strong>Analysis definition</strong> — Define what analyses are performed on this product (e.g., Identification, Assay, Dissolution, Microbial). Each analysis maps to a method reference.</li>
+            <li><strong>Test Plan</strong> — Attach analyses to the product. Configure: which tests are required for which sample type (release vs. stability), what test schedule applies, whether tests are mandatory or conditional.</li>
+            <li><strong>Component &amp; Spec setup</strong> — For each test, define components (individual parameters) and their specifications: lower limit, upper limit, target, units, number of decimal places, rounding rules.</li>
+            <li><strong>Auto-assignment on login</strong> — Configure the login form to auto-generate tests when a sample is logged in: based on product, sample type, and purpose (e.g., Release, Stability T=3mo). LabWare reads the test plan and creates the test records automatically.</li>
+          </ol>
+          <div class="tip"><strong>Config efficiency:</strong> LabWare supports <strong>Test Plan Templates</strong> — create once for a product family, then inherit and modify for individual products. Changes to a template apply to all products using it — manage carefully in a validated environment, as a template change affects all linked products and may require re-validation of all affected product configurations.</div>
+        </div></div>
+      </div>
+
+      <div class="qa-card lw-card" data-tags="lw admin val">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q05</span><span class="level-badge badge-both2">Both</span></div>
+          <div class="q-text">How does LabWare manage the sample lifecycle from login through disposal? What state transitions are involved and who controls each?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>The standard LabWare sample lifecycle state machine:</p>
+          <ul>
+            <li><strong>Scheduled (U)</strong> — Sample registered, tests assigned, awaiting analysis. Lab supervisor can review and modify at this stage.</li>
+            <li><strong>In Progress (I)</strong> — First result entered. Sample is actively being tested. Analysts can enter results; supervisor can review.</li>
+            <li><strong>Completed (C)</strong> — All results entered and reviewed by analyst. Pending QA/supervisor approval. No new result entry allowed without workflow.</li>
+            <li><strong>Approved (A)</strong> — QA or designated supervisor has reviewed and e-signed approval. Sample data is locked. This is the final GxP-significant state for data release purposes.</li>
+            <li><strong>Disposed (D)</strong> — Physical sample disposed per retention policy. Disposal date, method, and authorizer recorded. Data record persists permanently.</li>
+            <li><strong>Cancelled (X)</strong> — Sample withdrawn before completion. Reason required. Audit trail preserved.</li>
+          </ul>
+          <p><strong>Who controls transitions:</strong> Login Groups + status-based access profiles. Only QA/Supervisor login group can move a sample from Completed to Approved. Analysts cannot self-approve. Admin can override in emergency with documented justification — but this action is captured in the audit trail and is visible to auditors.</p>
+          <div class="critical"><strong>Validation scope:</strong> Each state transition is an OQ test case. Critical negative tests: Analyst attempts to approve own sample (system blocks). Approved sample result attempted edit (system blocks). Cancelled sample attempted reinstatement without documentation (system blocks).</div>
+        </div></div>
+      </div>
+
+    </div><!-- /lw-sample -->
+
+    <!-- ═══════════════════════════
+         LABWARE — RESULTS & CALCS
+    ═══════════════════════════ -->
+    <div class="section" id="lw-results" data-section="lw">
+      <div class="section-header">
+        <span class="section-tag tag-lw">LabWare LIMS</span>
+        <div>
+          <div class="section-title">Results, Calculations &amp; OOS Handling</div>
+          <div class="section-desc">Result entry, LBMS calculations, OOS/OOT flagging, and batch release</div>
+        </div>
+      </div>
+
+      <div class="qa-card lw-card" data-tags="lw admin val">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q06</span><span class="level-badge badge-both2">Both</span></div>
+          <div class="q-text">How does LabWare detect and flag OOS (Out of Specification) results? Walk through the configuration and what happens automatically when an OOS result is entered.</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>LabWare compares every entered result against the specification limits defined on the component. The OOS detection is automatic and immediate:</p>
+          <ol>
+            <li><strong>Spec evaluation on entry</strong> — As soon as the analyst enters a result value and saves, LabWare evaluates: is the value within the spec limits (lower limit ≤ result ≤ upper limit)? If outside limits, the result is immediately flagged as OOS.</li>
+            <li><strong>OOS flag on result</strong> — The result record's OOS indicator is set to TRUE. The result row is visually highlighted (typically red). The analyst cannot proceed to complete the sample without acknowledging and investigating the OOS.</li>
+            <li><strong>Automatic OOS record</strong> — Depending on configuration, LabWare can auto-create an OOS investigation record (linked to the result) in a separate OOS module or trigger an external QMS notification. The OOS record captures: test, component, specification limits, actual result, analyst, date/time.</li>
+            <li><strong>Workflow trigger</strong> — OOS results prevent the sample from moving to Completed status until the OOS investigation is either resolved (retest confirms OOS, formal investigation opened) or invalidated (root cause identified as lab error, with documented justification and QA approval).</li>
+          </ol>
+          <div class="tip"><strong>OOT (Out of Trend):</strong> LabWare also supports OOT detection for stability data — results within spec but showing a statistically concerning trend. OOT is configured separately with trend limits (often tighter than spec limits) and triggers a different, lower-severity workflow. OOT does not block batch release but generates a notification for the stability team.</div>
+        </div></div>
+      </div>
+
+      <div class="qa-card lw-card" data-tags="lw val">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q07</span><span class="level-badge badge-val">Val Lead</span></div>
+          <div class="q-text">You need to validate a complex multi-component LBMS calculation formula in LabWare. What is your approach — how do you test it and what constitutes passing evidence?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>LBMS calculation scripts are GAMP Cat 5 — they require formal validation as custom code. My approach:</p>
+          <ol>
+            <li><strong>Document the formula</strong> — Write the formula specification in plain mathematical notation in the FRS. Define all input variables, their data types and units, the formula logic, and the expected output range. This is the "expected result" baseline before any testing.</li>
+            <li><strong>Independent calculation</strong> — Calculate the expected result manually (or in a validated spreadsheet) using the formula spec and a set of representative test data inputs. This pre-defined expected result is the basis for OQ test script expected values.</li>
+            <li><strong>Test data matrix</strong> — Design test cases covering: (a) nominal values within spec, (b) boundary values (at limit exactly), (c) extreme low and high inputs, (d) zero inputs where applicable, (e) null/missing inputs to test error handling.</li>
+            <li><strong>OQ execution</strong> — Enter each test input set into LabWare in the QA vault, execute the calculation, record the system-generated result, compare to the independently-calculated expected result. Tolerance: typically exact match or within rounding rules defined in the FRS.</li>
+            <li><strong>Evidence package</strong> — OQ test script with pre-defined expected values, executed with actual results, tester signature, reviewer signature. Screenshots of system output for each test case. Any deviations documented and resolved before sign-off.</li>
+          </ol>
+          <div class="critical"><strong>Never accept "it looks right" as evidence.</strong> The expected value must be pre-defined before test execution, independently calculated, and documented in the protocol before running the test. Post-hoc expected values calculated after seeing the system output are not acceptable GxP evidence — they prove nothing.</div>
+        </div></div>
+      </div>
+
+    </div><!-- /lw-results -->
+
+    <!-- ═══════════════════════════
+         LABWARE — INSTRUMENT INTEGRATION
+    ═══════════════════════════ -->
+    <div class="section" id="lw-instruments" data-section="lw">
+      <div class="section-header">
+        <span class="section-tag tag-lw">LabWare LIMS</span>
+        <div>
+          <div class="section-title">Instrument Integration &amp; Data Interfaces</div>
+          <div class="section-desc">Bidirectional interfaces, LabX, file-based imports, and integration validation</div>
+        </div>
+      </div>
+
+      <div class="qa-card lw-card" data-tags="lw admin val">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q08</span><span class="level-badge badge-both2">Both</span></div>
+          <div class="q-text">How does LabWare integrate with laboratory instruments — what are the integration methods and how do you validate an instrument interface?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>LabWare supports several instrument integration patterns:</p>
+          <ul>
+            <li><strong>File-based import (flat file / ASCII)</strong> — Instrument exports a CSV or text file to a watched folder. LabWare's import engine (LBMS-driven) polls the folder, parses the file, maps fields to result records, and imports. Most common and simplest method.</li>
+            <li><strong>Direct database connection</strong> — LabWare connects to the instrument data system's database (e.g., Empower, Chromeleon) and queries results directly. Requires the instrument system's DB to be accessible and a validated mapping layer.</li>
+            <li><strong>Middleware / broker</strong> — An intermediary (e.g., LabX, NuGenesis, custom middleware) sits between the instrument and LabWare, handling format conversion, error management, and bi-directional communication. Used for complex multi-instrument environments.</li>
+            <li><strong>Bidirectional (sample login push)</strong> — LabWare pushes the worklist (sample ID, test, method) to the instrument controller. Instrument runs the analysis and pushes results back. Reduces manual transcription to zero.</li>
+          </ul>
+          <p><strong>Validating an instrument interface:</strong></p>
+          <ol>
+            <li><strong>URS</strong>: Define what data must transfer, in what direction, with what field mapping and error handling.</li>
+            <li><strong>IQ</strong>: Confirm the interface is installed, configured, and the communication path is active.</li>
+            <li><strong>OQ</strong>: (a) Import known test data files — verify every field maps correctly, values match exactly. (b) Test with intentionally malformed files — verify error is caught and not silently imported. (c) Test duplicate prevention — same file imported twice should not create duplicate results. (d) Verify audit trail shows "source: instrument import" vs. "source: manual entry."</li>
+          </ol>
+          <div class="critical"><strong>Data integrity rule:</strong> Instrument-imported results must be distinguishable in the audit trail from manually-entered results. The import source (filename, instrument ID, import timestamp) must be recorded on the result record. This traceability is a 21 CFR Part 11 requirement and an ALCOA "Attributable" obligation.</div>
+        </div></div>
+      </div>
+
+      <div class="qa-card lw-card" data-tags="lw admin val">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q09</span><span class="level-badge badge-both2">Both</span></div>
+          <div class="q-text">In 2024 you resolved a LabX balance issue where duplicate WeightIDs were being created. Walk through the technical root cause and how LabWare's configuration should prevent this class of problem.</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>The root cause was a <strong>missing uniqueness constraint on the WeightID field</strong> in the LabX balance ELN workflow. LabX was passing task/weighing records to LabWare via a file interface, and the WeightID — which should be a unique identifier per weighing event — had no uniqueness enforcement at either the LabX configuration layer or the LabWare import validation layer.</p>
+          <p><strong>The LabWare configuration fix:</strong></p>
+          <ul>
+            <li><strong>Import validation script</strong> — Added a pre-import LBMS validation check: before accepting an incoming WeightID from LabX, query the LabWare result table to confirm no existing record carries that WeightID. If a match is found, reject the import with a logged error rather than silently creating a duplicate.</li>
+            <li><strong>Unique index at DB layer</strong> — Added a unique index on the WeightID column in the relevant LabWare table. This is a database-level enforcement — even if the application-layer check was bypassed, the database would reject the insert.</li>
+            <li><strong>Error notification</strong> — Configured the import engine to send an email alert to the lab supervisor whenever an import is rejected due to a duplicate key, so the issue is visible immediately rather than silently failing.</li>
+          </ul>
+          <p><strong>Preventive config review added to SOP:</strong> Any field that serves as a unique identifier in LabWare (WeightID, SampleID, BarCode) must have both an application-layer uniqueness check in the import script AND a database-level unique index. This is now a checklist item in the config review SOP for all new interface configurations.</p>
+          <div class="tip"><strong>Validation evidence:</strong> OQ test case added to regression library: "Attempt to import LabX file containing a duplicate WeightID — verify system rejects with error log entry and no duplicate result created." Run on every LabWare release regression cycle.</div>
+        </div></div>
+      </div>
+
+    </div><!-- /lw-instruments -->
+
+    <!-- ═══════════════════════════
+         LABWARE — VALIDATION
+    ═══════════════════════════ -->
+    <div class="section" id="lw-val" data-section="lw">
+      <div class="section-header">
+        <span class="section-tag tag-lw">LabWare LIMS</span>
+        <div>
+          <div class="section-title">Validation Strategy &amp; CSV</div>
+          <div class="section-desc">GAMP category, validation approach, upgrade strategy, and 21 CFR Part 11</div>
+        </div>
+      </div>
+
+      <div class="qa-card lw-card" data-tags="lw val">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q10</span><span class="level-badge badge-val">Val Lead</span></div>
+          <div class="q-text">LabWare is on-premise. How does your validation approach differ from a SaaS system like Veeva? What do you uniquely own that a SaaS customer does not have to worry about?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>On-premise LabWare is <strong>GAMP Category 4</strong> (configured COTS). Unlike SaaS, you own the full infrastructure stack:</p>
+          <ul>
+            <li><strong>IQ is fully yours</strong> — You qualify the server hardware, OS, database, LabWare application installation, network configuration, backup system, and DR plan. SaaS customers get this from the vendor. On-premise, every item in the IQ checklist is your responsibility to test and document.</li>
+            <li><strong>Upgrades are fully controlled by you</strong> — No vendor can push a patch to your PROD without your knowledge and change control. This is a benefit (control) and a burden (you must proactively manage patch cycles, security updates, and version upgrades).</li>
+            <li><strong>Database access means more config risk</strong> — Unlike SaaS where admins work through a UI, LabWare admins can run SQL directly against the database. This power requires strict DBA access controls, and any DB-level change must be change-controlled and validated.</li>
+            <li><strong>Performance is your responsibility</strong> — Server sizing, database tuning, backup windows, disaster recovery tests. SaaS abstracts this. On-premise means your validation must address these infrastructure elements.</li>
+            <li><strong>LBMS scripts are your code</strong> — Every custom script is Cat 5. You must version-control, document, and formally validate each one. SaaS platforms either don't allow custom code or sandbox it tightly.</li>
+          </ul>
+          <div class="tip"><strong>Practical implication:</strong> Your Validation Master Plan for on-premise LabWare will be significantly longer than for a SaaS LIMS. IQ alone may be 20–30 test cases covering infrastructure. Budget for this — it is often underestimated in project planning.</div>
+        </div></div>
+      </div>
+
+      <div class="qa-card lw-card" data-tags="lw val">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q11</span><span class="level-badge badge-val">Val Lead</span></div>
+          <div class="q-text">LabWare releases a major version upgrade (e.g., v7 to v8). Walk through your end-to-end revalidation strategy — what is the scope, what can be leveraged, and what must be fully retested?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <ol>
+            <li><strong>Gap analysis</strong> — Compare v7 and v8 release documentation. Identify: new features, changed features, deprecated features, known resolved bugs. Categorize each change by GxP impact.</li>
+            <li><strong>What can be leveraged (not re-tested from scratch):</strong>
+              <ul>
+                <li>Infrastructure IQ — if running on same server, hardware IQ evidence carries forward (document with a rationale statement)</li>
+                <li>Standard platform features unchanged by the upgrade — document that they were assessed and determined unchanged, with a formal rationale</li>
+                <li>Vendor-supplied testing for platform core features (if LabWare provides validation documentation for v8)</li>
+              </ul>
+            </li>
+            <li><strong>What must be fully retested:</strong>
+              <ul>
+                <li>All LBMS scripts — verify behavior is identical under new version (syntax changes between major versions can silently alter script behavior)</li>
+                <li>All instrument interfaces — data format parsing, field mapping, error handling</li>
+                <li>All configured calculations and OOS logic</li>
+                <li>All user role and access profile configurations — major versions sometimes change the security model</li>
+                <li>Reports and COA generation — output format and data accuracy</li>
+                <li>All e-signature and audit trail functions (21 CFR Part 11 compliance verification)</li>
+              </ul>
+            </li>
+            <li><strong>UAT in parallel environment</strong> — Upgrade a cloned environment first. Run the full regression suite. Have business users execute end-to-end workflows. Sign UAT before scheduling production upgrade window.</li>
+            <li><strong>Upgrade window and rollback plan</strong> — Defined downtime, backup taken and verified immediately before upgrade, rollback procedure tested in the clone environment, go/no-go criteria defined (if UAT has open criticals → roll back, do not go live).</li>
+          </ol>
+        </div></div>
+      </div>
+
+    </div><!-- /lw-val -->
+
+    <!-- ═══════════════════════════
+         BIOVIA ELN — ARCHITECTURE
+    ═══════════════════════════ -->
+    <div class="section" id="eln-arch" data-section="eln">
+      <div class="section-header">
+        <span class="section-tag tag-eln">Biovia ELN</span>
+        <div>
+          <div class="section-title">Architecture &amp; Notebook Structure</div>
+          <div class="section-desc">Biovia platform model, experiment hierarchy, template system, and admin setup</div>
+        </div>
+      </div>
+
+      <div class="qa-card eln-card" data-tags="eln admin">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q12</span><span class="level-badge badge-admin">Admin</span></div>
+          <div class="q-text">Explain the Biovia ELN object hierarchy — Notebooks, Experiments, Sections, and Protocols. How does this translate to GxP record management?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>Biovia (formerly Accelrys) ELN uses a <strong>document-centric hierarchy</strong> that mirrors a physical lab notebook:</p>
+          <ul>
+            <li><strong>Notebook</strong> — Top-level container. Belongs to a user or a team. Analogous to a physical lab notebook volume. Access-controlled at this level. In a GxP environment, notebooks are typically project- or department-scoped (e.g., "QC Release Testing 2024").</li>
+            <li><strong>Experiment</strong> — An individual experimental record within a notebook. Contains all data, observations, calculations, and conclusions for one analytical session or study. The experiment is the primary GxP record — it has its own lifecycle (In Progress → Submitted → Reviewed → Approved), e-signature events, and audit trail.</li>
+            <li><strong>Section</strong> — A structured subsection within an experiment. Sections have defined types: Header (metadata), Protocol (procedure steps), Results (tabular data entry), Discussion (narrative), Attachment (supporting files). Sections enforce data capture structure.</li>
+            <li><strong>Protocol Template</strong> — A pre-approved, locked-down experimental procedure that users instantiate rather than write from scratch. In a GxP lab, all analytical procedures should exist as validated protocol templates, ensuring every analyst follows the same standardized format and captures all required data fields.</li>
+          </ul>
+          <p><strong>GxP implication:</strong> The Experiment is the unit of record that QA signs off. Everything in the experiment — protocol steps, entered values, calculations, instrument attachments — forms the complete analytical record. The experiment audit trail must capture every edit to every field from first entry to final QA approval.</p>
+          <div class="tip"><strong>Template governance:</strong> Protocol templates must be version-controlled and approved in the ELN before being made available to users. A change to a template must go through change control. Users working from an old template version while a new one is active must be identified and managed — this is a common gap found in inspections.</div>
+        </div></div>
+      </div>
+
+      <div class="qa-card eln-card" data-tags="eln admin">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q13</span><span class="level-badge badge-admin">Admin</span></div>
+          <div class="q-text">How do you configure role-based access in Biovia ELN? What prevents an analyst from approving their own experiment?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>Biovia ELN uses <strong>Roles</strong> assigned at the system level, combined with <strong>Workflow configurations</strong> that enforce separation of duties:</p>
+          <ul>
+            <li><strong>System Roles</strong> — Author, Reviewer, Approver, Administrator. Each role has defined permissions: Authors can create and edit experiments. Reviewers can submit comments but not approve. Approvers can give final sign-off. Admins manage system configuration.</li>
+            <li><strong>Experiment workflow</strong> — The review/approval workflow is configured to require a different user at each stage. The system enforces: "The Approver cannot be the same user as the Author." This is a core 21 CFR Part 11 separation-of-duties control.</li>
+            <li><strong>Group-based routing</strong> — Approval tasks can be routed to a specific group (e.g., "QA Approvers") rather than a named individual, ensuring coverage and preventing bottlenecks.</li>
+          </ul>
+          <div class="critical"><strong>Self-approval prevention — OQ test (mandatory):</strong> Create an experiment as User A. Submit for approval. Attempt to approve as User A. System must reject with an error: "Approver cannot be the same as the Author." This is one of the most commonly cited Part 11 failures when it's misconfigured or manually bypassed. The test must be documented in the OQ and the expected result must be "system blocks."</div>
+        </div></div>
+      </div>
+
+    </div><!-- /eln-arch -->
+
+    <!-- ═══════════════════════════
+         BIOVIA ELN — WORKFLOWS
+    ═══════════════════════════ -->
+    <div class="section" id="eln-workflow" data-section="eln">
+      <div class="section-header">
+        <span class="section-tag tag-eln">Biovia ELN</span>
+        <div>
+          <div class="section-title">Workflows, Experiments &amp; Template Management</div>
+          <div class="section-desc">Experiment lifecycle, template versioning, and LIMS integration</div>
+        </div>
+      </div>
+
+      <div class="qa-card eln-card" data-tags="eln admin val">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q14</span><span class="level-badge badge-both2">Both</span></div>
+          <div class="q-text">How does Biovia ELN integrate with LabWare LIMS? What data flows between the two systems and how do you validate the interface?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>The ELN-LIMS integration is a bidirectional data flow — the two systems complement each other in the analytical workflow:</p>
+          <ul>
+            <li><strong>LIMS → ELN (worklist push):</strong> LabWare pushes the sample worklist to Biovia ELN — sample IDs, tests to be performed, method references. The analyst in ELN receives a pre-populated experiment template with the correct samples and tests pre-loaded, eliminating manual transcription of sample IDs.</li>
+            <li><strong>ELN → LIMS (results pull):</strong> After the analyst completes the experiment and records results in the ELN, the final approved result values are transferred to LabWare LIMS — the system of record for batch release. LabWare receives the results and populates the corresponding sample/test/component records.</li>
+            <li><strong>Attachment transfer:</strong> Raw instrument data files, chromatograms, spectra attached to the ELN experiment can be linked (or transferred) to the corresponding LabWare result record as supporting attachments.</li>
+          </ul>
+          <p><strong>Interface validation OQ tests:</strong></p>
+          <ol>
+            <li>Log a sample in LabWare, confirm worklist appears in ELN with correct sample ID, test, and method</li>
+            <li>Enter and approve results in ELN, confirm identical values appear in LabWare on the correct sample/test/component records</li>
+            <li>Test with a rejected ELN experiment — confirm rejected results do NOT transfer to LabWare</li>
+            <li>Test field mapping: all transferred fields (result value, units, analyst, experiment ID, approval timestamp) match exactly between ELN and LIMS</li>
+            <li>Test error handling: disconnect the interface mid-transfer, verify an error is logged and the partial transfer does not create incomplete result records</li>
+          </ol>
+          <div class="critical"><strong>Single source of truth:</strong> If both systems hold the same result, you must define which is the authoritative record. In a pharma QC environment, LabWare is typically the system of record for batch release decisions. The ELN holds the experimental narrative. Both must agree — discrepancy between them is a data integrity finding.</div>
+        </div></div>
+      </div>
+
+      <div class="qa-card eln-card" data-tags="eln admin">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q15</span><span class="level-badge badge-admin">Admin</span></div>
+          <div class="q-text">How do you manage the versioning and change control of ELN protocol templates in a GxP environment?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>Protocol templates in Biovia ELN must be managed with the same rigor as SOPs — they are the electronic equivalent of an analytical procedure form:</p>
+          <ul>
+            <li><strong>Template lifecycle</strong> — Templates have their own state machine in the ELN: Draft → Under Review → Approved → Deprecated. Only Approved templates are available to analysts for new experiments.</li>
+            <li><strong>Version numbering</strong> — ELN maintains version history of templates (v1.0, v1.1, v2.0). When a template is revised and approved as v2.0, existing in-progress experiments continue using the version they were initiated on. New experiments use v2.0.</li>
+            <li><strong>Change control linkage</strong> — Template changes must be initiated via a Change Control in the QMS. The CC documents: what changed, why, GxP impact, validation re-testing required. The CC record number is referenced in the template's change history notes within the ELN.</li>
+            <li><strong>Impact on existing records</strong> — When a template is revised, identify any in-progress experiments using the old template. Decide: (a) complete on old template with documented justification, or (b) transition to new template with a migration note in the experiment record.</li>
+          </ul>
+          <div class="tip"><strong>Common gap:</strong> Analysts saving personal copies of templates outside the controlled library. If an analyst creates a "my custom HPLC template" and uses it for GxP work, those experiments are not generated from a controlled, approved protocol. Enforce the rule: all GxP experiments must use templates from the controlled library only. Validate this with an access control test — analysts should not have permission to create new templates, only to instantiate from the approved library.</div>
+        </div></div>
+      </div>
+
+    </div><!-- /eln-workflow -->
+
+    <!-- ═══════════════════════════
+         BIOVIA ELN — DATA INTEGRITY
+    ═══════════════════════════ -->
+    <div class="section" id="eln-data" data-section="eln">
+      <div class="section-header">
+        <span class="section-tag tag-eln">Biovia ELN</span>
+        <div>
+          <div class="section-title">Data Integrity &amp; Electronic Signatures</div>
+          <div class="section-desc">ALCOA+ in ELN context, raw data management, and Part 11 compliance</div>
+        </div>
+      </div>
+
+      <div class="qa-card eln-card" data-tags="eln admin val">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q16</span><span class="level-badge badge-both2">Both</span></div>
+          <div class="q-text">How does Biovia ELN handle raw data — what is the "original record" in an ELN context, and how do you ensure it cannot be deleted or overwritten?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>In the ELN context, <strong>original record</strong> means the first entry of a data point — the first value typed or imported — and all subsequent edits must be tracked without ever deleting the original:</p>
+          <ul>
+            <li><strong>Field-level audit trail</strong> — Every data field in the ELN experiment maintains a complete edit history. Any change to an entered value creates an audit record showing: previous value, new value, user who changed it, date/time, and reason for change (required comment). The original value is permanently preserved — it cannot be deleted even by an admin.</li>
+            <li><strong>Attachment integrity</strong> — Raw instrument files (chromatograms, spectra) attached to the experiment are stored in a content-addressed vault. The file hash is recorded at upload. The system can verify file integrity at any time by recomputing the hash. If the stored hash doesn't match, the file has been tampered with.</li>
+            <li><strong>No delete for approved records</strong> — Once an experiment reaches Approved state, no fields, attachments, or audit trail entries can be deleted. The experiment is locked. It can only be superseded by a new experiment with a documented justification and QA sign-off.</li>
+            <li><strong>Scratchpad vs. official record</strong> — Biovia ELN distinguishes between a "scratchpad" working area (drafting, not part of the official record) and the official experiment sections. Only data in official sections is subject to GxP audit trail requirements. This distinction must be understood by all users and documented in the user training.</li>
+          </ul>
+          <div class="critical"><strong>Inspector question:</strong> "Show me the original raw data for this result." In an ELN environment, the answer must trace from the approved result → back through the audit trail → to the original first-entry value → to the attached raw instrument file with its integrity hash. If any link in that chain is broken, you have a data integrity gap.</div>
+        </div></div>
+      </div>
+
+    </div><!-- /eln-data -->
+
+    <!-- ═══════════════════════════
+         BIOVIA ELN — VALIDATION
+    ═══════════════════════════ -->
+    <div class="section" id="eln-val" data-section="eln">
+      <div class="section-header">
+        <span class="section-tag tag-eln">Biovia ELN</span>
+        <div>
+          <div class="section-title">Validation &amp; CSV for Biovia ELN</div>
+          <div class="section-desc">Validation scope, hybrid paper-to-ELN migration, and inspection readiness</div>
+        </div>
+      </div>
+
+      <div class="qa-card eln-card" data-tags="eln val">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q17</span><span class="level-badge badge-val">Val Lead</span></div>
+          <div class="q-text">Your lab is transitioning from paper lab notebooks to Biovia ELN. What validation activities are required and what must change in your SOPs before the first GxP experiment can be recorded electronically?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>Paper-to-ELN transition is a significant program — not just an IT rollout. It is a regulated change to your data management system and requires formal validation:</p>
+          <ol>
+            <li><strong>System Impact Assessment</strong> — Confirm ELN is GxP-applicable (it is, for any regulated analytical work). Classify as GAMP Cat 4 (configured) or Cat 5 if heavy customization. Determine 21 CFR Part 11 applicability.</li>
+            <li><strong>URS development</strong> — Capture all requirements including: experiment creation, edit controls, audit trail, e-signature, template management, role-based access, instrument attachment, interface to LIMS, backup, access from mobile or remote stations (if applicable).</li>
+            <li><strong>IQ / OQ / PQ</strong> — Full validation package. PQ must include real analysts performing real-world workflows on the system before go-live.</li>
+            <li><strong>SOP updates required before go-live:</strong>
+              <ul>
+                <li>New SOP: "Use of Electronic Lab Notebook — GxP Requirements"</li>
+                <li>Update all analytical SOPs to reference ELN as the recording medium (remove paper notebook references)</li>
+                <li>New SOP: "ELN Data Correction Procedure" (how to correct an entry, who approves, what reason is required)</li>
+                <li>Update data retention SOP to address ELN backup, archive, and retrieval</li>
+                <li>Update training curriculum — all analysts trained and assessed on ELN before first GxP use</li>
+              </ul>
+            </li>
+            <li><strong>Parallel running period</strong> — For a defined transition period, consider running paper and ELN in parallel (paper as backup) to build confidence. Define exactly when ELN becomes the sole record. From that date, paper recording of the same data constitutes a duplicate record and must cease.</li>
+          </ol>
+          <div class="critical"><strong>Go-live gate:</strong> Zero GxP experiments may be recorded in the ELN until: (a) validation is complete and signed off, (b) all user SOPs are approved, (c) all users are trained with records filed, (d) QA has formally declared the system validated and ready for use. "We'll validate it properly once people start using it" is not acceptable — it is a regulatory violation.</div>
+        </div></div>
+      </div>
+
+    </div><!-- /eln-val -->
+
+    <!-- ═══════════════════════════
+         LIS — ARCHITECTURE
+    ═══════════════════════════ -->
+    <div class="section" id="lis-arch" data-section="lis">
+      <div class="section-header">
+        <span class="section-tag tag-lis">LIS Systems</span>
+        <div>
+          <div class="section-title">LIS vs. LIMS — Architecture &amp; Key Differences</div>
+          <div class="section-desc">What a LIS is, how it differs from a LIMS, clinical context, and validation implications</div>
+        </div>
+      </div>
+
+      <div class="qa-card lis-card" data-tags="lis admin val">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q18</span><span class="level-badge badge-both2">Both</span></div>
+          <div class="q-text">What is the fundamental difference between a LIS and a LIMS? When would you use one vs. the other, and can they coexist?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>This is a foundational question that catches many candidates off guard. The distinction is real and regulatory:</p>
+          <ul>
+            <li><strong>LIS (Laboratory Information System)</strong> — Designed for clinical diagnostic laboratories. Manages patient specimens, test orders (from physicians/clinicians), results that are reported back to clinicians for patient care decisions. Integrates with Hospital Information Systems (HIS), EMR/EHR, and physician portals. Regulated primarily under CLIA (Clinical Laboratory Improvement Amendments) in the US, and under medical device / clinical software regulations in some jurisdictions. Examples: SCC SoftLab, Cerner PathNet, Epic Beaker, Sunquest, LabWare LIS.</li>
+            <li><strong>LIMS (Laboratory Information Management System)</strong> — Designed for analytical, R&amp;D, or QC laboratories. Manages samples (not patients), tests, and results that feed into quality decisions, batch release, or research. Regulated under 21 CFR Part 11, GLP, GMP, or GCP depending on the application. Examples: LabWare LIMS, Labvantage, STARLIMS, SampleManager.</li>
+          </ul>
+          <p><strong>Key technical differences:</strong></p>
+          <ul>
+            <li>LIS has a patient demographics engine and links results to patient medical records. LIMS has a sample/product engine and links results to batches or studies.</li>
+            <li>LIS uses HL7 messaging standards for clinical data exchange. LIMS uses more varied integration approaches (HL7, flat files, REST APIs, direct DB).</li>
+            <li>LIS has clinical decision support (critical values, delta checks, reflex testing rules). LIMS has specification-based OOS/OOT logic.</li>
+          </ul>
+          <p><strong>Can they coexist?</strong> Yes — in a hospital-based pharma setting or a research hospital, a LIS handles patient diagnostic work and a LIMS handles research sample management. They may share an instrument but their data streams are kept separate. The interface between them (if any) must be carefully validated to prevent patient data from entering the research system and vice versa.</p>
+        </div></div>
+      </div>
+
+      <div class="qa-card lis-card" data-tags="lis admin">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q19</span><span class="level-badge badge-admin">Admin</span></div>
+          <div class="q-text">How does a LIS handle test ordering, accession numbering, and result reporting — walk through the clinical workflow from order to report.</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>The clinical LIS workflow follows an <strong>Order → Accession → Analyze → Verify → Report</strong> cycle:</p>
+          <ol>
+            <li><strong>Order entry</strong> — Physician places a test order in the EMR/HIS (e.g., "CBC, CMP, Lipid Panel"). The order is transmitted to the LIS via HL7 ORM (Order Message) or via manual entry at the LIS workstation.</li>
+            <li><strong>Accession creation</strong> — LIS creates an accession record (unique accession number, e.g., LAB-20240415-00342) linking the patient, the order, the specimen type, and the collection time. A specimen label is printed with barcode.</li>
+            <li><strong>Specimen receipt</strong> — Lab receives the specimen, scans the barcode, confirms collection time, documents receipt time. LIS tracks turnaround time from this point.</li>
+            <li><strong>Instrument routing</strong> — The LIS or middleware routes the accession to the appropriate analyzer (hematology, chemistry, microbiology). The analyzer queries the LIS for the order using the barcode, receives the test list, performs analysis, and sends results back.</li>
+            <li><strong>Autoverification</strong> — LIS applies autoverification rules (delta checks, critical value alerts, instrument QC status) to determine if results can be automatically verified and released or require manual technologist review.</li>
+            <li><strong>Result verification</strong> — Medical Technologist reviews flagged results, applies clinical judgment, and verifies the results in the LIS. This is the GxP-equivalent approval step in clinical lab terms.</li>
+            <li><strong>Reporting</strong> — Verified results are transmitted back to the EMR via HL7 ORU (Observation Result) message and displayed in the physician's EMR view. Cumulative patient reports generated as needed.</li>
+          </ol>
+          <div class="tip"><strong>Critical value handling:</strong> LIS must alert lab staff AND document that the alert was acknowledged for any result flagged as a critical value (life-threatening range). This is a CLIA requirement. The alert, acknowledgment, and notification to the ordering clinician must all be recorded with timestamps in the LIS audit trail.</div>
+        </div></div>
+      </div>
+
+    </div><!-- /lis-arch -->
+
+    <!-- ═══════════════════════════
+         LIS — HL7 & INTERFACES
+    ═══════════════════════════ -->
+    <div class="section" id="lis-hl7" data-section="lis">
+      <div class="section-header">
+        <span class="section-tag tag-lis">LIS Systems</span>
+        <div>
+          <div class="section-title">HL7, Interfaces &amp; System Integration</div>
+          <div class="section-desc">HL7 v2 messaging, ASTM, middleware, EMR integration, and instrument connectivity</div>
+        </div>
+      </div>
+
+      <div class="qa-card lis-card" data-tags="lis admin">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q20</span><span class="level-badge badge-admin">Admin</span></div>
+          <div class="q-text">Explain HL7 v2 messaging in the LIS context. What are the key message types, and what does a real HL7 ORM or ORU message structure look like?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p><strong>HL7 v2 (Health Level 7 version 2)</strong> is the dominant messaging standard for clinical data exchange. It uses a pipe-delimited text format. Key message types in the LIS workflow:</p>
+          <ul>
+            <li><strong>ORM (Order Message)</strong> — From HIS/EMR to LIS. Contains: patient demographics, order details (test codes), specimen information, ordering physician. Used to communicate a new test order to the lab.</li>
+            <li><strong>ORU (Observation Result Unsolicited)</strong> — From LIS to HIS/EMR. Contains: patient ID, accession number, test results, reference ranges, flags (H/L/C for High/Low/Critical), verifying technologist. Used to send results back to the clinical system.</li>
+            <li><strong>ADT (Admit/Discharge/Transfer)</strong> — From HIS to LIS. Patient demographic updates — name changes, bed location, admission status. LIS must stay in sync to report results to the right location.</li>
+            <li><strong>ACK (Acknowledgment)</strong> — Response to any inbound HL7 message. AA = Application Accept (received and processed), AE = Application Error, AR = Application Reject. Critical for confirming messages were received — unacknowledged messages must be retried or alerted.</li>
+          </ul>
+          <p><strong>Example ORU message structure:</strong></p>
+          <div class="code-snippet">MSH|^~\&|LIS|LABSITE|EMR|HOSPITAL|20240415103022||ORU^R01|MSG001|P|2.5
+PID|1||MRN12345^^^HOSP||DOE^JOHN^A||19800101|M
+PV1|1|I|4W^401^A^^^ICU
+OBR|1|ORD001^LIS|ACC20240415001^LIS|CBC^^^LOCAL^Complete Blood Count
+OBX|1|NM|WBC^White Blood Cell Count^L|1|7.2|4.0-10.5|10*3/uL|N|||F|||20240415103000
+OBX|2|NM|HGB^Hemoglobin^L|1|14.2|12.0-17.5|g/dL|N|||F|||20240415103000
+OBX|3|NM|PLT^Platelets^L|1|45|150-400|10*3/uL|L|||F|||20240415103000</div>
+          <p>Each OBX segment is one result. The final field in OBX is the observation result status — F = Final, P = Preliminary, C = Correction.</p>
+          <div class="tip"><strong>Interface validation:</strong> For each HL7 interface, validate with real message samples: send a test ORU and verify the EMR receives and displays the correct values. Test the ACK handshake. Test with out-of-sequence messages. Test with missing mandatory fields — verify the LIS rejects gracefully rather than creating a partial patient record.</div>
+        </div></div>
+      </div>
+
+      <div class="qa-card lis-card" data-tags="lis admin">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q21</span><span class="level-badge badge-admin">Admin</span></div>
+          <div class="q-text">What is an autoverification rule in a LIS and how do you configure and validate one? What are the risks if autoverification is misconfigured?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p><strong>Autoverification</strong> is the LIS capability to automatically release a result to the EMR without requiring manual technologist review — when the result meets all defined criteria for automatic acceptance. It is a major efficiency tool but carries significant clinical risk if misconfigured.</p>
+          <p><strong>Configuration elements:</strong></p>
+          <ul>
+            <li><strong>Reference range check</strong> — Result is within the normal reference range for age/sex. If outside range, route to manual review.</li>
+            <li><strong>Critical value check</strong> — Result is NOT in a critical value range. Critical values always require manual review and clinician notification.</li>
+            <li><strong>Delta check</strong> — Current result is within an acceptable delta (change) from the patient's previous result for the same test. A sudden large change (e.g., potassium 4.0 → 6.8 overnight) fails the delta check and routes to manual review regardless of whether the current value is in range.</li>
+            <li><strong>QC check</strong> — Instrument QC for the run in which this result was generated must be passing. If QC failed, all results from that run are held for manual review.</li>
+            <li><strong>Instrument flag check</strong> — No instrument error flags on the result.</li>
+          </ul>
+          <p><strong>Validation approach:</strong> Each autoverification rule is a validated business logic function. OQ must test every rule with specific positive and negative test cases — verify that a result meeting all criteria is auto-released, and that a result failing any single criterion is routed to manual queue. Test all combinations of failures. This is GAMP Cat 4 configuration testing.</p>
+          <div class="critical"><strong>Risk of misconfiguration:</strong> An autoverification rule that incorrectly releases a critical value (e.g., a potassium of 7.0 mEq/L) without clinician notification could contribute to a patient safety event. This is why autoverification rules must be clinically reviewed by the Laboratory Medical Director AND validated by IT/informatics before go-live. Any change to autoverification rules requires a formal change control with clinical sign-off.</div>
+        </div></div>
+      </div>
+
+    </div><!-- /lis-hl7 -->
+
+    <!-- ═══════════════════════════
+         LIS — VALIDATION
+    ═══════════════════════════ -->
+    <div class="section" id="lis-val" data-section="lis">
+      <div class="section-header">
+        <span class="section-tag tag-lis">LIS Systems</span>
+        <div>
+          <div class="section-title">LIS Validation &amp; Regulatory Framework</div>
+          <div class="section-desc">CLIA, CAP, 21 CFR Part 11 applicability, and clinical validation approach</div>
+        </div>
+      </div>
+
+      <div class="qa-card lis-card" data-tags="lis val">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q22</span><span class="level-badge badge-val">Val Lead</span></div>
+          <div class="q-text">What regulatory frameworks govern LIS validation? Is 21 CFR Part 11 applicable to a clinical LIS? How does CLIA change the validation approach?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>LIS validation sits at the intersection of multiple regulatory frameworks:</p>
+          <ul>
+            <li><strong>CLIA (42 CFR Part 493)</strong> — Primary US regulation for clinical laboratories. Requires laboratories to verify/validate any system that supports test performance, result reporting, or patient record management. CLIA §493.1251 requires labs to establish and verify specifications for systems before use. This is the clinical equivalent of CSV.</li>
+            <li><strong>CAP (College of American Pathologists)</strong> — Accreditation standard for clinical labs. LIS checklist items include: access controls, result integrity, backup, interface validation, downtime procedures. CAP inspectors will check LIS validation documentation.</li>
+            <li><strong>21 CFR Part 11</strong> — Applicable if the LIS creates or maintains electronic records that substitute for paper records in a regulated context. For a hospital lab doing clinical testing only, Part 11 may not apply directly. For a pharma company's clinical lab or bioanalytical lab supporting drug trials, Part 11 does apply.</li>
+            <li><strong>HIPAA</strong> — Patient data security and privacy. LIS contains PHI (Protected Health Information). Audit trail requirements overlap with Part 11 — access logs, data change trails, user authentication.</li>
+          </ul>
+          <p><strong>How CLIA changes the validation approach:</strong></p>
+          <ul>
+            <li>CLIA requires <strong>method verification</strong> (analytical validation of the test methods) in addition to system validation. You validate both the instrument/method AND the LIS configuration that supports it.</li>
+            <li>CLIA requires a <strong>Laboratory Director sign-off</strong> (MD or PhD) on the validation — not just IT/informatics. This is unlike pharma CSV where a Validation Lead and QA sign off.</li>
+            <li>CLIA places strong emphasis on <strong>downtime procedures</strong> — what happens when the LIS is unavailable? How are results recorded, reported, and then entered into the LIS when it comes back up? This must be in your SOP and tested in the validation.</li>
+          </ul>
+        </div></div>
+      </div>
+
+    </div><!-- /lis-val -->
+
+    <!-- ═══════════════════════════
+         CROSS — OOS / OOT
+    ═══════════════════════════ -->
+    <div class="section" id="cross-oos" data-section="cross">
+      <div class="section-header">
+        <span class="section-tag tag-cross">Cross-Cutting</span>
+        <div>
+          <div class="section-title">OOS / OOT Handling Across Systems</div>
+          <div class="section-desc">How LIMS, ELN, and LIS each handle out-of-specification and out-of-trend results</div>
+        </div>
+      </div>
+
+      <div class="qa-card cross-card" data-tags="lw eln admin val">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q23</span><span class="level-badge badge-both2">Both</span></div>
+          <div class="q-text">An OOS result is entered in LabWare LIMS. Walk through every system action, the required human steps, and the documentation trail from OOS entry to resolution.</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>This is one of the most frequently-tested regulatory scenarios. The FDA has specific guidance on OOS investigations (2006 FDA Guidance on OOS Results).</p>
+          <ol>
+            <li><strong>Result entry → immediate OOS flag</strong> — Analyst enters result. LabWare evaluates against spec. OOS flag set. Sample status locked at current state. Analyst sees OOS indicator and cannot proceed to complete the sample without investigation.</li>
+            <li><strong>Phase 1 — Laboratory Investigation</strong> — Analyst and supervisor review for assignable laboratory cause: calculation error, instrument malfunction, wrong standard preparation, data transcription error, sample handling error. If a clear lab error is found with documented evidence → invalidate the original result, document the assignable cause, retest. This must be approved by QA before invalidation.</li>
+            <li><strong>No assignable cause found → Phase 2 — Full OOS Investigation</strong> — Formal OOS investigation record opened in QMS. Expands scope: retest the original sample (full retest, not just re-run), test retain samples, evaluate batch manufacturing records, check raw material CoAs, review environmental monitoring data for the production period.</li>
+            <li><strong>Outcome determination</strong> — Based on Phase 2 results: (a) Confirmed OOS → batch failure, formal disposition, regulatory notification if required, CAPA. (b) OOS invalidated with documented evidence → batch can be reconsidered for release with QA and potentially QP/RP sign-off. (c) Inconclusive → additional testing with statistical justification.</li>
+            <li><strong>Documentation in LabWare</strong> — All investigation notes, retest results, decisions, and QA approvals must be linked to the original OOS result record. The final disposition is recorded on the sample. The OOS investigation record number is cross-referenced. This complete chain must be producible on demand for an inspector.</li>
+          </ol>
+          <div class="critical"><strong>FDA key requirement:</strong> You cannot average an OOS result with passing results to achieve a "passing average." Each result must be valid on its own merits or invalidated with documented scientific justification. Averaging OOS results away is one of the most cited GMP violations in FDA warning letters related to LIMS management.</div>
+        </div></div>
+      </div>
+
+    </div><!-- /cross-oos -->
+
+    <!-- ═══════════════════════════
+         CROSS — DATA INTEGRITY
+    ═══════════════════════════ -->
+    <div class="section" id="cross-data" data-section="cross">
+      <div class="section-header">
+        <span class="section-tag tag-cross">Cross-Cutting</span>
+        <div>
+          <div class="section-title">Data Integrity &amp; ALCOA+ Across Lab Systems</div>
+          <div class="section-desc">Practical application of ALCOA+ in LIMS, ELN, and LIS — common violations and fixes</div>
+        </div>
+      </div>
+
+      <div class="qa-card cross-card" data-tags="lw eln lis admin val">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q24</span><span class="level-badge badge-both2">Both</span></div>
+          <div class="q-text">What are the most common data integrity violations found in LIMS/ELN systems during FDA inspections, and how do you configure and validate against each one?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>Based on FDA 483 observations and warning letters, the most common LIMS/ELN data integrity findings:</p>
+          <ul>
+            <li><strong>Shared user accounts</strong> — Multiple analysts logging in with the same credentials. ALCOA violation: Attributable. Fix: Enforce unique user IDs via system configuration. Validate: attempt to log in with the same credentials on two stations simultaneously — system should reject or limit. Periodic access review to catch shared accounts.</li>
+            <li><strong>Audit trail disabled or insufficient</strong> — System audit trail turned off, or only capturing some fields. Fix: Verify audit trail is enabled for all GxP tables at system level (not just UI-level). Validate: change a result value and verify the original value, new value, user, and timestamp all appear in the audit trail.</li>
+            <li><strong>Test injection / data manipulation</strong> — Analysts running samples multiple times, selecting the "best" result, and entering only that one. ALCOA violation: Original. Fix: Configure instrument integration so ALL runs are automatically imported — analysts cannot cherry-pick. Validate: run a test three times from an instrument, verify all three results appear in LIMS regardless of which passed spec.</li>
+            <li><strong>Backdated records</strong> — Manual entry of records with an earlier date than the actual activity. Fix: System-generated timestamps on all entries that cannot be modified by users. Validate: enter a result, verify the system timestamp does not match any editable field.</li>
+            <li><strong>Unapproved data deletion</strong> — Results deleted to hide anomalies. Fix: Configure the system so deletion requires a supervisory override with an audit trail entry and mandatory reason. Validate: attempt to delete an approved result — system should block or require elevated authorization.</li>
+            <li><strong>Orphaned raw data</strong> — Instrument files saved locally by analysts without being linked to the official LIMS/ELN record. Fix: Require instrument integration so data goes directly to the validated system. SOP prohibiting local data storage. Validate: confirm all instruments transfer to LIMS directly and no local storage path is available.</li>
+          </ul>
+        </div></div>
+      </div>
+
+    </div><!-- /cross-data -->
+
+    <!-- ═══════════════════════════
+         CROSS — UPGRADES
+    ═══════════════════════════ -->
+    <div class="section" id="cross-upgrade" data-section="cross">
+      <div class="section-header">
+        <span class="section-tag tag-cross">Cross-Cutting</span>
+        <div>
+          <div class="section-title">Upgrades, Patch Management &amp; Long-Term Maintenance</div>
+          <div class="section-desc">Managing system lifecycles across on-premise LIMS, ELN, and LIS platforms</div>
+        </div>
+      </div>
+
+      <div class="qa-card cross-card" data-tags="lw eln lis val">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q25</span><span class="level-badge badge-val">Val Lead</span></div>
+          <div class="q-text">You manage three validated systems — LabWare LIMS, Biovia ELN, and a clinical LIS — each with different vendor patch cycles. How do you build a unified validation maintenance program without a team of 10?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>This is a resource management and prioritization challenge as much as a technical one. My approach:</p>
+          <ol>
+            <li><strong>Risk-tiered regression libraries per system</strong> — Each system has a 3-tier regression library (Tier 1: 5–8 smoke tests, &lt;30 min; Tier 2: 20–30 targeted; Tier 3: full suite). Patch severity determines which tier runs. Security patches with no functional change → Tier 1 only. Feature releases → Tier 2. Major versions → Tier 3 + UAT.</li>
+            <li><strong>Stagger patch calendars</strong> — Negotiate with vendors to avoid simultaneous release windows. LabWare patches in Q1/Q3, Biovia in Q2/Q4, LIS on its own cycle. Never two systems in concurrent validation windows if avoidable.</li>
+            <li><strong>Power user delegation</strong> — Train a designated power user in each department (QC for LIMS, Research for ELN, Lab Tech for LIS) to run Tier 1 smoke tests. Validation Lead reviews results and signs off. This multiplies capacity without adding headcount.</li>
+            <li><strong>Shared change control template</strong> — One CC template that works for all three systems. Standardize the impact assessment sections so the thought process is consistent even though the systems are different. Reduces per-change administrative overhead.</li>
+            <li><strong>Annual periodic review consolidation</strong> — Schedule all three periodic reviews in the same quarter. Prepare a combined annual validation status report covering all three systems for senior management. One QA sign-off cycle covers all three.</li>
+            <li><strong>Vendor relationship</strong> — For all three systems, be on the vendor's early access / preview program for upcoming releases. First look at release notes = more lead time for impact assessment = less panic testing.</li>
+          </ol>
+          <div class="tip"><strong>Metric that matters:</strong> Mean time from patch availability to validated production deployment per system. Target: &lt;4 weeks for security patches, &lt;8 weeks for feature releases. If either number is consistently higher, the regression library needs streamlining or scope needs to be negotiated with QA.</div>
+        </div></div>
+      </div>
+
+    </div><!-- /cross-upgrade -->
+
+  </div><!-- /content -->
+</div><!-- /layout -->
+
+<div class="page-footer">
+  <span>LabWare LIMS · Biovia ELN · LIS Systems · Interview Preparation Guide · Admin + Validation Lead Level</span>
+  <span>25 Questions · 21 CFR Part 11 · GAMP 5 · CLIA · ALCOA+</span>
+</div>
+
+<script>
+  let activeSystem = 'all';
+  let activeLevel  = 'all';
+
+  function toggle(qEl) {
+    qEl.closest('.qa-card').classList.toggle('open');
+  }
+
+  function filter(type, btn) {
+    const systems = ['all','lw','eln','lis'];
+    const levels  = ['admin','val'];
+
+    if (type === 'all')          { activeSystem = 'all'; activeLevel = 'all'; }
+    else if (systems.includes(type)) { activeSystem = type; }
+    else if (levels.includes(type))  { activeLevel = activeLevel === type ? 'all' : type; }
+
+    // Button states
+    document.querySelectorAll('.filter-btn').forEach(b => b.className = 'filter-btn');
+    if (activeSystem === 'all' && activeLevel === 'all')
+      document.querySelector('[onclick="filter(\'all\',this)"]').classList.add('active-all');
+    if (activeSystem === 'lw')  document.querySelector('[onclick="filter(\'lw\',this)"]').classList.add('active-lw');
+    if (activeSystem === 'eln') document.querySelector('[onclick="filter(\'eln\',this)"]').classList.add('active-eln');
+    if (activeSystem === 'lis') document.querySelector('[onclick="filter(\'lis\',this)"]').classList.add('active-lis');
+    if (activeLevel  === 'admin') document.querySelector('[onclick="filter(\'admin\',this)"]').classList.add('active-admin');
+    if (activeLevel  === 'val')   document.querySelector('[onclick="filter(\'val\',this)"]').classList.add('active-val');
+
+    applyFilters();
+  }
+
+  function applyFilters() {
+    let count = 0;
+    document.querySelectorAll('.qa-card').forEach(card => {
+      const tags = card.dataset.tags || '';
+      const sysMatch   = activeSystem === 'all' || tags.includes(activeSystem);
+      const levelMatch = activeLevel  === 'all' || tags.includes(activeLevel) || tags.includes('both');
+      const show = sysMatch && levelMatch;
+      card.classList.toggle('hidden', !show);
+      if (show) count++;
+    });
+    document.querySelectorAll('.section').forEach(sec => {
+      const visible = [...sec.querySelectorAll('.qa-card:not(.hidden)')].length > 0;
+      sec.classList.toggle('hidden', !visible);
+    });
+    document.getElementById('qcount').textContent = count + ' question' + (count !== 1 ? 's' : '');
+  }
+
+  function jumpTo(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const secData = el.dataset.section;
+    const activeClass = secData === 'lw' ? 'active-lw' : secData === 'eln' ? 'active-eln' : secData === 'lis' ? 'active-lis' : 'active-cross';
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active-lw','active-eln','active-lis','active-cross'));
+    event.currentTarget.classList.add(activeClass);
+  }
+
+  applyFilters();
+</script>
+</body>
+</html>
