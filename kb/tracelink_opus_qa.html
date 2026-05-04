@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TraceLink OPUS — Interview Prep &amp; Reference</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Literata:ital,opsz,wght@0,7..72,300;0,7..72,400;1,7..72,300&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #f5f2eb;
+    --surface: #faf8f3;
+    --surface2: #f0ece2;
+    --border: #e2ddd0;
+    --border2: #cdc8b8;
+    --ink: #1c1a16;
+    --ink2: #4a4639;
+    --ink3: #8a8270;
+    /* TraceLink brand = deep navy + teal */
+    --tl:        #0d1e35;
+    --tl-light:  #1a5276;
+    --tl-pale:   #e6f0f8;
+    /* Serialization = blue-steel */
+    --ser:       #0d2a3a;
+    --ser-light: #1a6a8a;
+    --ser-pale:  #e6f3f8;
+    /* Compliance = forest green */
+    --comp:       #0d2a0d;
+    --comp-light: #1a7a1a;
+    --comp-pale:  #e6f5e6;
+    /* Integration/Network = warm orange */
+    --net:       #3a1a00;
+    --net-light: #b35a00;
+    --net-pale:  #fdf0e0;
+    --gold: #b8860b;
+    --gold-pale: #fdf6e3;
+    --red: #8b1a1a;
+    --red-pale: #fdf0f0;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Literata', Georgia, serif;
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  /* ══ MASTHEAD ══ */
+  .masthead {
+    background: var(--tl);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .masthead-inner {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: 158px;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .masthead-left {
+    padding: 36px 40px;
+    border-right: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .masthead-right {
+    padding: 36px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .masthead-logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.22em;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .masthead-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 30px;
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: #fff;
+  }
+
+  .masthead-sub {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  .masthead-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .masthead-pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 2px;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.65);
+  }
+
+  .masthead-pill.hot {
+    background: rgba(26,82,118,0.6);
+    border-color: rgba(26,162,230,0.4);
+    color: #7ecff5;
+  }
+
+  .masthead-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .masthead-stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #fff;
+  }
+
+  .masthead-stat-label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    font-style: italic;
+  }
+
+  .masthead-stats-row {
+    display: flex;
+    gap: 40px;
+    margin-top: 6px;
+  }
+
+  /* ══ CONTROLS ══ */
+  .controls {
+    background: var(--surface);
+    border-bottom: 2px solid var(--border);
+    padding: 14px 36px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .filter-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--ink3);
+    text-transform: uppercase;
+    margin-right: 4px;
+  }
+
+  .filter-btn {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 3px;
+    border: 1.5px solid var(--border2);
+    background: var(--surface);
+    color: var(--ink2);
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.03em;
+  }
+
+  .filter-btn:hover { background: var(--surface2); border-color: var(--ink3); }
+  .filter-btn.active-all    { background: var(--tl);        color: #fff; border-color: var(--tl); }
+  .filter-btn.active-admin  { background: var(--gold);      color: #fff; border-color: var(--gold); }
+  .filter-btn.active-val    { background: var(--ser-light); color: #fff; border-color: var(--ser-light); }
+
+  .sep { width: 1px; height: 22px; background: var(--border2); margin: 0 4px; }
+  .q-count { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink3); margin-left: auto; }
+
+  /* ══ LAYOUT ══ */
+  .layout { display: grid; grid-template-columns: 234px 1fr; max-width: 1300px; margin: 0 auto; }
+
+  /* ══ SIDEBAR ══ */
+  .sidebar {
+    padding: 24px 0;
+    border-right: 1px solid var(--border);
+    position: sticky;
+    top: 57px;
+    height: calc(100vh - 57px);
+    overflow-y: auto;
+    background: var(--surface);
+  }
+
+  .sidebar::-webkit-scrollbar { width: 3px; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border2); }
+
+  .nav-group-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    color: var(--ink3);
+    text-transform: uppercase;
+    padding: 14px 20px 5px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px 20px;
+    cursor: pointer;
+    transition: all 0.12s;
+    font-size: 12.5px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    color: var(--ink2);
+    border-left: 3px solid transparent;
+    line-height: 1.3;
+  }
+
+  .nav-item:hover { background: var(--surface2); color: var(--ink); }
+  .nav-item.active { color: var(--tl-light); border-left-color: var(--tl-light); background: var(--tl-pale); }
+
+  .nav-pip { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; background: var(--tl-light); }
+  .nav-pip.pip-ser  { background: var(--ser-light); }
+  .nav-pip.pip-comp { background: var(--comp-light); }
+  .nav-pip.pip-net  { background: var(--net-light); }
+
+  /* ══ CONTENT ══ */
+  .content { padding: 40px 52px 80px; max-width: 920px; }
+
+  .section { margin-bottom: 56px; animation: fadeUp 0.4s ease both; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+  .section-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 28px; padding-bottom: 16px; border-bottom: 2px solid var(--border); }
+
+  .section-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.14em; padding: 4px 10px; border-radius: 2px; text-transform: uppercase; white-space: nowrap; margin-top: 6px; flex-shrink: 0; }
+
+  .tag-tl   { background: var(--tl);        color: #fff; }
+  .tag-ser  { background: var(--ser-light);  color: #fff; }
+  .tag-comp { background: var(--comp-light); color: #fff; }
+  .tag-net  { background: var(--net-light);  color: #fff; }
+  .tag-hot  { background: #1a5276;           color: #7ecff5; border: 1px solid rgba(126,207,245,0.3); }
+
+  .section-title { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.2; color: var(--ink); }
+  .section-desc  { font-size: 13.5px; color: var(--ink3); font-style: italic; margin-top: 4px; line-height: 1.5; }
+
+  /* ══ Q&A CARDS ══ */
+  .qa-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 6px; margin-bottom: 16px; overflow: hidden; transition: border-color 0.15s; }
+  .qa-card:hover { border-color: var(--border2); }
+  .qa-card { border-left: 4px solid var(--tl-light); }
+  .qa-card.ser-card  { border-left-color: var(--ser-light); }
+  .qa-card.comp-card { border-left-color: var(--comp-light); }
+  .qa-card.net-card  { border-left-color: var(--net-light); }
+
+  .qa-question { padding: 18px 22px 16px; cursor: pointer; display: flex; gap: 14px; align-items: flex-start; user-select: none; }
+  .qa-question:hover { background: var(--surface2); }
+
+  .q-meta { display: flex; flex-direction: column; gap: 5px; flex-shrink: 0; min-width: 56px; align-items: flex-start; }
+  .q-num  { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink3); }
+
+  .level-badge { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.08em; padding: 2px 6px; border-radius: 2px; text-transform: uppercase; }
+  .badge-admin { background: var(--gold-pale);  color: var(--gold);    border: 1px solid #e8c96a; }
+  .badge-val   { background: var(--tl-pale);    color: var(--tl-light); border: 1px solid #a0c4d8; }
+  .badge-both2 { background: var(--red-pale);   color: var(--red);     border: 1px solid #e8a0a0; }
+  .badge-hot   { background: #e6f3f8; color: var(--ser-light); border: 1px solid #a0d0e8; }
+
+  .q-text    { font-family: 'Syne', sans-serif; font-size: 14.5px; font-weight: 700; color: var(--ink); line-height: 1.4; flex: 1; }
+  .q-chevron { font-size: 12px; color: var(--ink3); transition: transform 0.2s; margin-top: 3px; flex-shrink: 0; }
+  .qa-card.open .q-chevron { transform: rotate(180deg); }
+
+  .qa-answer { display: none; padding: 0 22px 22px; border-top: 1px solid var(--border); }
+  .qa-card.open .qa-answer { display: block; }
+
+  .answer-label { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.14em; color: var(--ink3); text-transform: uppercase; margin: 16px 0 10px; }
+
+  .answer-body { font-size: 14px; color: var(--ink2); line-height: 1.8; }
+  .answer-body p { margin-bottom: 10px; }
+  .answer-body p:last-child { margin-bottom: 0; }
+  .answer-body strong { color: var(--ink); font-weight: 600; }
+  .answer-body ul { list-style: none; padding: 0; margin: 10px 0; display: flex; flex-direction: column; gap: 6px; }
+  .answer-body ul li { display: flex; gap: 10px; align-items: flex-start; font-size: 13.5px; }
+  .answer-body ul li::before { content: '▸'; color: var(--ink3); font-size: 10px; margin-top: 5px; flex-shrink: 0; }
+  .answer-body ol { padding-left: 20px; margin: 10px 0; display: flex; flex-direction: column; gap: 6px; }
+  .answer-body ol li { font-size: 13.5px; color: var(--ink2); }
+
+  .tip { background: var(--gold-pale); border-left: 3px solid var(--gold); border-radius: 0 4px 4px 0; padding: 12px 16px; margin: 12px 0; font-size: 13px; color: var(--ink2); font-style: italic; }
+  .tip strong { color: var(--gold); font-style: normal; }
+
+  .critical { background: var(--red-pale); border-left: 3px solid var(--red); border-radius: 0 4px 4px 0; padding: 12px 16px; margin: 12px 0; font-size: 13px; color: var(--ink2); }
+  .critical strong { color: var(--red); }
+
+  .info { background: var(--tl-pale); border-left: 3px solid var(--tl-light); border-radius: 0 4px 4px 0; padding: 12px 16px; margin: 12px 0; font-size: 13px; color: var(--ink2); }
+  .info strong { color: var(--tl-light); }
+
+  .code-snippet { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 12px 16px; margin: 10px 0; color: var(--ink2); white-space: pre-wrap; line-height: 1.6; }
+
+  /* Comparison table */
+  .deliv-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .deliv-table th { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink3); padding: 10px 16px; border-bottom: 1px solid var(--border); text-align: left; }
+  .deliv-table td { padding: 13px 16px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--ink2); }
+  .deliv-table tr:hover td { background: var(--surface); color: var(--ink); }
+  .deliv-table td:first-child { font-weight: 600; color: var(--ink); }
+
+  .section.hidden { display: none; }
+  .qa-card.hidden { display: none; }
+
+  /* ══ FOOTER ══ */
+  .page-footer { border-top: 2px solid var(--border); padding: 22px 48px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink3); display: flex; justify-content: space-between; align-items: center; background: var(--surface); flex-wrap: wrap; gap: 8px; }
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <div class="masthead-inner">
+    <div class="masthead-left">
+      <div class="masthead-logo">Supply Chain · Pharma</div>
+      <div class="masthead-title">TraceLink<br>OPUS Platform</div>
+      <div class="masthead-sub">Admin &amp; Validation Lead · Interview Reference</div>
+      <div class="masthead-pills" style="margin-top:14px;">
+        <span class="masthead-pill hot">DSCSA 2023</span>
+        <span class="masthead-pill hot">EU FMD</span>
+        <span class="masthead-pill">EPCIS</span>
+        <span class="masthead-pill">GS1</span>
+        <span class="masthead-pill">Serialization</span>
+      </div>
+    </div>
+    <div class="masthead-right">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.16em;color:rgba(255,255,255,0.35);text-transform:uppercase;margin-bottom:14px;">Platform at a Glance</div>
+      <div class="masthead-stats-row">
+        <div class="masthead-stat">
+          <div class="masthead-stat-num">291K+</div>
+          <div class="masthead-stat-label">network members</div>
+        </div>
+        <div class="masthead-stat">
+          <div class="masthead-stat-num">128</div>
+          <div class="masthead-stat-label">countries connected</div>
+        </div>
+        <div class="masthead-stat">
+          <div class="masthead-stat-num">80%</div>
+          <div class="masthead-stat-label">pharma co. market share</div>
+        </div>
+        <div class="masthead-stat">
+          <div class="masthead-stat-num">1TB</div>
+          <div class="masthead-stat-label">transactions / month</div>
+        </div>
+      </div>
+      <div style="margin-top:14px;font-size:13px;color:rgba(255,255,255,0.45);font-style:italic;max-width:480px;line-height:1.6;">"Integrate Once, Interoperate with Everyone™" — single connection gives you reach across the entire pharma supply chain network.</div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTROLS -->
+<div class="controls">
+  <span class="filter-label">Filter</span>
+  <button class="filter-btn active-all" onclick="filter('all',this)">All Questions</button>
+  <div class="sep"></div>
+  <button class="filter-btn" onclick="filter('admin',this)">Admin Level</button>
+  <button class="filter-btn" onclick="filter('val',this)">Val Lead Level</button>
+  <span class="q-count" id="qcount">Loading...</span>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="nav-group-label">Platform Foundation</div>
+    <div class="nav-item" onclick="jumpTo('opus-platform')"><div class="nav-pip"></div>OPUS Platform &amp; Architecture</div>
+    <div class="nav-item" onclick="jumpTo('opus-network')"><div class="nav-pip"></div>The TraceLink Network Model</div>
+    <div class="nav-item" onclick="jumpTo('opus-admin')"><div class="nav-pip"></div>Administration &amp; Config</div>
+
+    <div class="nav-group-label">Serialization</div>
+    <div class="nav-item" onclick="jumpTo('ser-concepts')"><div class="nav-pip pip-ser"></div>Serialization Concepts</div>
+    <div class="nav-item" onclick="jumpTo('ser-snm')"><div class="nav-pip pip-ser"></div>SNM — Serial Number Mgmt</div>
+    <div class="nav-item" onclick="jumpTo('ser-snx')"><div class="nav-pip pip-ser"></div>SNX — Exchange</div>
+    <div class="nav-item" onclick="jumpTo('ser-som')"><div class="nav-pip pip-ser"></div>SOM — Operations Mgmt</div>
+    <div class="nav-item" onclick="jumpTo('ser-spi')"><div class="nav-pip pip-ser"></div>SPI — Product Intelligence</div>
+
+    <div class="nav-group-label">Regulatory Compliance</div>
+    <div class="nav-item" onclick="jumpTo('reg-dscsa')"><div class="nav-pip pip-comp"></div>DSCSA (US)</div>
+    <div class="nav-item" onclick="jumpTo('reg-fmd')"><div class="nav-pip pip-comp"></div>EU FMD &amp; Global</div>
+    <div class="nav-item" onclick="jumpTo('reg-exceptions')"><div class="nav-pip pip-comp"></div>Exception Management</div>
+
+    <div class="nav-group-label">Integration &amp; Data</div>
+    <div class="nav-item" onclick="jumpTo('int-epcis')"><div class="nav-pip pip-net"></div>EPCIS &amp; GS1 Standards</div>
+    <div class="nav-item" onclick="jumpTo('int-erp')"><div class="nav-pip pip-net"></div>ERP / SAP Integration</div>
+    <div class="nav-item" onclick="jumpTo('int-val')"><div class="nav-pip pip-net"></div>CSV &amp; Validation</div>
+  </nav>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- ═══════════════════════════════
+         PLATFORM FOUNDATION
+    ═══════════════════════════════ -->
+    <div class="section" id="opus-platform">
+      <div class="section-header">
+        <span class="section-tag tag-tl">TraceLink · Platform</span>
+        <div>
+          <div class="section-title">OPUS Platform &amp; Architecture</div>
+          <div class="section-desc">What TraceLink is, what OPUS means, and how the platform is fundamentally different from other pharma software</div>
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="admin val">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q01</span><span class="level-badge badge-both2">Both</span></div>
+          <div class="q-text">What is TraceLink and what problem does it actually solve? How is it different from an ERP or a standalone serialization tool?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>TraceLink is a <strong>multi-enterprise supply chain network platform</strong> — not a single-company system. That distinction is the core of everything. Most software (ERP, LIMS, QMS) manages data and processes within your company. TraceLink connects your company with every other company in your supply chain — <strong>291,000+ entities across 128 countries</strong> — through a single integration.</p>
+          <p>The fundamental problem it solves: pharmaceutical supply chain compliance (serialization, track-and-trace, DSCSA, EU FMD) requires exchanging data with hundreds or thousands of trading partners — contract manufacturers, wholesalers, distributors, pharmacies, 3PLs. Without TraceLink, each of those connections is a separate point-to-point integration — expensive, slow, and brittle.</p>
+          <p><strong>TraceLink's model: "Integrate Once, Interoperate with Everyone™"</strong></p>
+          <ul>
+            <li>You build one integration to TraceLink's OPUS platform</li>
+            <li>TraceLink handles all B2B connectivity, data translation, and format conversion to/from every partner</li>
+            <li>Adding a new trading partner is configuration, not an IT project — no new interface build required</li>
+          </ul>
+          <p><strong>vs. ERP:</strong> SAP/Oracle manages your internal operations (purchasing, manufacturing, inventory). TraceLink manages the data that must flow between you and external partners for regulatory compliance. They complement each other — most companies integrate TraceLink with SAP to feed master data (GTINs, lot numbers) into TraceLink and receive serialization events back.</p>
+          <p><strong>vs. standalone serialization tool:</strong> A point solution handles your packaging line serialization but has no network — you still need to build integrations to send EPCIS data to every partner. TraceLink provides the network layer on top of the serialization function.</p>
+          <div class="info"><strong>Director-level framing:</strong> TraceLink's value is the network, not just the software. The larger the network grows, the more valuable it becomes for everyone on it. That's a fundamentally different business model from licensed software — and it means TraceLink's incentive is to onboard your partners quickly, not to charge you for each integration.</div>
+        </div></div>
+      </div>
+
+      <div class="qa-card" data-tags="admin">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q02</span><span class="level-badge badge-admin">Admin</span></div>
+          <div class="q-text">What does OPUS stand for and how is the platform structured? What are the key capability layers?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p><strong>OPUS = Orchestration Platform for Universal Solutions</strong>. It is TraceLink's PaaS (Platform as a Service) layer — a no-code/low-code development and deployment environment that hosts all TraceLink applications and allows customers to build custom orchestration solutions.</p>
+          <p>The OPUS architecture has four distinct layers:</p>
+          <ul>
+            <li><strong>OPUS Network Platform</strong> — The connectivity and B2B infrastructure layer. Handles all trading partner onboarding, data translation between formats (EPCIS, flat file, EDI, XML, JSON), message routing, and delivery. This is the "Integrate Once" layer.</li>
+            <li><strong>OPUS Applications</strong> — Pre-built solutions sitting on the network: Serialization (SNM, SNX, SOM), Compliance (DSCSA, EU FMD), Master Data Exchange, Smart Event Manager, MINT. These are TraceLink-built, validated applications customers subscribe to.</li>
+            <li><strong>OPUS Administration (Opus Administer)</strong> — The configuration and user management layer. Where admins set up company networks, manage users, define permissions, configure product master data, and manage trading partner Links.</li>
+            <li><strong>OPUS Solution Designer</strong> — A newer low-code capability allowing customers and partners to build custom supply chain orchestration workflows on the OPUS platform without writing code. Think of it as configuring custom process flows on top of the network.</li>
+          </ul>
+          <p>The latest additions (August 2025) added <strong>MINT</strong> (Multienterprise Information Network Tower) for supply chain visibility analytics and <strong>POET</strong> (Process Orchestration for Empowered Teams) for structured exception collaboration.</p>
+          <div class="tip"><strong>Admin implication:</strong> When you join TraceLink, you're onboarded onto the OPUS platform and get access to the specific applications your subscription covers. An Admin's day-to-day work lives in Opus Administer — configuring products, managing partner Links, handling user access, and monitoring message processing in Info Exchange.</div>
+        </div></div>
+      </div>
+
+    </div><!-- /opus-platform -->
+
+    <!-- ═══════════════════════════════
+         NETWORK MODEL
+    ═══════════════════════════════ -->
+    <div class="section" id="opus-network">
+      <div class="section-header">
+        <span class="section-tag tag-tl">TraceLink · Network</span>
+        <div>
+          <div class="section-title">The TraceLink Network Model</div>
+          <div class="section-desc">Networks, Links, trading partner onboarding, and the B2N connect-once model</div>
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="admin">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q03</span><span class="level-badge badge-admin">Admin</span></div>
+          <div class="q-text">Explain the concept of Networks and Links in TraceLink. How do you establish a connection with a new trading partner?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>TraceLink uses a <strong>Network-and-Link model</strong> as the foundational concept for all multi-enterprise collaboration:</p>
+          <ul>
+            <li><strong>Network</strong> — A defined scope of connectivity within a TraceLink application. A company can own one or more Networks (e.g., a "US DSCSA Network" and an "EU FMD Network" for the same company). The Network determines what application capabilities and compliance rules are active.</li>
+            <li><strong>Link</strong> — A specific connection between two companies within a Network. A Link between Company A (manufacturer) and Company B (wholesaler) enables them to exchange data within that Network's scope. Links can be directional (A sends to B) or bidirectional. Each Link defines the message types that can flow and the connectivity method (TraceLink-to-TraceLink, SFTP, AS2, API).</li>
+          </ul>
+          <p><strong>Establishing a new trading partner connection:</strong></p>
+          <ol>
+            <li><strong>Partner already on TraceLink network</strong> — Most likely scenario since 291K+ members exist. Admin searches the directory, sends a Link invitation, partner accepts. Configuration only — no technical build required. This is the "Integrate Once" value realized.</li>
+            <li><strong>Partner NOT on TraceLink</strong> — TraceLink's Network Success team can onboard the partner. For partners without their own systems, TraceLink provides a web portal UI for manual data exchange (uploading EPCIS files, receiving ASNs). For partners with systems, a standard integration is built once.</li>
+            <li><strong>Configure the Link</strong> — Define connectivity method, message types, data translation rules, and any custom field mappings. Test in sandbox. Activate for production.</li>
+          </ol>
+          <div class="info"><strong>Director talking point:</strong> "Our biggest integration cost savings come from the network model. Adding our 50th wholesaler was a configuration task — not a 6-month IT project. Every partner we onboard to TraceLink makes the network more valuable for our next partner."</div>
+        </div></div>
+      </div>
+
+    </div><!-- /opus-network -->
+
+    <!-- ═══════════════════════════════
+         ADMINISTRATION
+    ═══════════════════════════════ -->
+    <div class="section" id="opus-admin">
+      <div class="section-header">
+        <span class="section-tag tag-tl">TraceLink · Admin</span>
+        <div>
+          <div class="section-title">Opus Administer — Configuration &amp; User Management</div>
+          <div class="section-desc">Master data setup, user roles, permissions, and day-to-day admin operations</div>
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="admin">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q04</span><span class="level-badge badge-admin">Admin</span></div>
+          <div class="q-text">What does an admin need to configure in OPUS before any serialization or compliance workflows can run? Walk through the master data setup sequence.</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>Before any serialization message can be processed, the following must be configured in Opus Administer — in this sequence:</p>
+          <ol>
+            <li><strong>Company profile</strong> — Company name, address, GLN (Global Location Number — the GS1 identifier for your company). GLN is foundational — it identifies your company in all EPCIS messages.</li>
+            <li><strong>Internal locations</strong> — Define your manufacturing sites, warehouses, and distribution centers. Each location gets its own GLN. Locations appear in EPCIS events as the "read point" and "business location" — they tell the supply chain where an event occurred.</li>
+            <li><strong>Product master data</strong> — Define each product: GTIN (Global Trade Item Number — the GS1 product identifier that goes on the barcode), product description, dosage form, strength, pack levels (unit/case/pallet), National Drug Code (for US products). This data must be correct and complete before serial numbers can be generated — serial numbers are always associated with a GTIN.</li>
+            <li><strong>Trading partner profiles (Links)</strong> — Configure each partner's identity (their GLN) and the Link between you. This is what allows EPCIS messages to be routed correctly.</li>
+            <li><strong>Users and roles</strong> — Create user accounts, assign roles (Admin, Operator, Read-Only, Compliance Manager). Role determines what menus and actions are available.</li>
+            <li><strong>Application-specific config</strong> — Once the above is done, configure the specific applications: for SNM, define serial number generation ranges and formats; for DSCSA, configure the EPCIS transaction profiles and partner mappings.</li>
+          </ol>
+          <div class="critical"><strong>GTIN and GLN accuracy is critical.</strong> Errors in product master data (wrong GTIN, wrong pack hierarchy) propagate into all downstream serialization data and create DSCSA exceptions with trading partners. Master data errors are one of the leading causes of EPCIS verification failures. Validate all GTINs against GS1 registry before configuration.</div>
+        </div></div>
+      </div>
+
+      <div class="qa-card" data-tags="admin">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q05</span><span class="level-badge badge-admin">Admin</span></div>
+          <div class="q-text">What is the Info Exchange application in TraceLink and how does an admin use it for daily operations monitoring?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p><strong>Info Exchange</strong> is TraceLink's message monitoring and troubleshooting hub — the admin's operational cockpit for all inbound and outbound data exchange. Think of it as the message queue and error log for everything flowing through the network.</p>
+          <p><strong>What you see in Info Exchange:</strong></p>
+          <ul>
+            <li><strong>Message status</strong> — Every message (EPCIS event, SNX commission, verification request) has a status: Processed Successfully, Processing, Failed, Rejected. Failed messages require investigation.</li>
+            <li><strong>Error details</strong> — For failed messages, Info Exchange shows the error code, error description, and the specific field/value that caused the failure. E.g., "GTIN not found in master data" or "Serial number already commissioned."</li>
+            <li><strong>Message content</strong> — Drill into any message to see its raw content — the actual EPCIS XML or SNX payload. Critical for debugging partner issues.</li>
+            <li><strong>Reprocessing</strong> — After fixing a root cause (e.g., missing GTIN added to master data), failed messages can be reprocessed from Info Exchange without requiring the partner to resend.</li>
+            <li><strong>Audit trail</strong> — All message processing is logged with timestamps, user actions, and status changes. This is part of your TraceLink audit trail for validation purposes.</li>
+          </ul>
+          <div class="tip"><strong>Daily admin routine:</strong> Start every morning with an Info Exchange scan — filter for Failed or Rejected messages from the previous 24 hours. Each failure is a potential compliance gap. Resolve same-day. Track recurring errors as deviation candidates if they represent systemic issues.</div>
+        </div></div>
+      </div>
+
+    </div><!-- /opus-admin -->
+
+    <!-- ═══════════════════════════════
+         SERIALIZATION CONCEPTS
+    ═══════════════════════════════ -->
+    <div class="section" id="ser-concepts">
+      <div class="section-header">
+        <span class="section-tag tag-ser">Serialization · Core</span>
+        <div>
+          <div class="section-title">Serialization Concepts — What You Must Know Cold</div>
+          <div class="section-desc">GS1 identifiers, serial number lifecycle, aggregation hierarchy, and key terminology</div>
+        </div>
+      </div>
+
+      <div class="qa-card ser-card" data-tags="admin val">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q06</span><span class="level-badge badge-both2">Both</span></div>
+          <div class="q-text">Explain the GS1 identifier set used in pharmaceutical serialization — GTIN, SGTIN, GLN, SSCC. What is each one and where does it appear?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>These are the foundational data elements of the global pharmaceutical serialization system. You must know them cold:</p>
+          <ul>
+            <li><strong>GTIN (Global Trade Item Number)</strong> — Identifies a specific product at a specific pack level. A 14-digit number. The same GTIN is on every box of a given drug product — it doesn't change per individual unit. GTIN + Serial Number together make each unit unique.</li>
+            <li><strong>SGTIN (Serialized GTIN)</strong> — GTIN + Serial Number combined. This is the unique identity of one specific package. SGTIN is the EPC (Electronic Product Code) used in EPCIS events. Format: urn:epc:id:sgtin:[company prefix].[item reference].[serial number]</li>
+            <li><strong>GLN (Global Location Number)</strong> — 13-digit GS1 identifier for a physical location or legal entity. Every company and every significant location (factory, warehouse, pharmacy) has a GLN. GLNs appear in EPCIS events as "read point" (where scanning occurred) and "business location" (where the product is).</li>
+            <li><strong>SSCC (Serial Shipping Container Code)</strong> — 18-digit GS1 identifier for a logistics unit (case, pallet). When products are aggregated (individual units packed into a case, cases stacked on a pallet), each container level gets an SSCC. SSCCs link parent-child relationships in the aggregation hierarchy.</li>
+            <li><strong>NDC (National Drug Code)</strong> — US-specific 10-digit or 11-digit identifier for a drug product. Used in DSCSA as a product identifier and maps to the GTIN. The FDA requires NDC on serialized products sold in the US.</li>
+          </ul>
+          <div class="code-snippet">Example SGTIN EPC:
+urn:epc:id:sgtin:0614141.107346.2017
+
+Breakdown:
+- 0614141    = GS1 Company Prefix (your company's GS1 registration)
+- 107346     = Item Reference (your product code within your prefix)
+- 2017       = Serial Number (unique per physical unit)
+
+Together: identifies exactly ONE specific package of ONE specific product
+from ONE specific company — globally unique.</div>
+        </div></div>
+      </div>
+
+      <div class="qa-card ser-card" data-tags="admin val">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q07</span><span class="level-badge badge-both2">Both</span></div>
+          <div class="q-text">What is the serial number lifecycle — Commission, Ship, Receive, Decommission — and what EPCIS event type corresponds to each?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>Every serialized pharmaceutical unit goes through a defined lifecycle. Each lifecycle event is captured as an <strong>EPCIS (Electronic Product Code Information Services)</strong> event — the global standard for recording what happened to a serialized product, where, and when.</p>
+          <table class="deliv-table" style="margin-top:12px;">
+            <thead><tr><th>Event</th><th>What It Means</th><th>EPCIS Event Type</th><th>Business Step / Disposition</th></tr></thead>
+            <tbody>
+              <tr><td>Commission</td><td>Serial number is assigned to a physical package at the packaging line</td><td>Object Event</td><td>Commissioning / Active</td></tr>
+              <tr><td>Aggregate</td><td>Units packed into case, cases onto pallet — parent-child relationship created</td><td>Aggregation Event</td><td>Packing / In Progress</td></tr>
+              <tr><td>Ship</td><td>Product leaves your facility to a trading partner</td><td>Object Event</td><td>Departing / In Transit</td></tr>
+              <tr><td>Receive</td><td>Product arrives at trading partner's facility; they scan and accept</td><td>Object Event</td><td>Arriving / Active</td></tr>
+              <tr><td>Disaggregate</td><td>Case opened, units separated from parent container</td><td>Aggregation Event</td><td>Unpacking</td></tr>
+              <tr><td>Decommission</td><td>Product destroyed, recalled, expired, returned, or dispensed to patient</td><td>Object Event</td><td>Destroying / Recalled / Dispensed</td></tr>
+            </tbody>
+          </table>
+          <div class="info"><strong>DSCSA/FMD implication:</strong> Under DSCSA 2023, manufacturers must send EPCIS transaction data to trading partners for every Ship event. Wholesalers must send EPCIS to their customers (pharmacies) on every Ship. This chain of EPCIS events from manufacturer to dispenser is the "electronic, interoperable, item-level traceability" that DSCSA mandates.</div>
+        </div></div>
+      </div>
+
+      <div class="qa-card ser-card" data-tags="admin val">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q08</span><span class="level-badge badge-both2">Both</span></div>
+          <div class="q-text">What is aggregation and why does it matter for serialization? What is a pack hierarchy and how do you configure it?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p><strong>Aggregation</strong> is the process of creating a documented parent-child relationship between serialized items across packaging levels. Instead of scanning 1,000 individual bottles to confirm a shipment, you scan one pallet SSCC and the system knows all 1,000 bottles are inside.</p>
+          <p><strong>Pack hierarchy</strong> (typical pharma example):</p>
+          <div class="code-snippet">PALLET (SSCC: 0360141...)    ← Level 4: Logistics unit
+  └── CASE (SSCC: 0360141...)   ← Level 3: Shipping case (12 bottles)
+        └── BOTTLE (SGTIN: urn:epc:id:sgtin:...)  ← Level 2: Saleable unit
+              └── [optional: inner pack / blister]  ← Level 1: Consumer unit</div>
+          <p>The hierarchy is captured in TraceLink via <strong>Aggregation EPCIS events</strong>: each event states "SSCC X contains [list of SGTINs or child SSCCs]." The entire tree is then queryable — "show me everything on pallet X" returns every unit down to item level.</p>
+          <p><strong>Configuration in TraceLink (SNM):</strong> Define the pack hierarchy for each product in master data — how many units per inner pack, units per case, cases per pallet. This drives the aggregation logic during packaging operations. The packaging line systems (L4 serialization systems) create the aggregation and send the events to TraceLink (L5 network layer) for dissemination to partners.</p>
+          <div class="tip"><strong>Why it matters operationally:</strong> Aggregation enables "saleable returns verification" under DSCSA — when a pharmacy returns product, the wholesaler scans the unit SGTIN and verifies it was legitimately in the supply chain. Without serialized aggregation data, this verification is impossible at scale.</div>
+        </div></div>
+      </div>
+
+    </div><!-- /ser-concepts -->
+
+    <!-- ═══════════════════════════════
+         SNM
+    ═══════════════════════════════ -->
+    <div class="section" id="ser-snm">
+      <div class="section-header">
+        <span class="section-tag tag-ser">Serialization · SNM</span>
+        <div>
+          <div class="section-title">SNM — Serial Number Management</div>
+          <div class="section-desc">Generating, allocating, and managing serial number pools for packaging operations</div>
+        </div>
+      </div>
+
+      <div class="qa-card ser-card" data-tags="admin">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q09</span><span class="level-badge badge-admin">Admin</span></div>
+          <div class="q-text">How does SNM (Serial Number Management) work in TraceLink? How are serial numbers generated, allocated to packaging lines, and what happens if a line runs out?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>SNM is the upstream module that governs where serial numbers come from before they reach the packaging line. The flow:</p>
+          <ol>
+            <li><strong>Serial number generation</strong> — SNM generates serialized GTINs (SGTIN EPCs) for each product. Generation rules are configured per product: number format, length, sequential vs. random, uniqueness rules. Importantly, TraceLink ensures global uniqueness — no two SGTINs generated for the same GTIN will ever be the same.</li>
+            <li><strong>Pool management</strong> — Generated serial numbers are held in a pool associated with the product and packaging site. The pool has configurable thresholds: "Low" (trigger replenishment) and "Critical" (alert packaging operations).</li>
+            <li><strong>Allocation (requisition)</strong> — The L4 packaging line system requests a batch of serial numbers from TraceLink via API or file exchange. SNM allocates a defined quantity from the pool, marks them as "allocated" (reserved), and delivers them to the line. Allocated numbers can't be given to another line.</li>
+            <li><strong>Commissioning confirmation</strong> — After packaging, the line reports back which serial numbers were actually used (commissioned onto physical packages) and which were wasted (damaged labels, line stoppages). Unused allocations are returned to the pool or decommissioned. TraceLink updates the status accordingly.</li>
+          </ol>
+          <p><strong>If a line runs out:</strong> If the pool reaches the critical threshold, SNM sends alerts. Admins can trigger emergency replenishment. In extreme cases (very high-volume packaging runs), an emergency serial number request can be processed — but this should be a process exception, not the norm. Pool sizing should be based on packaging run volume with adequate buffer.</p>
+          <div class="critical"><strong>Regulatory implication:</strong> Serialized products cannot leave the facility without a commissioned serial number. Running out of serial numbers = packaging line shutdown. This is an operational risk that must be managed proactively — not reactively. Pool monitoring and replenishment alerts should be set conservatively.</div>
+        </div></div>
+      </div>
+
+    </div><!-- /ser-snm -->
+
+    <!-- ═══════════════════════════════
+         SNX
+    ═══════════════════════════════ -->
+    <div class="section" id="ser-snx">
+      <div class="section-header">
+        <span class="section-tag tag-ser">Serialization · SNX</span>
+        <div>
+          <div class="section-title">SNX — Serialization Network Exchange</div>
+          <div class="section-desc">The B2B data exchange engine for serialization events between trading partners</div>
+        </div>
+      </div>
+
+      <div class="qa-card ser-card" data-tags="admin val">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q10</span><span class="level-badge badge-both2">Both</span></div>
+          <div class="q-text">What is SNX and what types of messages does it exchange? Explain the difference between L4 and L5 in the serialization architecture.</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p><strong>SNX (Serialization Network Exchange)</strong> is the module that manages the transfer of serialization data between TraceLink and external systems — both your internal systems (L4) and your trading partners (L5 network).</p>
+          <p><strong>The L4 / L5 architecture:</strong></p>
+          <ul>
+            <li><strong>L1–L3</strong> — Packaging line: individual device controllers (L1), line-level serialization systems (L2), site-level serialization (L3). These are on the factory floor, often from vendors like Systech, ACG, Antares.</li>
+            <li><strong>L4</strong> — Site/enterprise serialization management. Your internal LIMS, ERP, or site-level serialization server. Manages serial numbers for your company's operations. Examples: SAP S/4HANA with serialization module, Antares Vision enterprise software.</li>
+            <li><strong>L5</strong> — Network/cloud layer. TraceLink is L5. It receives serialization events from your L4 systems and distributes them to trading partners. Also receives events from trading partners and routes them to you.</li>
+          </ul>
+          <p><strong>What SNX exchanges:</strong></p>
+          <ul>
+            <li>Commission events from packaging line → TraceLink (you commissioned these serial numbers)</li>
+            <li>Aggregation events → TraceLink (these units are in these cases/pallets)</li>
+            <li>Ship EPCIS events from you → to your distributor via TraceLink network</li>
+            <li>Receive EPCIS acknowledgments from distributor → back to you via TraceLink</li>
+            <li>Verification requests from pharmacies checking product authenticity → routed through TraceLink to manufacturer</li>
+          </ul>
+          <div class="info"><strong>Practical admin view:</strong> SNX is where you configure the message formats and mappings for how your L4 system talks to TraceLink. If your packaging line sends TraceLink a custom XML format, SNX translates it to the canonical TraceLink format and then to EPCIS for distribution to partners. You configure the translation catalogs in SNX.</div>
+        </div></div>
+      </div>
+
+    </div><!-- /ser-snx -->
+
+    <!-- ═══════════════════════════════
+         SOM
+    ═══════════════════════════════ -->
+    <div class="section" id="ser-som">
+      <div class="section-header">
+        <span class="section-tag tag-ser">Serialization · SOM</span>
+        <div>
+          <div class="section-title">SOM — Serialized Operations Manager</div>
+          <div class="section-desc">The warehouse and distribution serialized inventory repository</div>
+        </div>
+      </div>
+
+      <div class="qa-card ser-card" data-tags="admin val">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q11</span><span class="level-badge badge-both2">Both</span></div>
+          <div class="q-text">What is SOM used for and how does it differ from SNM and SNX? When would a warehouse or 3PL use SOM?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p><strong>SOM (Serialized Operations Manager)</strong> is the operational serialized inventory repository — it tracks where serialized products are, what events have occurred to them, and what their current status is across warehouse and distribution operations.</p>
+          <p><strong>How it differs from SNM and SNX:</strong></p>
+          <ul>
+            <li><strong>SNM</strong> = upstream (generating serial numbers before packaging)</li>
+            <li><strong>SNX</strong> = exchange layer (moving serialization data between partners)</li>
+            <li><strong>SOM</strong> = operational tracking repository (what is my current serialized inventory, what has happened to it)</li>
+          </ul>
+          <p><strong>SOM's key functions:</strong></p>
+          <ul>
+            <li><strong>Serialized inventory visibility</strong> — Real-time view of all serialized products at your locations: what you have, what lot, what serial numbers, what status (Active, Shipped, Recalled, Expired).</li>
+            <li><strong>Shipment management</strong> — Generate EPCIS ship events from warehouse operations. Scan pallet SSCC → SOM generates the EPCIS event with all contained SGTINs → SNX forwards to trading partner via network.</li>
+            <li><strong>Receipt verification</strong> — When product arrives, scan the SSCC → SOM verifies the received serial numbers against the expected shipment from the partner → flags any discrepancies (expected 1,000 units, received 998 — 2 are missing from EPCIS).</li>
+            <li><strong>Exception identification</strong> — SOM auto-flags DSCSA exceptions: missing EPCIS, verification failures, quantity mismatches. These feed into the POET exception management workflow for resolution.</li>
+            <li><strong>Recall support</strong> — When a recall is issued, SOM can query which serialized units are still in the supply chain, at what locations, and generate targeted recall notifications.</li>
+          </ul>
+          <div class="tip"><strong>Who uses SOM:</strong> Manufacturers with warehouse operations, wholesale distributors, 3PLs. Any party that receives serialized product and must verify it, then ship it forward, needs SOM (or equivalent). Pharmacies may use the lighter-weight Smart Inventory Tracker or Smart Event Manager for their dispensing operations.</div>
+        </div></div>
+      </div>
+
+    </div><!-- /ser-som -->
+
+    <!-- ═══════════════════════════════
+         SPI
+    ═══════════════════════════════ -->
+    <div class="section" id="ser-spi">
+      <div class="section-header">
+        <span class="section-tag tag-ser">Serialization · SPI</span>
+        <div>
+          <div class="section-title">SPI — Serialized Product Intelligence</div>
+          <div class="section-desc">Analytics, visibility, and exception root cause analysis across the serialized supply chain</div>
+        </div>
+      </div>
+
+      <div class="qa-card ser-card" data-tags="admin val">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q12</span><span class="level-badge badge-val">Val Lead</span></div>
+          <div class="q-text">What is Serialized Product Intelligence (SPI) and what business questions does it answer that no other TraceLink module can?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p><strong>SPI (Serialized Product Intelligence)</strong> is TraceLink's analytics layer for serialized supply chain data. While SNM/SNX/SOM handle the operational workflows, SPI is where you analyze patterns, investigate exceptions, and derive supply chain intelligence from the serialization data you've accumulated.</p>
+          <p><strong>Business questions SPI answers:</strong></p>
+          <ul>
+            <li><strong>"Where are all my products right now?"</strong> — End-to-end serialized product location across all supply chain partners. Which distributor has how many units of Lot X? Which pharmacy has the units approaching expiry?</li>
+            <li><strong>"Why are we getting verification failures from Partner Y?"</strong> — SPI correlates exceptions against root cause patterns: is it a data quality issue (wrong GTIN in EPCIS)? A timing issue (EPCIS not sent before product arrived)? A specific packaging line generating malformed events?</li>
+            <li><strong>"Which packaging line or CMO is the source of most exceptions?"</strong> — Cross-partner analytics to identify systemic problems. If 80% of exceptions trace back to one CMO's L4 system, that's an actionable finding.</li>
+            <li><strong>"Do our digital records match physical inventory?"</strong> — Reconciliation reports comparing serialized events in the system against physical stock counts. Discrepancies are potential diversion or counterfeiting signals.</li>
+            <li><strong>"What is our DSCSA compliance rate?"</strong> — Dashboard showing what % of shipments had EPCIS data delivered on time, what % were verified successfully, what % had open exceptions.</li>
+          </ul>
+          <div class="info"><strong>August 2025 SPI enhancement:</strong> TraceLink added enhanced inventory reconciliation with additional data fields in reconcile reports, and increased real-time inventory visibility with available quantity data — helping teams avoid using decommissioned or non-saleable products in operations.</div>
+        </div></div>
+      </div>
+
+    </div><!-- /ser-spi -->
+
+    <!-- ═══════════════════════════════
+         DSCSA
+    ═══════════════════════════════ -->
+    <div class="section" id="reg-dscsa">
+      <div class="section-header">
+        <span class="section-tag tag-comp">Compliance · US</span>
+        <div>
+          <div class="section-title">DSCSA — US Drug Supply Chain Security Act</div>
+          <div class="section-desc">What DSCSA requires, what changed in 2023, and how TraceLink enables compliance</div>
+        </div>
+      </div>
+
+      <div class="qa-card comp-card" data-tags="admin val">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q13</span><span class="level-badge badge-both2">Both</span></div>
+          <div class="q-text">What does DSCSA require and what changed with the November 2023 enforcement deadline? Why did it make TraceLink's network model essential rather than optional?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p><strong>DSCSA (Drug Supply Chain Security Act, US 2013)</strong> was a decade-long phased implementation program requiring electronic, interoperable track-and-trace of prescription drug products throughout the US supply chain. The November 27, 2023 deadline was the most significant phase — it activated <strong>item-level traceability</strong>.</p>
+          <p><strong>What DSCSA requires (post-2023):</strong></p>
+          <ul>
+            <li><strong>Serialization</strong> — Every saleable prescription drug unit must carry a unique serial number (SGTIN) encoded in a 2D DataMatrix barcode.</li>
+            <li><strong>Electronic EPCIS exchange</strong> — Every time product changes ownership (manufacturer ships to wholesaler, wholesaler ships to pharmacy), the seller must send an EPCIS Transaction History to the buyer — electronically, in an interoperable standard format, before or at the time of shipment.</li>
+            <li><strong>Verification</strong> — Trading partners must be able to verify the authenticity of product serial numbers. Pharmacies returning product to wholesalers must verify the SGTIN is legitimate before accepting the return (saleable returns verification).</li>
+            <li><strong>Authorized Trading Partners</strong> — Companies can only buy/sell with ATP-credentialed trading partners — those who have gone through FDA-recognized licensure verification.</li>
+            <li><strong>Exception management</strong> — When verification fails or EPCIS data is missing/incorrect, trading partners must have a process to investigate and resolve (or quarantine/return product).</li>
+          </ul>
+          <p><strong>Why 2023 made the network model essential:</strong> Prior phases only required lot-level tracing — manageable with point-to-point integrations. Item-level EPCIS means every package, every transaction, at massive scale. A mid-size pharma company might ship 50M+ units/year to 5,000+ customers. Building 5,000 point-to-point EPCIS integrations is impossible. The network model — integrate once, reach everyone — became the only viable operational approach.</p>
+          <div class="critical"><strong>Non-compliance consequence:</strong> Products without compliant serialization data cannot be sold in the US supply chain. Trading partners are required to quarantine non-compliant product. This makes DSCSA compliance a revenue risk, not just a regulatory risk.</div>
+        </div></div>
+      </div>
+
+      <div class="qa-card comp-card" data-tags="admin">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q14</span><span class="level-badge badge-admin">Admin</span></div>
+          <div class="q-text">Walk through what happens technically in TraceLink when a manufacturer ships a serialized product to a wholesaler under DSCSA 2023 requirements.</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>This is the core operational DSCSA workflow — know it step by step:</p>
+          <ol>
+            <li><strong>Packaging</strong> — Serialized units commissioned at the packaging line (L2/L3 system). Commission events sent to TraceLink SNM/SNX. Units aggregated into cases/pallets — aggregation events sent to TraceLink.</li>
+            <li><strong>Order received</strong> — Manufacturer receives a purchase order from a wholesaler. The order references specific GTINs (products) and quantities.</li>
+            <li><strong>Pick and ship preparation</strong> — Warehouse picks the order. Each pallet/case scanned. SOM or WMS integrates with TraceLink to associate those specific SSCCs/SGTINs with the outbound shipment.</li>
+            <li><strong>EPCIS Ship event generated</strong> — As the shipment departs, TraceLink generates an EPCIS Object Event: Business Step = "departing", Disposition = "in transit", Read Point = manufacturer GLN, Business Location = wholesaler GLN, EPC List = all SGTINs or SSCCs in the shipment. Event is time-stamped with the actual ship date/time.</li>
+            <li><strong>EPCIS delivered to wholesaler via network</strong> — TraceLink routes the EPCIS to the wholesaler via their established Link. If the wholesaler is also on TraceLink, delivery is near-instant. If they use a different system (SAP ICH, rfxcel), TraceLink translates to the required format.</li>
+            <li><strong>Wholesaler receives and verifies</strong> — Product arrives at wholesaler. They scan SSCCs upon receipt. Their system sends a receive event. Optionally, they issue a verification request for a sample of SGTINs — TraceLink routes the request to the manufacturer's verification service. Manufacturer confirms the serial number is legitimate.</li>
+            <li><strong>Transaction History built</strong> — Each party in the chain maintains the Transaction History — the complete chain of custody from manufacturer to current holder. Under DSCSA, this must be producible within 2 business days of a request from a trading partner or FDA.</li>
+          </ol>
+          <div class="info"><strong>DSCSA verification service (VRS):</strong> The industry-standard Verification Router Service routes verification requests between trading partners. TraceLink is integrated with the HDA (Healthcare Distribution Alliance) VRS standard — verification requests flow through the VRS network to the manufacturer's verification endpoint, which TraceLink hosts.</div>
+        </div></div>
+      </div>
+
+    </div><!-- /reg-dscsa -->
+
+    <!-- ═══════════════════════════════
+         EU FMD
+    ═══════════════════════════════ -->
+    <div class="section" id="reg-fmd">
+      <div class="section-header">
+        <span class="section-tag tag-comp">Compliance · EU / Global</span>
+        <div>
+          <div class="section-title">EU FMD &amp; Global Compliance</div>
+          <div class="section-desc">Falsified Medicines Directive, NMVS, and how TraceLink handles multi-country compliance</div>
+        </div>
+      </div>
+
+      <div class="qa-card comp-card" data-tags="admin val">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q15</span><span class="level-badge badge-both2">Both</span></div>
+          <div class="q-text">How does EU FMD (Falsified Medicines Directive) differ from DSCSA in its approach to serialization and verification? How does TraceLink support both simultaneously?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>Both DSCSA and EU FMD address drug supply chain security, but they use fundamentally different models:</p>
+          <table class="deliv-table" style="margin-top:12px;">
+            <thead><tr><th>Dimension</th><th>DSCSA (US)</th><th>EU FMD</th></tr></thead>
+            <tbody>
+              <tr><td>Verification model</td><td>End-to-end traceability — every party in the chain exchanges EPCIS. Verification happens peer-to-peer between trading partners.</td><td>End-to-end verification against a central repository (NMVS — National Medicines Verification System). Product is "uploaded" by manufacturer and "decommissioned" at point of dispense.</td></tr>
+              <tr><td>Central database</td><td>No central database. EPCIS flows between parties via networks like TraceLink.</td><td>Yes — EMVS (European Medicines Verification System) is the pan-European hub. Each country has a national NMVS node. All serial numbers uploaded to EMVS by manufacturer at time of packaging.</td></tr>
+              <tr><td>Who verifies</td><td>Any trading partner in the chain can verify. Pharmacies verify on receipt.</td><td>Pharmacist verifies (decommissions) the serial number at the point of dispensing to a patient. Wholesalers verify at receipt for some markets.</td></tr>
+              <tr><td>Data scope</td><td>Full transaction history — who had the product at every step.</td><td>Commission status — was this serial number commissioned by the manufacturer and has it been decommissioned (dispensed)?</td></tr>
+              <tr><td>Tamper evidence</td><td>Serialization + anti-tampering device on pack.</td><td>Serialization + anti-tampering device mandatory on pack.</td></tr>
+            </tbody>
+          </table>
+          <p><strong>TraceLink supporting both simultaneously:</strong> TraceLink's global compliance module allows a manufacturer to configure rules per market. Product shipped to the US triggers DSCSA EPCIS exchange logic. Product shipped to Germany triggers NMVS upload logic. The same OPUS platform, the same single integration, manages both — TraceLink handles the different message formats, endpoints, and regulatory rules per market behind the scenes.</p>
+          <div class="tip"><strong>Key admin concept — "country compliance profiles":</strong> In TraceLink admin, each product can have multiple country compliance configurations defining which regulations apply in which market. A product sold globally might have US (DSCSA), EU (FMD), Brazil (SNCM), Turkey (ITS), and Saudi Arabia (SFDA) profiles — all managed from one platform with market-specific rules applied automatically based on the shipment destination.</div>
+        </div></div>
+      </div>
+
+    </div><!-- /reg-fmd -->
+
+    <!-- ═══════════════════════════════
+         EXCEPTION MANAGEMENT
+    ═══════════════════════════════ -->
+    <div class="section" id="reg-exceptions">
+      <div class="section-header">
+        <span class="section-tag tag-hot">New · Aug 2025</span>
+        <div>
+          <div class="section-title">Exception Management — POET</div>
+          <div class="section-desc">What exceptions are, how they arise, and how POET handles structured resolution</div>
+        </div>
+      </div>
+
+      <div class="qa-card comp-card" data-tags="admin val">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q16</span><span class="level-badge badge-both2">Both</span></div>
+          <div class="q-text">What is a DSCSA exception and what are the most common types? How does TraceLink's POET module handle exception resolution?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>A <strong>DSCSA exception</strong> is any situation where the serialized product data doesn't match expectations at a point in the supply chain — creating a compliance gap that must be investigated and resolved before the product can move forward or be dispensed.</p>
+          <p><strong>Most common exception types:</strong></p>
+          <ul>
+            <li><strong>Missing EPCIS</strong> — Product arrived at a trading partner but no EPCIS transaction data was received. Seller failed to send the electronic pedigree. Most common exception type. Root cause: timing gap (EPCIS sent late), integration failure, or seller not yet compliant.</li>
+            <li><strong>Verification failure</strong> — A serial number was scanned for verification but the verification service returned "unknown" or "inactive." Could mean counterfeit product, or a data gap (number was commissioned but not properly registered).</li>
+            <li><strong>Quantity mismatch</strong> — EPCIS says 1,000 units were shipped but only 998 arrived, or the received EPCIS lists serial numbers not physically present. Possible diversion, picking error, or EPCIS error.</li>
+            <li><strong>Aggregation mismatch</strong> — The case or pallet SSCC doesn't contain the expected units according to the aggregation data. Case may have been opened and repacked without updating the aggregation hierarchy.</li>
+            <li><strong>Suspect product</strong> — Product flagged as recalled, counterfeit, or with compromised anti-tamper device. Must be quarantined pending investigation.</li>
+          </ul>
+          <p><strong>POET (Process Orchestration for Empowered Teams — launched August 2025):</strong></p>
+          <p>POET is TraceLink's structured exception resolution workflow. Prior to POET, exception resolution was ad-hoc — emails and phone calls between supply chain teams. POET formalizes it:</p>
+          <ul>
+            <li>SOM auto-detects an exception and creates a POET case automatically</li>
+            <li>POET follows the HDA (Healthcare Distribution Alliance) Exceptions Guideline process — the industry-standard structured procedure for resolving DSCSA exceptions</li>
+            <li>Tasks are assigned to specific teams at each party (manufacturer, wholesaler) with defined response timelines</li>
+            <li>Email transactions between trading partners are standardized and automated within POET</li>
+            <li>Resolution time reduced by up to 80% vs. manual exception handling</li>
+            <li>Full audit trail of every action, communication, and decision in the exception case</li>
+          </ul>
+        </div></div>
+      </div>
+
+    </div><!-- /reg-exceptions -->
+
+    <!-- ═══════════════════════════════
+         EPCIS & GS1 STANDARDS
+    ═══════════════════════════════ -->
+    <div class="section" id="int-epcis">
+      <div class="section-header">
+        <span class="section-tag tag-net">Integration · Standards</span>
+        <div>
+          <div class="section-title">EPCIS &amp; GS1 Standards — Technical Deep Dive</div>
+          <div class="section-desc">EPCIS document structure, event types, CBV, and what an actual EPCIS message looks like</div>
+        </div>
+      </div>
+
+      <div class="qa-card net-card" data-tags="admin val">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q17</span><span class="level-badge badge-both2">Both</span></div>
+          <div class="q-text">Explain EPCIS — what it stands for, what it contains, and what a real EPCIS Object Event for a pharmaceutical shipment looks like in XML.</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p><strong>EPCIS = Electronic Product Code Information Services.</strong> It is the GS1 standard for recording and sharing information about events that happen to physical objects in the supply chain. "Who did what to which items, where, and when."</p>
+          <p>An EPCIS document contains one or more <strong>Events</strong>. Each event has:</p>
+          <ul>
+            <li><strong>Event Time</strong> — When the event occurred</li>
+            <li><strong>Event Time Zone Offset</strong> — Timezone context</li>
+            <li><strong>EPC List</strong> — Which SGTINs (or SSCCs) this event applies to</li>
+            <li><strong>Action</strong> — OBSERVE, ADD, or DELETE</li>
+            <li><strong>Business Step</strong> — From GS1 CBV vocabulary: departing, arriving, shipping, receiving, commissioning, decommissioning, etc.</li>
+            <li><strong>Disposition</strong> — Current state of the items: active, in_transit, recalled, destroyed, dispensed, etc.</li>
+            <li><strong>Read Point</strong> — GLN of the location where scanning occurred</li>
+            <li><strong>Business Location</strong> — GLN of the business context (where the items are)</li>
+          </ul>
+          <div class="code-snippet">&lt;!-- EPCIS Ship Event: Manufacturer → Wholesaler --&gt;
+&lt;ObjectEvent&gt;
+  &lt;eventTime&gt;2024-04-15T14:30:00Z&lt;/eventTime&gt;
+  &lt;eventTimeZoneOffset&gt;-05:00&lt;/eventTimeZoneOffset&gt;
+  &lt;epcList&gt;
+    &lt;epc&gt;urn:epc:id:sgtin:0614141.107346.2017&lt;/epc&gt;
+    &lt;epc&gt;urn:epc:id:sgtin:0614141.107346.2018&lt;/epc&gt;
+    &lt;epc&gt;urn:epc:id:sgtin:0614141.107346.2019&lt;/epc&gt;
+  &lt;/epcList&gt;
+  &lt;action&gt;OBSERVE&lt;/action&gt;
+  &lt;bizStep&gt;urn:epcglobal:cbv:bizstep:departing&lt;/bizStep&gt;
+  &lt;disposition&gt;urn:epcglobal:cbv:disp:in_transit&lt;/disposition&gt;
+  &lt;readPoint&gt;
+    &lt;id&gt;urn:epc:id:sgln:0614141.00729.0&lt;/id&gt;
+    &lt;!-- Manufacturer's warehouse GLN --&gt;
+  &lt;/readPoint&gt;
+  &lt;bizLocation&gt;
+    &lt;id&gt;urn:epc:id:sgln:0358621.00729.0&lt;/id&gt;
+    &lt;!-- Wholesaler's destination GLN --&gt;
+  &lt;/bizLocation&gt;
+&lt;/ObjectEvent&gt;</div>
+          <div class="tip"><strong>CBV (Core Business Vocabulary):</strong> GS1's standardized list of values for bizStep and disposition. Using standard CBV values (instead of custom strings) is what makes EPCIS interoperable — any system can interpret "urn:epcglobal:cbv:bizstep:departing" without a custom translation layer. TraceLink enforces CBV compliance in outgoing EPCIS messages.</div>
+        </div></div>
+      </div>
+
+    </div><!-- /int-epcis -->
+
+    <!-- ═══════════════════════════════
+         ERP / SAP INTEGRATION
+    ═══════════════════════════════ -->
+    <div class="section" id="int-erp">
+      <div class="section-header">
+        <span class="section-tag tag-net">Integration · ERP</span>
+        <div>
+          <div class="section-title">ERP / SAP Integration with TraceLink</div>
+          <div class="section-desc">How TraceLink connects with SAP, what data flows in each direction, and common integration patterns</div>
+        </div>
+      </div>
+
+      <div class="qa-card net-card" data-tags="admin val">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q18</span><span class="level-badge badge-both2">Both</span></div>
+          <div class="q-text">How does TraceLink integrate with SAP ERP? What data flows from SAP to TraceLink and what flows back? What are the typical integration points?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>The SAP ↔ TraceLink integration is bidirectional, with each system acting as the authoritative source for different data types:</p>
+          <p><strong>SAP → TraceLink:</strong></p>
+          <ul>
+            <li><strong>Product master data (GTINs)</strong> — SAP Material Master contains product definitions. The GTIN (stored in SAP as EAN/UPC) is exported to TraceLink to populate the product master. This keeps TraceLink's serialization product catalog in sync with SAP.</li>
+            <li><strong>Outbound delivery orders</strong> — When SAP creates an outbound delivery (goods issue), it triggers a notification to TraceLink with: delivery number, partner details (ship-to GLN), product and quantity. TraceLink uses this to associate the correct serial numbers with the shipment and generate the EPCIS ship event.</li>
+            <li><strong>Purchase orders / GR (goods receipt)</strong> — When product is expected inbound, SAP sends the PO details to TraceLink so SOM knows what to expect for receipt verification.</li>
+          </ul>
+          <p><strong>TraceLink → SAP:</strong></p>
+          <ul>
+            <li><strong>Serial number confirmation</strong> — After commissioning, TraceLink sends the actual serial numbers used back to SAP so the SAP batch record is updated with serialized inventory.</li>
+            <li><strong>Verification results</strong> — When TraceLink verifies received products, it can post the verification status back to SAP's goods receipt document.</li>
+            <li><strong>Exception notifications</strong> — DSCSA exceptions identified by TraceLink can trigger SAP workflow notifications to block release of suspect product.</li>
+          </ul>
+          <div class="code-snippet">Integration architecture (typical):
+SAP → SAP Integration Suite (CI/BTP) → TraceLink REST API
+  OR
+SAP → SAP Serialization Manager (SSM) → TraceLink SNX (via file/AS2)
+  OR  
+SAP → TraceLink iDoc/BAPI adapter (pre-built connector)</div>
+          <div class="tip"><strong>Pre-built connectors:</strong> TraceLink provides pre-built SAP connectors that most customers use rather than building custom integrations. The connector maps SAP IDoc messages to TraceLink's canonical message format. Validating this connector is a key part of any TraceLink implementation.</div>
+        </div></div>
+      </div>
+
+    </div><!-- /int-erp -->
+
+    <!-- ═══════════════════════════════
+         CSV & VALIDATION
+    ═══════════════════════════════ -->
+    <div class="section" id="int-val">
+      <div class="section-header">
+        <span class="section-tag tag-tl">TraceLink · Validation</span>
+        <div>
+          <div class="section-title">CSV &amp; Validation for TraceLink</div>
+          <div class="section-desc">GAMP category, validation approach, what Tracelink provides, and what you still own</div>
+        </div>
+      </div>
+
+      <div class="qa-card" data-tags="val">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q19</span><span class="level-badge badge-val">Val Lead</span></div>
+          <div class="q-text">Is TraceLink a GxP system requiring full CSV? What GAMP category does it fall under and what is your validation scope vs. what TraceLink provides?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>Yes — <strong>TraceLink is a GxP-regulated system for pharma companies.</strong> The serialization data it manages (serial numbers, EPCIS events, transaction histories) is regulatory-required data. Its classification:</p>
+          <ul>
+            <li><strong>GAMP Category 4</strong> (Configured COTS) — TraceLink is a commercial SaaS platform that you configure for your products and partners. No custom code required for standard operation (though OPUS Solution Designer can add Cat 5 elements if used).</li>
+            <li><strong>21 CFR Part 11 applicable</strong> — Electronic records (EPCIS events, serial number status, exception records) and electronic signatures are required. Audit trail must be complete and tamper-proof.</li>
+          </ul>
+          <p><strong>What TraceLink provides (vendor qualification deliverables):</strong></p>
+          <ul>
+            <li>SOC 2 Type II report (infrastructure and security controls)</li>
+            <li>Platform IQ-equivalent documentation (hosted on AWS — infrastructure qualified by TraceLink)</li>
+            <li>Release validation documentation for each platform update (TraceLink validates platform-level features before release)</li>
+            <li>21 CFR Part 11 compliance whitepaper (audit trail, e-sig, access controls)</li>
+          </ul>
+          <p><strong>What YOU still own (your validation scope):</strong></p>
+          <ul>
+            <li><strong>Configuration OQ</strong> — Test all your configured products, GTINs, pack hierarchies, trading partner Links, and workflow settings. TraceLink does not test your configuration.</li>
+            <li><strong>Interface validation</strong> — Validate the SAP ↔ TraceLink integration: data flows correctly, field mapping is accurate, error handling works.</li>
+            <li><strong>End-to-end process OQ/PQ</strong> — Simulate a full serialization workflow: commission → aggregate → ship → verify → receive. Test with real (or realistic test) data. Test exception scenarios.</li>
+            <li><strong>URS, FRS, RTM</strong> — Your regulatory requirements, fully your responsibility.</li>
+            <li><strong>SOPs and training</strong> — All user-facing procedures.</li>
+            <li><strong>Release regression testing</strong> — TraceLink releases platform updates (typically 4 per year). You must assess each release for GxP impact and run regression tests in your sandbox before production deployment.</li>
+          </ul>
+        </div></div>
+      </div>
+
+      <div class="qa-card" data-tags="val">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q20</span><span class="level-badge badge-val">Val Lead</span></div>
+          <div class="q-text">What are the most critical OQ test cases for a TraceLink implementation and what are the most commonly missed scenarios?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p><strong>Critical OQ test cases — must have:</strong></p>
+          <ul>
+            <li><strong>Serial number uniqueness</strong> — Generate serial numbers for the same GTIN on two separate requests. Verify no duplicate SGTINs are ever issued. The foundational serialization data integrity test.</li>
+            <li><strong>Commission → Ship → Receive chain</strong> — Full end-to-end: commission a unit, aggregate it, generate a ship EPCIS, verify the partner receives the EPCIS, verify the receive event updates the product's status correctly in SOM.</li>
+            <li><strong>EPCIS field accuracy</strong> — Verify every field in the outgoing EPCIS (bizStep, disposition, readPoint GLN, bizLocation GLN, eventTime, EPC list) exactly matches the configured values and the actual transaction data.</li>
+            <li><strong>Verification service</strong> — Send a verification request for a legitimately commissioned SGTIN → verify "active" response. Send for a non-existent SGTIN → verify "unknown" response. Send for a decommissioned SGTIN → verify "inactive" response.</li>
+            <li><strong>Exception detection</strong> — Receive a shipment with serial numbers not in the expected EPCIS → verify SOM/POET auto-generates an exception record.</li>
+            <li><strong>Access control</strong> — Verify that a Read-Only user cannot commission serial numbers or send EPCIS. Separation of duties test.</li>
+            <li><strong>Audit trail</strong> — Make a configuration change (update a GTIN) → verify the audit trail records who changed it, when, old value, new value.</li>
+          </ul>
+          <p><strong>Most commonly missed scenarios:</strong></p>
+          <ul>
+            <li>Testing the <strong>wasted serial number return</strong> flow — what happens to allocated serial numbers that were never commissioned (damaged labels, line stoppage). Verify they are properly decommissioned and don't remain as "ghost" active serials.</li>
+            <li><strong>Timezone handling</strong> — EPCIS events must have correct UTC timestamps and timezone offsets. Test events generated at a facility in a different timezone than your IT system — verify timestamps are correct in the EPCIS output.</li>
+            <li><strong>Pack hierarchy disaggregation</strong> — Test opening a case (disaggregation event) and verify the parent-child relationship is correctly updated. Missed more often than aggregation testing.</li>
+            <li><strong>Partner connectivity failure handling</strong> — What happens if an outgoing EPCIS to a partner fails to deliver? Verify retry logic and alert generation. Do not assume successful delivery without confirmation.</li>
+          </ul>
+        </div></div>
+      </div>
+
+      <div class="qa-card" data-tags="admin val">
+        <div class="qa-question" onclick="toggle(this)">
+          <div class="q-meta"><span class="q-num">Q21</span><span class="level-badge badge-both2">Both</span></div>
+          <div class="q-text">A Director asks you: "We're going live on TraceLink in 6 months. What are the top 5 things that will derail us if we don't address them early?" What do you say?</div>
+          <div class="q-chevron">▼</div>
+        </div>
+        <div class="qa-answer"><div class="answer-label">Answer</div><div class="answer-body">
+          <p>This is the kind of question that separates experienced practitioners from people who've only read documentation. The five real killers:</p>
+          <ol>
+            <li><strong>Master data quality — GTINs and GLNs.</strong> This is the single largest cause of failed implementations. If your GTINs in SAP don't match the GTINs in GS1's database, or if your trading partners' GLNs are wrong, every EPCIS message will fail verification. Start a GTIN/GLN data audit in month 1. Budget 4–6 weeks for master data cleansing alone.</li>
+            <li><strong>L4 system readiness.</strong> TraceLink (L5) is only as good as what your L4 system sends it. If your packaging line serialization system isn't tested and stable before TraceLink go-live, you'll have no clean data to exchange. L4 readiness — testing commission events, aggregation events, and the L4→TraceLink interface — must be on the critical path.</li>
+            <li><strong>Trading partner onboarding timeline.</strong> You can be fully compliant on day one, but if your top 20 wholesale partners aren't onboarded on TraceLink and able to receive EPCIS, you're compliant but non-operational. Start partner outreach in month 2. Some partners need 3–4 months of their own onboarding work. This is the most commonly underestimated timeline risk.</li>
+            <li><strong>Exception management process not defined.</strong> DSCSA 2023 will generate exceptions — verification failures, missing EPCIS, quantity mismatches. If you haven't defined who owns exception resolution, what the SOP is, and how POET is configured before go-live, your first wave of exceptions will create operational chaos. Design the exception process during implementation, not after.</li>
+            <li><strong>Validation not starting until month 4.</strong> TraceLink is a GxP system. If you treat validation as a go-live activity rather than a parallel workstream, you'll either delay go-live by 2 months or go live unvalidated. Start writing the URS in month 1. IQ/OQ can begin as soon as configuration is stable in the QA environment — typically month 3.</li>
+          </ol>
+          <div class="info"><strong>Bonus insight for the Director:</strong> "The companies that struggle with TraceLink implementations almost always have one of these five problems. The companies that go live on time almost always started their GTIN audit and partner outreach in the first 60 days. That window is what I'd protect most aggressively in the project plan."</div>
+        </div></div>
+      </div>
+
+    </div><!-- /int-val -->
+
+  </div><!-- /content -->
+</div><!-- /layout -->
+
+<div class="page-footer">
+  <span>TraceLink OPUS Platform · Interview Preparation &amp; Reference · Admin + Validation Lead Level</span>
+  <span>21 Questions · DSCSA 2023 · EU FMD · EPCIS · GS1 · GAMP 5 · Updated Aug 2025</span>
+</div>
+
+<script>
+  let activeLevel = 'all';
+
+  function toggle(qEl) { qEl.closest('.qa-card').classList.toggle('open'); }
+
+  function filter(type, btn) {
+    const levels = ['admin','val'];
+    if (type === 'all') { activeLevel = 'all'; }
+    else if (levels.includes(type)) { activeLevel = activeLevel === type ? 'all' : type; }
+
+    document.querySelectorAll('.filter-btn').forEach(b => b.className = 'filter-btn');
+    if (activeLevel === 'all') document.querySelector('[onclick="filter(\'all\',this)"]').classList.add('active-all');
+    if (activeLevel === 'admin') document.querySelector('[onclick="filter(\'admin\',this)"]').classList.add('active-admin');
+    if (activeLevel === 'val')   document.querySelector('[onclick="filter(\'val\',this)"]').classList.add('active-val');
+
+    let count = 0;
+    document.querySelectorAll('.qa-card').forEach(card => {
+      const tags = card.dataset.tags || '';
+      const show = activeLevel === 'all' || tags.includes(activeLevel) || tags.includes('both');
+      card.classList.toggle('hidden', !show);
+      if (show) count++;
+    });
+    document.querySelectorAll('.section').forEach(sec => {
+      sec.classList.toggle('hidden', [...sec.querySelectorAll('.qa-card:not(.hidden)')].length === 0);
+    });
+    document.getElementById('qcount').textContent = count + ' question' + (count !== 1 ? 's' : '');
+  }
+
+  function jumpTo(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+  }
+
+  filter('all', document.querySelector('.filter-btn'));
+</script>
+</body>
+</html>
