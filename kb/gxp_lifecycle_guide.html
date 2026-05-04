@@ -434,6 +434,56 @@
   /* ─── HORIZONTAL RULE ─── */
   hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
 
+  /* ─── CAPA DIAGRAM ─── */
+  .capa-diagram-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 12px;
+    margin-bottom: 24px;
+    overflow-x: auto;
+  }
+
+  .capa-node rect {
+    transition: fill 0.15s, stroke-width 0.15s;
+  }
+  .capa-node:hover rect {
+    stroke-width: 1.6 !important;
+    filter: brightness(1.15);
+  }
+
+  .capa-detail {
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-left: 3px solid var(--accent2);
+    border-radius: 0 8px 8px 0;
+    padding: 18px 22px;
+    margin: 8px 0 18px;
+    animation: slideDown 0.25s ease both;
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .capa-detail-title {
+    font-weight: 600;
+    font-size: 14.5px;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+
+  .capa-detail p {
+    font-size: 13.5px;
+    color: var(--text2);
+    line-height: 1.7;
+  }
+
+  .capa-detail .checklist { margin-top: 4px; }
+  .capa-detail .checklist li { color: var(--text2); font-size: 13px; }
+  .capa-detail .checklist li strong { color: var(--text); font-weight: 600; }
+
   /* ─── FOOTER ─── */
   .footer {
     margin-top: 60px;
@@ -475,6 +525,10 @@
     <div class="nav-section-label">Change Control</div>
     <div class="nav-item" onclick="show('phase7', this)"><div class="nav-dot"></div>Change Control Process</div>
     <div class="nav-item" onclick="show('phase8', this)"><div class="nav-dot"></div>Enhancement Requests</div>
+
+    <div class="nav-section-label">Deviations &amp; CAPA</div>
+    <div class="nav-item" onclick="show('phase13', this)"><div class="nav-dot"></div>Deviation → CAPA Lifecycle</div>
+    <div class="nav-item" onclick="show('phase14', this)"><div class="nav-dot"></div>Deviation Start to Close</div>
 
     <div class="nav-section-label">Ongoing Operations</div>
     <div class="nav-item" onclick="show('phase9', this)"><div class="nav-dot"></div>Periodic Review</div>
@@ -1017,6 +1071,716 @@
       </div>
     </div>
 
+    <!-- PHASE 13 — DEVIATION → CAPA LIFECYCLE -->
+    <div id="phase13" class="phase">
+      <div class="phase-header">
+        <div class="phase-tag">Deviations &amp; CAPA · Reference</div>
+        <div class="phase-title">Deviation → CAPA<br>Lifecycle</div>
+        <div class="phase-subtitle">Every unplanned event in a GxP environment that deviates from an approved procedure, specification, or expected result must be formally managed. When risk severity meets the CAPA threshold, a linked Corrective and Preventive Action record is auto-generated. This diagram shows the full lifecycle — from event detection through verified closure.</div>
+      </div>
+
+      <!-- INTERACTIVE FLOW DIAGRAM -->
+      <div class="section">
+        <div class="section-title">Full Lifecycle Flow</div>
+        <p style="color:var(--text2);font-size:13.5px;margin-bottom:20px;">Click any stage node to expand details. Each box represents a formal milestone in the QMS record lifecycle.</p>
+
+        <div class="capa-diagram-wrap">
+          <svg width="100%" viewBox="0 0 680 920" style="display:block;">
+            <defs>
+              <marker id="capaArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </marker>
+            </defs>
+
+            <!-- ── PHASE LANE SEPARATORS ── -->
+            <line x1="48" y1="140" x2="645" y2="140" stroke="#252a38" stroke-width="0.5" stroke-dasharray="4 4"/>
+            <line x1="48" y1="316" x2="645" y2="316" stroke="#252a38" stroke-width="0.5" stroke-dasharray="4 4"/>
+            <line x1="48" y1="534" x2="645" y2="534" stroke="#252a38" stroke-width="0.5" stroke-dasharray="4 4"/>
+            <line x1="48" y1="758" x2="645" y2="758" stroke="#252a38" stroke-width="0.5" stroke-dasharray="4 4"/>
+
+            <!-- ── PHASE LABELS (left rail) ── -->
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#555c78" letter-spacing="0.1em"
+              text-anchor="middle" transform="translate(22,90) rotate(-90)">DETECTION</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#555c78" letter-spacing="0.1em"
+              text-anchor="middle" transform="translate(22,228) rotate(-90)">INVESTIGATION</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#555c78" letter-spacing="0.1em"
+              text-anchor="middle" transform="translate(22,425) rotate(-90)">CAPA</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#555c78" letter-spacing="0.1em"
+              text-anchor="middle" transform="translate(22,646) rotate(-90)">EXECUTION</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#555c78" letter-spacing="0.1em"
+              text-anchor="middle" transform="translate(22,800) rotate(-90)">CLOSURE</text>
+
+            <!-- ══════════════════════════════════
+                 ROW 1 — Event detected (coral/red)
+            ══════════════════════════════════ -->
+            <g class="capa-node" onclick="toggleCapaDetail('d-detect')" style="cursor:pointer;">
+              <rect x="220" y="36" width="240" height="60" rx="8"
+                fill="rgba(255,95,109,0.08)" stroke="#ff5f6d" stroke-width="0.8"/>
+              <text font-family="'DM Sans',sans-serif" font-size="13.5" font-weight="600"
+                fill="#ff5f6d" text-anchor="middle" dominant-baseline="central" x="340" y="57">Event detected</text>
+              <text font-family="'DM Mono',monospace" font-size="10.5" fill="#8b90a8"
+                text-anchor="middle" dominant-baseline="central" x="340" y="76">Duplicate WeightIDs in ELN LabX balance</text>
+            </g>
+
+            <!-- ══════════════════════════════════
+                 ROW 2 — Containment + Deviation opened
+            ══════════════════════════════════ -->
+            <g class="capa-node" onclick="toggleCapaDetail('d-contain')" style="cursor:pointer;">
+              <rect x="58" y="160" width="238" height="60" rx="8"
+                fill="rgba(255,157,77,0.08)" stroke="#ff9d4d" stroke-width="0.8"/>
+              <text font-family="'DM Sans',sans-serif" font-size="13" font-weight="600"
+                fill="#ff9d4d" text-anchor="middle" dominant-baseline="central" x="177" y="181">Immediate containment</text>
+              <text font-family="'DM Mono',monospace" font-size="10" fill="#8b90a8"
+                text-anchor="middle" dominant-baseline="central" x="177" y="200">Restrict entry · flag affected records</text>
+            </g>
+            <g class="capa-node" onclick="toggleCapaDetail('d-open')" style="cursor:pointer;">
+              <rect x="384" y="160" width="238" height="60" rx="8"
+                fill="rgba(200,125,255,0.08)" stroke="#c87dff" stroke-width="0.8"/>
+              <text font-family="'DM Sans',sans-serif" font-size="13" font-weight="600"
+                fill="#c87dff" text-anchor="middle" dominant-baseline="central" x="503" y="181">Deviation record opened</text>
+              <text font-family="'DM Mono',monospace" font-size="10" fill="#8b90a8"
+                text-anchor="middle" dominant-baseline="central" x="503" y="200">Unplanned · GxP · High severity</text>
+            </g>
+
+            <!-- row1 → row2 connectors -->
+            <path d="M310 96 L177 160" fill="none" stroke="#2e3448" stroke-width="1" marker-end="url(#capaArrow)"/>
+            <path d="M370 96 L503 160" fill="none" stroke="#2e3448" stroke-width="1" marker-end="url(#capaArrow)"/>
+
+            <!-- ══════════════════════════════════
+                 ROW 3 — Root cause investigation
+            ══════════════════════════════════ -->
+            <g class="capa-node" onclick="toggleCapaDetail('d-rca')" style="cursor:pointer;">
+              <rect x="148" y="260" width="384" height="60" rx="8"
+                fill="rgba(0,212,255,0.06)" stroke="#00d4ff" stroke-width="0.8"/>
+              <text font-family="'DM Sans',sans-serif" font-size="13.5" font-weight="600"
+                fill="#00d4ff" text-anchor="middle" dominant-baseline="central" x="340" y="281">Root cause investigation</text>
+              <text font-family="'DM Mono',monospace" font-size="10.5" fill="#8b90a8"
+                text-anchor="middle" dominant-baseline="central" x="340" y="300">No uniqueness constraint on WeightID field — config gap</text>
+            </g>
+
+            <path d="M177 220 L265 260" fill="none" stroke="#2e3448" stroke-width="1" marker-end="url(#capaArrow)"/>
+            <path d="M503 220 L415 260" fill="none" stroke="#2e3448" stroke-width="1" marker-end="url(#capaArrow)"/>
+
+            <!-- ══════════════════════════════════
+                 ROW 4 — Impact assessment + QA review
+            ══════════════════════════════════ -->
+            <g class="capa-node" onclick="toggleCapaDetail('d-impact')" style="cursor:pointer;">
+              <rect x="58" y="360" width="238" height="60" rx="8"
+                fill="rgba(79,255,176,0.06)" stroke="#4fffb0" stroke-width="0.8"/>
+              <text font-family="'DM Sans',sans-serif" font-size="13" font-weight="600"
+                fill="#4fffb0" text-anchor="middle" dominant-baseline="central" x="177" y="381">Impact assessment</text>
+              <text font-family="'DM Mono',monospace" font-size="10" fill="#8b90a8"
+                text-anchor="middle" dominant-baseline="central" x="177" y="400">Affected records · data integrity risk</text>
+            </g>
+            <g class="capa-node" onclick="toggleCapaDetail('d-qa')" style="cursor:pointer;">
+              <rect x="384" y="360" width="238" height="60" rx="8"
+                fill="rgba(79,255,176,0.06)" stroke="#4fffb0" stroke-width="0.8"/>
+              <text font-family="'DM Sans',sans-serif" font-size="13" font-weight="600"
+                fill="#4fffb0" text-anchor="middle" dominant-baseline="central" x="503" y="381">QA review &amp; approval</text>
+              <text font-family="'DM Mono',monospace" font-size="10" fill="#8b90a8"
+                text-anchor="middle" dominant-baseline="central" x="503" y="400">Severity confirmed · CAPA threshold met</text>
+            </g>
+
+            <path d="M300 320 L177 360" fill="none" stroke="#2e3448" stroke-width="1" marker-end="url(#capaArrow)"/>
+            <path d="M380 320 L503 360" fill="none" stroke="#2e3448" stroke-width="1" marker-end="url(#capaArrow)"/>
+
+            <!-- CAPA trigger dashed arrow -->
+            <path d="M503 420 L503 452 L340 452 L340 474" fill="none" stroke="#c87dff"
+              stroke-width="1" stroke-dasharray="5 3" marker-end="url(#capaArrow)"/>
+            <text font-family="'DM Mono',monospace" font-size="10" fill="#c87dff"
+              text-anchor="middle" x="430" y="446">CAPA triggered</text>
+
+            <!-- ══════════════════════════════════
+                 ROW 5 — CAPA record
+            ══════════════════════════════════ -->
+            <g class="capa-node" onclick="toggleCapaDetail('d-capa')" style="cursor:pointer;">
+              <rect x="148" y="474" width="384" height="60" rx="8"
+                fill="rgba(255,95,109,0.08)" stroke="#ff5f6d" stroke-width="0.8"/>
+              <text font-family="'DM Sans',sans-serif" font-size="13.5" font-weight="600"
+                fill="#ff5f6d" text-anchor="middle" dominant-baseline="central" x="340" y="495">CAPA record created</text>
+              <text font-family="'DM Mono',monospace" font-size="10.5" fill="#8b90a8"
+                text-anchor="middle" dominant-baseline="central" x="340" y="514">Linked to deviation · corrective + preventive actions defined</text>
+            </g>
+
+            <!-- ══════════════════════════════════
+                 ROW 6 — Corrective + Preventive
+            ══════════════════════════════════ -->
+            <g class="capa-node" onclick="toggleCapaDetail('d-corr')" style="cursor:pointer;">
+              <rect x="58" y="578" width="238" height="72" rx="8"
+                fill="rgba(79,255,176,0.06)" stroke="#4fffb0" stroke-width="0.8"/>
+              <text font-family="'DM Sans',sans-serif" font-size="13" font-weight="600"
+                fill="#4fffb0" text-anchor="middle" dominant-baseline="central" x="177" y="596">Corrective action</text>
+              <text font-family="'DM Mono',monospace" font-size="10" fill="#8b90a8"
+                text-anchor="middle" x="177" y="616">Unique constraint added to WeightID</text>
+              <text font-family="'DM Mono',monospace" font-size="10" fill="#8b90a8"
+                text-anchor="middle" x="177" y="632">field via config change control</text>
+            </g>
+            <g class="capa-node" onclick="toggleCapaDetail('d-prev')" style="cursor:pointer;">
+              <rect x="384" y="578" width="238" height="72" rx="8"
+                fill="rgba(200,125,255,0.08)" stroke="#c87dff" stroke-width="0.8"/>
+              <text font-family="'DM Sans',sans-serif" font-size="13" font-weight="600"
+                fill="#c87dff" text-anchor="middle" dominant-baseline="central" x="503" y="596">Preventive action</text>
+              <text font-family="'DM Mono',monospace" font-size="10" fill="#8b90a8"
+                text-anchor="middle" x="503" y="616">OQ test case added · config review SOP</text>
+              <text font-family="'DM Mono',monospace" font-size="10" fill="#8b90a8"
+                text-anchor="middle" x="503" y="632">updated for all unique key fields</text>
+            </g>
+
+            <path d="M286 534 L177 578" fill="none" stroke="#2e3448" stroke-width="1" marker-end="url(#capaArrow)"/>
+            <path d="M394 534 L503 578" fill="none" stroke="#2e3448" stroke-width="1" marker-end="url(#capaArrow)"/>
+
+            <!-- ══════════════════════════════════
+                 ROW 7 — Verification + Change Control
+            ══════════════════════════════════ -->
+            <g class="capa-node" onclick="toggleCapaDetail('d-verify')" style="cursor:pointer;">
+              <rect x="58" y="694" width="238" height="60" rx="8"
+                fill="rgba(0,212,255,0.06)" stroke="#00d4ff" stroke-width="0.8"/>
+              <text font-family="'DM Sans',sans-serif" font-size="13" font-weight="600"
+                fill="#00d4ff" text-anchor="middle" dominant-baseline="central" x="177" y="715">Effectiveness verification</text>
+              <text font-family="'DM Mono',monospace" font-size="10" fill="#8b90a8"
+                text-anchor="middle" dominant-baseline="central" x="177" y="734">Re-test in QA vault · OQ evidence attached</text>
+            </g>
+            <g class="capa-node" onclick="toggleCapaDetail('d-cc')" style="cursor:pointer;">
+              <rect x="384" y="694" width="238" height="60" rx="8"
+                fill="rgba(255,157,77,0.08)" stroke="#ff9d4d" stroke-width="0.8"/>
+              <text font-family="'DM Sans',sans-serif" font-size="13" font-weight="600"
+                fill="#ff9d4d" text-anchor="middle" dominant-baseline="central" x="503" y="715">Change control closed</text>
+              <text font-family="'DM Mono',monospace" font-size="10" fill="#8b90a8"
+                text-anchor="middle" dominant-baseline="central" x="503" y="734">Config fix deployed to PROD · CC record linked</text>
+            </g>
+
+            <line x1="177" y1="650" x2="177" y2="694" stroke="#2e3448" stroke-width="1" marker-end="url(#capaArrow)"/>
+            <line x1="503" y1="650" x2="503" y2="694" stroke="#2e3448" stroke-width="1" marker-end="url(#capaArrow)"/>
+
+            <!-- ══════════════════════════════════
+                 ROW 8 — Closure
+            ══════════════════════════════════ -->
+            <g class="capa-node" onclick="toggleCapaDetail('d-close')" style="cursor:pointer;">
+              <rect x="210" y="800" width="260" height="60" rx="8"
+                fill="rgba(79,255,176,0.1)" stroke="#4fffb0" stroke-width="1.2"/>
+              <text font-family="'DM Sans',sans-serif" font-size="14" font-weight="600"
+                fill="#4fffb0" text-anchor="middle" dominant-baseline="central" x="340" y="821">Deviation &amp; CAPA closed</text>
+              <text font-family="'DM Mono',monospace" font-size="10.5" fill="#8b90a8"
+                text-anchor="middle" dominant-baseline="central" x="340" y="840">QA e-signature · records retained</text>
+            </g>
+
+            <path d="M177 754 L276 800" fill="none" stroke="#2e3448" stroke-width="1" marker-end="url(#capaArrow)"/>
+            <path d="M503 754 L404 800" fill="none" stroke="#2e3448" stroke-width="1" marker-end="url(#capaArrow)"/>
+
+          </svg>
+        </div><!-- /capa-diagram-wrap -->
+
+        <!-- DETAIL PANELS — expand on node click -->
+        <div id="d-detect" class="capa-detail" style="display:none;">
+          <div class="capa-detail-title">🔴 Event Detected — Duplicate WeightIDs in ELN LabX</div>
+          <p>During routine QC sample processing, a lab analyst noticed that two separate weighing tasks had been created with the same WeightID in the ELN LabX balance module. This meant two distinct physical weighing events shared a single identifier — a direct violation of ALCOA's Attributable and Original principles. The issue was escalated to the LIS Lead and QA the same day.</p>
+        </div>
+
+        <div id="d-contain" class="capa-detail" style="display:none;">
+          <div class="capa-detail-title">🟠 Immediate Containment</div>
+          <p>As soon as the issue was confirmed, new weighing task creation in the affected LabX workflow was restricted to prevent additional duplicates from being generated. All records in the system were queried against the WeightID field to identify the full scope of duplicates. A list of affected records was compiled and flagged for data review. No data was deleted or altered at this stage — containment only.</p>
+        </div>
+
+        <div id="d-open" class="capa-detail" style="display:none;">
+          <div class="capa-detail-title">🟣 Deviation Record Opened</div>
+          <p>A formal unplanned deviation was opened in the QMS the same day. Classification: Unplanned, GxP-critical, High severity. The record captured: system name (ELN LabX), date of discovery, who identified it, description of the event, initial scope estimate, and immediate containment actions taken. The deviation was assigned to the LIS Lead as investigation owner, with QA as approver.</p>
+        </div>
+
+        <div id="d-rca" class="capa-detail" style="display:none;">
+          <div class="capa-detail-title">🔵 Root Cause Investigation — 5-Why Analysis</div>
+          <ul class="checklist" style="margin-top:10px;">
+            <li><strong>Why 1:</strong> Duplicate WeightIDs existed → Users could manually enter any WeightID value with no validation.</li>
+            <li><strong>Why 2:</strong> No validation on entry → WeightID field had no uniqueness constraint enforced at the application or database layer.</li>
+            <li><strong>Why 3:</strong> No constraint configured → The field was designed to be unique by convention; enforcement was never built into the configuration.</li>
+            <li><strong>Why 4:</strong> Not caught in validation → The original OQ test suite did not include a negative test for duplicate WeightID entry.</li>
+            <li><strong>Root cause:</strong> Configuration gap — missing uniqueness constraint — combined with an incomplete OQ test library that lacked this negative scenario.</li>
+          </ul>
+        </div>
+
+        <div id="d-impact" class="capa-detail" style="display:none;">
+          <div class="capa-detail-title">🟢 Impact Assessment</div>
+          <p>A systematic query of the LabX database identified all WeightID duplicates across the affected date range. Each duplicate pair was cross-referenced against original paper weight logs to determine which record was correct and which was erroneous. Data integrity risk was assessed as High — if results had been reported from an incorrectly identified weighing event, it could affect analytical calculations and batch release decisions. No batch releases were found to have been directly impacted, but the potential risk was documented.</p>
+        </div>
+
+        <div id="d-qa" class="capa-detail" style="display:none;">
+          <div class="capa-detail-title">🟢 QA Review &amp; CAPA Threshold</div>
+          <p>QA reviewed the deviation, root cause, and impact assessment. Given the data integrity risk classification (ALCOA violation, potential impact on analytical results) and the systemic nature of the root cause (configuration gap, not a one-off human error), the risk score met the organization's CAPA threshold. QA approved the deviation investigation and triggered the CAPA auto-generation, linking it directly to this deviation record.</p>
+        </div>
+
+        <div id="d-capa" class="capa-detail" style="display:none;">
+          <div class="capa-detail-title">🔴 CAPA Record — Structure</div>
+          <p>The linked CAPA record was structured with two distinct workstreams:</p>
+          <div class="two-col" style="margin-top:12px;">
+            <div class="card"><div class="card-title" style="color:var(--accent)">Corrective Action</div><p style="font-size:13px;color:var(--text2);margin-top:8px;">Fix the immediate problem — add a uniqueness constraint to the WeightID field so the system enforces uniqueness at the point of entry. Implemented via formal change control.</p></div>
+            <div class="card"><div class="card-title" style="color:var(--accent4)">Preventive Action</div><p style="font-size:13px;color:var(--text2);margin-top:8px;">Prevent recurrence systemically — update the config review SOP to require a uniqueness check on all identifier fields for any new workflow. Add a negative test OQ case to the standard regression library.</p></div>
+          </div>
+        </div>
+
+        <div id="d-corr" class="capa-detail" style="display:none;">
+          <div class="capa-detail-title">🟢 Corrective Action — Config Change Control</div>
+          <p>A Change Control was raised to add a database-level uniqueness constraint on the WeightID field in the ELN LabX configuration. The change went through the standard promotion workflow: configured in DEV → OQ regression tested in QA vault (negative test: attempt to save a duplicate WeightID — verified system rejects with a clear validation error) → promoted to PROD after QA approval. Post-deployment verification confirmed the constraint was active. Affected duplicate records were remediated under a documented data correction process — each correction logged in the audit trail with the original value, new value, reason, and approver.</p>
+        </div>
+
+        <div id="d-prev" class="capa-detail" style="display:none;">
+          <div class="capa-detail-title">🟣 Preventive Action — SOP &amp; OQ Test Library Update</div>
+          <p>Two preventive actions were implemented: (1) The system configuration review SOP was updated to include an explicit step requiring review of all identifier fields for uniqueness constraint enforcement during any new workflow buildout or enhancement activity. (2) A new OQ test case was added to the standard regression library: "Attempt to create a duplicate [identifier field] — verify system rejects with appropriate error message." This test now runs on every future release regression cycle for LabX and was added as a template requirement for other ELN configurations.</p>
+        </div>
+
+        <div id="d-verify" class="capa-detail" style="display:none;">
+          <div class="capa-detail-title">🔵 Effectiveness Verification</div>
+          <p>After PROD deployment, the OQ effectiveness test was re-executed: attempt to create a new weighing task with an already-existing WeightID. The system rejected the entry with a clear validation error message. The test execution record (tester, date, actual result, pass status) was attached to the CAPA as effectiveness evidence. A 30-day monitoring period confirmed no new duplicate WeightID records appeared in the system after the fix was deployed.</p>
+        </div>
+
+        <div id="d-cc" class="capa-detail" style="display:none;">
+          <div class="capa-detail-title">🟠 Change Control Closure</div>
+          <p>The Change Control record was closed after: (1) configuration deployed to PROD, (2) post-deployment verification step confirmed and documented, (3) affected records remediated, (4) OQ evidence attached. The CC record was linked back to the CAPA record, so both records carry cross-references to each other. QA reviewed and signed off the CC closure. The CAPA's corrective action task was marked complete, referencing the CC record number.</p>
+        </div>
+
+        <div id="d-close" class="capa-detail" style="display:none;">
+          <div class="capa-detail-title">✅ Deviation &amp; CAPA Closed</div>
+          <p>Both records were formally closed with QA electronic signature. Closure criteria confirmed: root cause identified and documented; corrective action implemented and verified effective; preventive action implemented (SOP updated, OQ test added); all affected records remediated; change control closed; 30-day monitoring complete with no recurrence. All records retained in the QMS per the applicable data retention policy. At the next periodic review, QA signed off that actions were sustained.</p>
+          <div class="callout callout-green" style="margin-top:14px;"><strong>Regulatory principle:</strong> A deviation is only closed when you can prove the root cause has been fixed AND it won't happen again. Evidence of effectiveness — not just completion of actions — is what closes a CAPA.</div>
+        </div>
+
+      </div><!-- /section -->
+
+      <!-- KEY PRINCIPLES -->
+      <div class="section">
+        <div class="section-title">Key Principles — Deviations &amp; CAPAs</div>
+        <div class="step-list">
+          <div class="step"><span class="step-num">P1</span><div class="step-content"><div class="step-name">Same-day reporting</div><div class="step-desc">Deviations must be opened the same day the event is identified. Late reporting is itself a GxP finding. If you're unsure whether something is a deviation, open it — it's easier to close an unnecessary record than to justify late reporting.</div></div></div>
+          <div class="step"><span class="step-num">P2</span><div class="step-content"><div class="step-name">Containment before investigation</div><div class="step-desc">Stop the bleeding first. Restrict access, flag affected records, pause the affected process if needed. Document containment actions in the deviation record before moving to root cause analysis.</div></div></div>
+          <div class="step"><span class="step-num">P3</span><div class="step-content"><div class="step-name">Root cause ≠ the immediate cause</div><div class="step-desc">The root cause is the deepest systemic reason the event was possible. "User error" is almost never the root cause — it's a symptom. Dig into why the system or process allowed the error to occur.</div></div></div>
+          <div class="step"><span class="step-num">P4</span><div class="step-content"><div class="step-name">CAPA threshold is defined in your SOP</div><div class="step-desc">Not every deviation requires a CAPA. Your QMS SOP defines the risk scoring criteria (severity × likelihood × detectability) that triggers a CAPA. High-risk GxP data integrity events almost always meet the threshold.</div></div></div>
+          <div class="step"><span class="step-num">P5</span><div class="step-content"><div class="step-name">Effectiveness verification is mandatory</div><div class="step-desc">You cannot close a CAPA based on completing the actions alone. You must demonstrate the actions were effective — the deviation scenario does not recur, and the root cause has been eliminated. Test it, document it, attach it as evidence.</div></div></div>
+          <div class="step"><span class="step-num">P6</span><div class="step-content"><div class="step-name">Cross-reference everything</div><div class="step-desc">Deviation → CAPA → Change Control must all carry each other's record numbers. An auditor tracing a finding must be able to follow the chain from detection all the way through to verified closure without gaps.</div></div></div>
+        </div>
+      </div>
+
+      <div class="footer">
+        Deviation &amp; CAPA Reference · Based on real 2024 ELN LabX WeightID incident · GxP · ALCOA+ · 21 CFR Part 11
+      </div>
+    </div><!-- /phase13 -->
+
+    <!-- PHASE 14 — DEVIATION: START TO CLOSE -->
+    <div id="phase14" class="phase">
+      <div class="phase-header">
+        <div class="phase-tag">Deviations &amp; CAPA · Deep Dive</div>
+        <div class="phase-title">Deviation Lifecycle<br>Start to Close</div>
+        <div class="phase-subtitle">A complete walkthrough of every stage a deviation passes through — from the moment something goes wrong to the final QA signature on the closed record. Covers both planned and unplanned deviations, all key decision points, documentation requirements, and what can block closure at each gate. Click any node to expand full details.</div>
+      </div>
+
+      <!-- DEVIATION TYPE OVERVIEW -->
+      <div class="section">
+        <div class="section-title">Deviation Types — Know Before You Open</div>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title" style="color:var(--danger)">⚡ Unplanned Deviation</div>
+            <p style="font-size:13px;color:var(--text2);margin-top:8px;line-height:1.65;">Something happened that was not anticipated or approved in advance. Equipment failure during a run, an analyst following a different procedure, a system producing unexpected data. Must be reported the same day discovered. No pre-approval exists — the deviation IS the notification.</p>
+          </div>
+          <div class="card">
+            <div class="card-title" style="color:var(--accent3)">📋 Planned Deviation</div>
+            <p style="font-size:13px;color:var(--text2);margin-top:8px;line-height:1.65;">A known, intentional departure from a procedure — requested and approved in advance. Example: testing a new reagent lot under slightly different conditions than the SOP specifies, with QA pre-approval. The deviation record is opened BEFORE the activity occurs. Risk assessed and approved prior to execution.</p>
+          </div>
+        </div>
+        <div class="callout" style="margin-top:16px;"><strong>Key rule:</strong> If you're unsure whether something is a deviation, treat it as one and open the record. It is far easier to close an unnecessary deviation record with a documented justification than to defend why a potential GxP event was not reported. "When in doubt, document."</div>
+      </div>
+
+      <!-- INTERACTIVE FLOW DIAGRAM -->
+      <div class="section">
+        <div class="section-title">Full Deviation Lifecycle — All Stages</div>
+        <p style="color:var(--text2);font-size:13.5px;margin-bottom:20px;">Click any stage to expand full details, documentation requirements, and common pitfalls for that step.</p>
+
+        <div class="capa-diagram-wrap">
+          <svg width="100%" viewBox="0 0 680 1140" style="display:block;">
+            <defs>
+              <marker id="devArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </marker>
+            </defs>
+
+            <!-- PHASE LANE LINES -->
+            <line x1="48" y1="118" x2="645" y2="118" stroke="#252a38" stroke-width="0.5" stroke-dasharray="4 4"/>
+            <line x1="48" y1="258" x2="645" y2="258" stroke="#252a38" stroke-width="0.5" stroke-dasharray="4 4"/>
+            <line x1="48" y1="418" x2="645" y2="418" stroke="#252a38" stroke-width="0.5" stroke-dasharray="4 4"/>
+            <line x1="48" y1="578" x2="645" y2="578" stroke="#252a38" stroke-width="0.5" stroke-dasharray="4 4"/>
+            <line x1="48" y1="738" x2="645" y2="738" stroke="#252a38" stroke-width="0.5" stroke-dasharray="4 4"/>
+            <line x1="48" y1="898" x2="645" y2="898" stroke="#252a38" stroke-width="0.5" stroke-dasharray="4 4"/>
+
+            <!-- PHASE LABELS -->
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#555c78" letter-spacing="0.1em" text-anchor="middle" transform="translate(22,68) rotate(-90)">DETECTION</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#555c78" letter-spacing="0.1em" text-anchor="middle" transform="translate(22,188) rotate(-90)">RECORDING</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#555c78" letter-spacing="0.1em" text-anchor="middle" transform="translate(22,338) rotate(-90)">CONTAINMENT</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#555c78" letter-spacing="0.1em" text-anchor="middle" transform="translate(22,498) rotate(-90)">INVESTIGATION</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#555c78" letter-spacing="0.1em" text-anchor="middle" transform="translate(22,658) rotate(-90)">ASSESSMENT</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#555c78" letter-spacing="0.1em" text-anchor="middle" transform="translate(22,818) rotate(-90)">RESOLUTION</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#555c78" letter-spacing="0.1em" text-anchor="middle" transform="translate(22,1018) rotate(-90)">CLOSURE</text>
+
+            <!-- ══ STAGE 1 — Event occurs ══ -->
+            <g class="capa-node" onclick="toggleCapaDetail('dv-event')" style="cursor:pointer;">
+              <rect x="220" y="30" width="240" height="56" rx="8" fill="rgba(255,95,109,0.08)" stroke="#ff5f6d" stroke-width="0.8"/>
+              <text font-family="'DM Sans',sans-serif" font-size="13.5" font-weight="600" fill="#ff5f6d" text-anchor="middle" dominant-baseline="central" x="340" y="51">Event / non-conformance occurs</text>
+              <text font-family="'DM Mono',monospace" font-size="10" fill="#8b90a8" text-anchor="middle" dominant-baseline="central" x="340" y="70">Unplanned or planned departure from procedure</text>
+            </g>
+
+            <!-- ══ STAGE 2 — Same-day decision ══ -->
+            <!-- diamond shape using polygon -->
+            <polygon points="340,128 410,158 340,188 270,158" fill="rgba(255,157,77,0.08)" stroke="#ff9d4d" stroke-width="0.8"/>
+            <text font-family="'DM Mono',monospace" font-size="10" font-weight="600" fill="#ff9d4d" text-anchor="middle" dominant-baseline="central" x="340" y="155">GxP impact?</text>
+            <!-- YES label -->
+            <text font-family="'DM Mono',monospace" font-size="9.5" fill="#4fffb0" text-anchor="middle" x="260" y="200">YES → deviate</text>
+            <!-- NO label -->
+            <text font-family="'DM Mono',monospace" font-size="9.5" fill="#555c78" text-anchor="middle" x="425" y="200">NO → log only</text>
+
+            <!-- lines from event to diamond -->
+            <line x1="340" y1="86" x2="340" y2="128" stroke="#2e3448" stroke-width="1" marker-end="url(#devArrow)"/>
+            <!-- line from diamond left (yes) -->
+            <path d="M270 158 L177 158 L177 270" fill="none" stroke="#4fffb0" stroke-width="0.8" stroke-dasharray="4 3" marker-end="url(#devArrow)"/>
+            <!-- line from diamond right (no) -->
+            <path d="M410 158 L490 158 L490 270" fill="none" stroke="#555c78" stroke-width="0.8" stroke-dasharray="4 3" marker-end="url(#devArrow)"/>
+
+            <!-- NO path box -->
+            <g class="capa-node" onclick="toggleCapaDetail('dv-nongxp')" style="cursor:pointer;">
+              <rect x="390" y="270" width="200" height="50" rx="8" fill="rgba(85,92,120,0.12)" stroke="#555c78" stroke-width="0.8"/>
+              <text font-family="'DM Sans',sans-serif" font-size="12" font-weight="600" fill="#555c78" text-anchor="middle" dominant-baseline="central" x="490" y="290">Non-GxP event log</text>
+              <text font-family="'DM Mono',monospace" font-size="9.5" fill="#555c78" text-anchor="middle" dominant-baseline="central" x="490" y="308">Documented but no formal deviation</text>
+            </g>
+
+            <!-- ══ STAGE 3 — Open deviation record ══ -->
+            <g class="capa-node" onclick="toggleCapaDetail('dv-open')" style="cursor:pointer;">
+              <rect x="58" y="270" width="238" height="56" rx="8" fill="rgba(200,125,255,0.08)" stroke="#c87dff" stroke-width="0.8"/>
+              <text font-family="'DM Sans',sans-serif" font-size="13" font-weight="600" fill="#c87dff" text-anchor="middle" dominant-baseline="central" x="177" y="291">Open deviation record</text>
+              <text font-family="'DM Mono',monospace" font-size="10" fill="#8b90a8" text-anchor="middle" dominant-baseline="central" x="177" y="310">Same day · all mandatory fields</text>
+            </g>
+
+            <!-- ══ STAGE 4 — Immediate containment ══ -->
+            <g class="capa-node" onclick="toggleCapaDetail('dv-contain')" style="cursor:pointer;">
+              <rect x="58" y="358" width="238" height="56" rx="8" fill="rgba(255,157,77,0.08)" stroke="#ff9d4d" stroke-width="0.8"/>
+              <text font-family="'DM Sans',sans-serif" font-size="13" font-weight="600" fill="#ff9d4d" text-anchor="middle" dominant-baseline="central" x="177" y="379">Immediate containment</text>
+              <text font-family="'DM Mono',monospace" font-size="10" fill="#8b90a8" text-anchor="middle" dominant-baseline="central" x="177" y="398">Stop further impact · preserve evidence</text>
+            </g>
+            <!-- Risk scoring box -->
+            <g class="capa-node" onclick="toggleCapaDetail('dv-risk')" style="cursor:pointer;">
+              <rect x="384" y="358" width="238" height="56" rx="8" fill="rgba(255,209,102,0.07)" stroke="#ffd166" stroke-width="0.8"/>
+              <text font-family="'DM Sans',sans-serif" font-size="13" font-weight="600" fill="#ffd166" text-anchor="middle" dominant-baseline="central" x="503" y="379">Risk &amp; severity scoring</text>
+              <text font-family="'DM Mono',monospace" font-size="10" fill="#8b90a8" text-anchor="middle" dominant-baseline="central" x="503" y="398">Critical / Major / Minor / Cosmetic</text>
+            </g>
+
+            <line x1="177" y1="326" x2="177" y2="358" stroke="#2e3448" stroke-width="1" marker-end="url(#devArrow)"/>
+            <path d="M296 298 L340 298 L340 358 L384 358" fill="none" stroke="#2e3448" stroke-width="0.8" marker-end="url(#devArrow)"/>
+
+            <!-- ══ STAGE 5 — Investigation ══ -->
+            <g class="capa-node" onclick="toggleCapaDetail('dv-inv')" style="cursor:pointer;">
+              <rect x="148" y="438" width="384" height="56" rx="8" fill="rgba(0,212,255,0.06)" stroke="#00d4ff" stroke-width="0.8"/>
+              <text font-family="'DM Sans',sans-serif" font-size="13.5" font-weight="600" fill="#00d4ff" text-anchor="middle" dominant-baseline="central" x="340" y="459">Root cause investigation</text>
+              <text font-family="'DM Mono',monospace" font-size="10.5" fill="#8b90a8" text-anchor="middle" dominant-baseline="central" x="340" y="478">5-Why / Ishikawa · evidence reviewed · timeline built</text>
+            </g>
+
+            <line x1="177" y1="414" x2="240" y2="438" stroke="#2e3448" stroke-width="1" marker-end="url(#devArrow)"/>
+            <line x1="503" y1="414" x2="440" y2="438" stroke="#2e3448" stroke-width="1" marker-end="url(#devArrow)"/>
+
+            <!-- ══ STAGE 6 — Impact assessment ══ -->
+            <g class="capa-node" onclick="toggleCapaDetail('dv-impact')" style="cursor:pointer;">
+              <rect x="58" y="518" width="238" height="56" rx="8" fill="rgba(79,255,176,0.06)" stroke="#4fffb0" stroke-width="0.8"/>
+              <text font-family="'DM Sans',sans-serif" font-size="13" font-weight="600" fill="#4fffb0" text-anchor="middle" dominant-baseline="central" x="177" y="539">Impact assessment</text>
+              <text font-family="'DM Mono',monospace" font-size="10" fill="#8b90a8" text-anchor="middle" dominant-baseline="central" x="177" y="558">Scope · affected records · patient safety</text>
+            </g>
+            <!-- CAPA needed? decision -->
+            <g class="capa-node" onclick="toggleCapaDetail('dv-capaneed')" style="cursor:pointer;">
+              <rect x="384" y="518" width="238" height="56" rx="8" fill="rgba(255,209,102,0.07)" stroke="#ffd166" stroke-width="0.8"/>
+              <text font-family="'DM Sans',sans-serif" font-size="13" font-weight="600" fill="#ffd166" text-anchor="middle" dominant-baseline="central" x="503" y="539">CAPA threshold check</text>
+              <text font-family="'DM Mono',monospace" font-size="10" fill="#8b90a8" text-anchor="middle" dominant-baseline="central" x="503" y="558">Risk score ≥ threshold → CAPA required</text>
+            </g>
+
+            <line x1="300" y1="494" x2="177" y2="518" stroke="#2e3448" stroke-width="1" marker-end="url(#devArrow)"/>
+            <line x1="380" y1="494" x2="503" y2="518" stroke="#2e3448" stroke-width="1" marker-end="url(#devArrow)"/>
+
+            <!-- CAPA spawn arrow -->
+            <path d="M503 574 L503 604 L610 604" fill="none" stroke="#c87dff" stroke-width="0.8" stroke-dasharray="5 3" marker-end="url(#devArrow)"/>
+            <text font-family="'DM Mono',monospace" font-size="9.5" fill="#c87dff" x="506" y="598">→ spawn CAPA</text>
+
+            <!-- ══ STAGE 7 — QA review ══ -->
+            <g class="capa-node" onclick="toggleCapaDetail('dv-qareview')" style="cursor:pointer;">
+              <rect x="148" y="598" width="384" height="56" rx="8" fill="rgba(79,255,176,0.06)" stroke="#4fffb0" stroke-width="0.8"/>
+              <text font-family="'DM Sans',sans-serif" font-size="13.5" font-weight="600" fill="#4fffb0" text-anchor="middle" dominant-baseline="central" x="340" y="619">QA review</text>
+              <text font-family="'DM Mono',monospace" font-size="10.5" fill="#8b90a8" text-anchor="middle" dominant-baseline="central" x="340" y="638">Root cause accepted · actions approved · risk score confirmed</text>
+            </g>
+
+            <line x1="177" y1="574" x2="240" y2="598" stroke="#2e3448" stroke-width="1" marker-end="url(#devArrow)"/>
+            <line x1="503" y1="574" x2="440" y2="598" stroke="#2e3448" stroke-width="1" marker-end="url(#devArrow)"/>
+
+            <!-- QA reject path -->
+            <path d="M148 626 L90 626 L90 484 L148 484" fill="none" stroke="#ff5f6d" stroke-width="0.8" stroke-dasharray="4 3" marker-end="url(#devArrow)"/>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#ff5f6d" text-anchor="middle" x="68" y="560">reject →</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#ff5f6d" text-anchor="middle" x="68" y="572">re-investigate</text>
+
+            <!-- ══ STAGE 8 — Corrective actions ══ -->
+            <g class="capa-node" onclick="toggleCapaDetail('dv-actions')" style="cursor:pointer;">
+              <rect x="58" y="678" width="238" height="56" rx="8" fill="rgba(79,255,176,0.06)" stroke="#4fffb0" stroke-width="0.8"/>
+              <text font-family="'DM Sans',sans-serif" font-size="13" font-weight="600" fill="#4fffb0" text-anchor="middle" dominant-baseline="central" x="177" y="699">Corrective actions</text>
+              <text font-family="'DM Mono',monospace" font-size="10" fill="#8b90a8" text-anchor="middle" dominant-baseline="central" x="177" y="718">Fix immediate cause · remediate records</text>
+            </g>
+            <!-- Change control -->
+            <g class="capa-node" onclick="toggleCapaDetail('dv-cc')" style="cursor:pointer;">
+              <rect x="384" y="678" width="238" height="56" rx="8" fill="rgba(255,157,77,0.08)" stroke="#ff9d4d" stroke-width="0.8"/>
+              <text font-family="'DM Sans',sans-serif" font-size="13" font-weight="600" fill="#ff9d4d" text-anchor="middle" dominant-baseline="central" x="503" y="699">Change control (if needed)</text>
+              <text font-family="'DM Mono',monospace" font-size="10" fill="#8b90a8" text-anchor="middle" dominant-baseline="central" x="503" y="718">Config fix · SOP update · system change</text>
+            </g>
+
+            <line x1="290" y1="654" x2="177" y2="678" stroke="#2e3448" stroke-width="1" marker-end="url(#devArrow)"/>
+            <line x1="390" y1="654" x2="503" y2="678" stroke="#2e3448" stroke-width="1" marker-end="url(#devArrow)"/>
+
+            <!-- ══ STAGE 9 — Training & SOP update ══ -->
+            <g class="capa-node" onclick="toggleCapaDetail('dv-training')" style="cursor:pointer;">
+              <rect x="148" y="758" width="384" height="56" rx="8" fill="rgba(200,125,255,0.08)" stroke="#c87dff" stroke-width="0.8"/>
+              <text font-family="'DM Sans',sans-serif" font-size="13.5" font-weight="600" fill="#c87dff" text-anchor="middle" dominant-baseline="central" x="340" y="779">SOP / training update (if required)</text>
+              <text font-family="'DM Mono',monospace" font-size="10.5" fill="#8b90a8" text-anchor="middle" dominant-baseline="central" x="340" y="798">SOP revised → retraining completed → records filed</text>
+            </g>
+
+            <line x1="177" y1="734" x2="240" y2="758" stroke="#2e3448" stroke-width="1" marker-end="url(#devArrow)"/>
+            <line x1="503" y1="734" x2="440" y2="758" stroke="#2e3448" stroke-width="1" marker-end="url(#devArrow)"/>
+
+            <!-- ══ STAGE 10 — Effectiveness check ══ -->
+            <g class="capa-node" onclick="toggleCapaDetail('dv-effect')" style="cursor:pointer;">
+              <rect x="148" y="838" width="384" height="56" rx="8" fill="rgba(0,212,255,0.06)" stroke="#00d4ff" stroke-width="0.8"/>
+              <text font-family="'DM Sans',sans-serif" font-size="13.5" font-weight="600" fill="#00d4ff" text-anchor="middle" dominant-baseline="central" x="340" y="859">Effectiveness check</text>
+              <text font-family="'DM Mono',monospace" font-size="10.5" fill="#8b90a8" text-anchor="middle" dominant-baseline="central" x="340" y="878">Verify fix works · monitoring period · evidence documented</text>
+            </g>
+
+            <line x1="340" y1="814" x2="340" y2="838" stroke="#2e3448" stroke-width="1" marker-end="url(#devArrow)"/>
+
+            <!-- Not effective loop back -->
+            <path d="M532 838 L600 838 L600 460 L532 460" fill="none" stroke="#ff5f6d" stroke-width="0.8" stroke-dasharray="4 3" marker-end="url(#devArrow)"/>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#ff5f6d" text-anchor="middle" x="622" y="650">not effective</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#ff5f6d" text-anchor="middle" x="622" y="662">→ re-investigate</text>
+
+            <!-- ══ STAGE 11 — Closure gate ══ -->
+            <!-- diamond -->
+            <polygon points="340,912 418,944 340,976 262,944" fill="rgba(255,209,102,0.07)" stroke="#ffd166" stroke-width="0.8"/>
+            <text font-family="'DM Mono',monospace" font-size="10" font-weight="600" fill="#ffd166" text-anchor="middle" dominant-baseline="central" x="340" y="941">Closure criteria met?</text>
+
+            <line x1="340" y1="894" x2="340" y2="912" stroke="#2e3448" stroke-width="1" marker-end="url(#devArrow)"/>
+
+            <!-- Criteria not met loop -->
+            <path d="M262 944 L200 944 L200 858 L148 858" fill="none" stroke="#ff5f6d" stroke-width="0.8" stroke-dasharray="4 3" marker-end="url(#devArrow)"/>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#ff5f6d" text-anchor="middle" x="190" y="904">criteria</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#ff5f6d" text-anchor="middle" x="190" y="916">not met</text>
+
+            <!-- Yes → close -->
+            <line x1="340" y1="976" x2="340" y2="1006" stroke="#4fffb0" stroke-width="1" marker-end="url(#devArrow)"/>
+            <text font-family="'DM Mono',monospace" font-size="9.5" fill="#4fffb0" text-anchor="middle" x="374" y="994">YES →</text>
+
+            <!-- ══ STAGE 12 — QA sign-off & close ══ -->
+            <g class="capa-node" onclick="toggleCapaDetail('dv-close')" style="cursor:pointer;">
+              <rect x="200" y="1006" width="280" height="60" rx="8" fill="rgba(79,255,176,0.10)" stroke="#4fffb0" stroke-width="1.2"/>
+              <text font-family="'DM Sans',sans-serif" font-size="14" font-weight="600" fill="#4fffb0" text-anchor="middle" dominant-baseline="central" x="340" y="1028">Deviation closed</text>
+              <text font-family="'DM Mono',monospace" font-size="10.5" fill="#8b90a8" text-anchor="middle" dominant-baseline="central" x="340" y="1050">QA e-signature · record locked · archived</text>
+            </g>
+
+          </svg>
+        </div><!-- /capa-diagram-wrap -->
+
+        <!-- ── DETAIL PANELS ── -->
+
+        <div id="dv-event" class="capa-detail" style="display:none;">
+          <div class="capa-detail-title">🔴 Event / Non-Conformance Occurs</div>
+          <p>A deviation starts the moment something does not go as the approved procedure, specification, or process requires. This could be an instrument failing mid-run, an analyst making an error, a system producing an unexpected output, or a sample being processed under out-of-spec conditions. For planned deviations, the record is opened before the activity occurs, with pre-approval from QA. For unplanned, the clock starts from the moment of discovery — not from when the event actually happened if that was earlier.</p>
+        </div>
+
+        <div id="dv-nongxp" class="capa-detail" style="display:none;">
+          <div class="capa-detail-title">⚫ Non-GxP Event — Log Only</div>
+          <p>If the event occurs in a non-GxP process (e.g., an administrative process with no impact on regulated data, equipment, or products), a formal deviation record may not be required. However, good practice still requires documenting the event in a log or note-to-file, capturing what happened and why it is classified as non-GxP. This documentation protects you if the classification is later questioned — you have a record of the decision and the reasoning.</p>
+          <div class="callout"><strong>Caution:</strong> Be conservative. If there is any doubt about whether the process is GxP-relevant, open the deviation. An unnecessary deviation record costs time; a missing one can cost an inspection outcome.</div>
+        </div>
+
+        <div id="dv-open" class="capa-detail" style="display:none;">
+          <div class="capa-detail-title">🟣 Open the Deviation Record — Same Day</div>
+          <p>The deviation must be opened in your QMS on the same day the event is identified. Mandatory fields to complete at opening:</p>
+          <ul class="checklist" style="margin-top:10px;">
+            <li><strong>Date of event</strong> — when the deviation actually occurred (may differ from date of discovery)</li>
+            <li><strong>Date of discovery</strong> — when it was identified</li>
+            <li><strong>System / product / process affected</strong></li>
+            <li><strong>Description</strong> — factual, objective statement of what happened. No conclusions yet.</li>
+            <li><strong>Deviation type</strong> — Planned or Unplanned</li>
+            <li><strong>Initial severity estimate</strong> — Critical / Major / Minor</li>
+            <li><strong>Initiator</strong> — person opening the record</li>
+            <li><strong>Immediate containment actions taken</strong></li>
+          </ul>
+          <div class="callout" style="margin-top:12px;"><strong>Common mistake:</strong> Writing conclusions or root cause in the opening description. At this stage you only know what happened — not why. Write facts only. Root cause is documented in the investigation section once it has been determined.</div>
+        </div>
+
+        <div id="dv-contain" class="capa-detail" style="display:none;">
+          <div class="capa-detail-title">🟠 Immediate Containment Actions</div>
+          <p>Before investigation begins, stop the impact from spreading. Containment actions are documented in the deviation record at the time they are taken. Common containment actions:</p>
+          <ul class="checklist" style="margin-top:10px;">
+            <li>Quarantine affected materials, samples, or products — label clearly "HOLD — Deviation Under Investigation"</li>
+            <li>Suspend the affected process or workflow until root cause is known</li>
+            <li>Restrict system access or data entry in the affected area</li>
+            <li>Preserve evidence — do not repair, clean, or restart equipment involved until documented</li>
+            <li>Notify relevant stakeholders (supervisor, QA, Regulatory Affairs if batch release is affected)</li>
+            <li>Flag affected electronic records — do not alter or delete any data at this stage</li>
+          </ul>
+          <div class="callout callout-blue" style="margin-top:12px;"><strong>ALCOA principle:</strong> All data related to the deviation — including the original erroneous data — must be preserved. You may correct records through a formal data correction process with audit trail entries, but never delete original values. The original is the evidence.</div>
+        </div>
+
+        <div id="dv-risk" class="capa-detail" style="display:none;">
+          <div class="capa-detail-title">🟡 Risk &amp; Severity Scoring</div>
+          <p>Every deviation is risk-scored to determine the investigation depth required, the approval level needed for closure, and whether a CAPA must be generated. Typical scoring matrix:</p>
+          <table class="deliv-table" style="margin-top:12px;">
+            <thead><tr><th>Severity</th><th>Criteria</th><th>CAPA Required?</th><th>Closure Approver</th></tr></thead>
+            <tbody>
+              <tr><td><span class="badge badge-red">Critical</span></td><td>Patient safety risk, regulatory action risk, batch recall potential</td><td>Always</td><td>QA Director + Site Head</td></tr>
+              <tr><td><span class="badge badge-orange">Major</span></td><td>Data integrity impact, GxP record affected, process failure</td><td>Typically yes</td><td>QA Manager</td></tr>
+              <tr><td><span class="badge badge-yellow">Minor</span></td><td>Procedural deviation, limited GxP impact, no data affected</td><td>Risk-based</td><td>QA Reviewer</td></tr>
+              <tr><td><span class="badge badge-green">Cosmetic</span></td><td>Documentation error, no process or data impact</td><td>Rarely</td><td>QA Reviewer</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div id="dv-inv" class="capa-detail" style="display:none;">
+          <div class="capa-detail-title">🔵 Root Cause Investigation</div>
+          <p>The investigation must identify the true root cause — the deepest systemic reason the deviation was possible. Two primary tools:</p>
+          <div class="two-col" style="margin-top:12px;">
+            <div class="card">
+              <div class="card-title" style="color:var(--accent2)">5-Why Analysis</div>
+              <p style="font-size:13px;color:var(--text2);margin-top:8px;">Start with the observable event and ask "why" repeatedly until you reach the system- or process-level cause. Stop when the answer is something that can actually be fixed. Example: WeightID duplicate → no validation → no constraint configured → not in OQ test library → SOP gap. Root cause: SOP did not require uniqueness constraint checks.</p>
+            </div>
+            <div class="card">
+              <div class="card-title" style="color:var(--accent4)">Ishikawa (Fishbone)</div>
+              <p style="font-size:13px;color:var(--text2);margin-top:8px;">Useful for complex events with multiple potential causes. Categories: Man, Machine, Method, Material, Measurement, Environment (6M). Map all contributing factors before identifying the primary root cause. Better for manufacturing deviations than software/system ones.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top:14px;"><strong>Key output:</strong> The investigation report must state: (1) confirmed root cause, (2) contributing factors, (3) evidence reviewed, (4) what was ruled out and why. "Unknown" is never an acceptable root cause — keep investigating until you have a clear, actionable answer.</div>
+        </div>
+
+        <div id="dv-impact" class="capa-detail" style="display:none;">
+          <div class="capa-detail-title">🟢 Impact Assessment</div>
+          <p>The impact assessment answers: how far did this deviation reach, and what are the consequences? Key questions:</p>
+          <ul class="checklist" style="margin-top:10px;">
+            <li><strong>Records affected:</strong> Which specific GxP records, batches, samples, or results are impacted?</li>
+            <li><strong>Time window:</strong> How long has the root cause condition existed? Are older records potentially affected?</li>
+            <li><strong>Patient / product safety:</strong> Is there any risk to product quality, patient safety, or regulatory compliance?</li>
+            <li><strong>Batch release impact:</strong> Are any batches currently pending release that rely on affected data?</li>
+            <li><strong>Regulatory notification:</strong> Does the impact require notification to a regulatory authority?</li>
+            <li><strong>Remediation needed:</strong> Do affected records require data correction under a formal correction process?</li>
+          </ul>
+        </div>
+
+        <div id="dv-capaneed" class="capa-detail" style="display:none;">
+          <div class="capa-detail-title">🟡 CAPA Threshold Check</div>
+          <p>Your QMS SOP defines a risk score threshold above which a CAPA is mandatory. The threshold is typically based on a combination of severity, likelihood of recurrence, and detectability. A CAPA is almost always required when:</p>
+          <ul class="checklist" style="margin-top:10px;">
+            <li>The root cause is systemic (configuration gap, SOP gap, training gap) — not an isolated one-time human error</li>
+            <li>The same root cause has appeared in previous deviations (trend)</li>
+            <li>Data integrity was compromised or potentially compromised</li>
+            <li>The deviation is classified Critical or Major</li>
+            <li>Regulatory action risk exists</li>
+          </ul>
+          <div class="callout callout-green" style="margin-top:12px;"><strong>When CAPA is NOT required:</strong> A one-off, isolated minor deviation with a clear human error root cause, no systemic cause, and no data impact may be closed without a CAPA — with a documented justification for why preventive action beyond retraining is not warranted. This justification must be QA-approved.</div>
+        </div>
+
+        <div id="dv-qareview" class="capa-detail" style="display:none;">
+          <div class="capa-detail-title">🟢 QA Review</div>
+          <p>QA independently reviews the full deviation package before approving the investigation findings:</p>
+          <ul class="checklist" style="margin-top:10px;">
+            <li>Is the root cause well-evidenced and credible? Is further investigation needed?</li>
+            <li>Is the impact assessment complete? Are all affected records identified?</li>
+            <li>Are the proposed corrective actions appropriate to the root cause?</li>
+            <li>Is the severity classification correct?</li>
+            <li>Has the CAPA threshold been correctly applied (triggered or not triggered with justification)?</li>
+            <li>Are due dates for corrective actions realistic and compliant with SOP timelines?</li>
+          </ul>
+          <p style="margin-top:10px;">If QA rejects the investigation: the deviation returns to the investigator for additional root cause work. The rejection reason and requested additional investigation are documented in the QMS record. This loop is visible in the audit trail — rejected investigations are not unusual, they demonstrate the QA oversight process is working.</p>
+        </div>
+
+        <div id="dv-actions" class="capa-detail" style="display:none;">
+          <div class="capa-detail-title">🟢 Corrective Actions</div>
+          <p>Corrective actions fix the immediate problem caused by the deviation. They are distinct from preventive actions (which are part of the CAPA). For a deviation without a CAPA, corrective actions may include:</p>
+          <ul class="checklist" style="margin-top:10px;">
+            <li><strong>Data remediation:</strong> Correct affected records through a formal data correction process. Each correction logged in the audit trail: original value, corrected value, reason, corrector, approver.</li>
+            <li><strong>Equipment repair / recalibration:</strong> If equipment was involved, service and recalibrate before returning to GxP use.</li>
+            <li><strong>Batch disposition:</strong> If a batch is affected, QA makes a formal disposition decision (release, quarantine, reject) with documented justification.</li>
+            <li><strong>Immediate retraining:</strong> If the root cause is a knowledge gap, affected personnel are retrained on the specific procedure before resuming the activity.</li>
+          </ul>
+        </div>
+
+        <div id="dv-cc" class="capa-detail" style="display:none;">
+          <div class="capa-detail-title">🟠 Change Control — When Required</div>
+          <p>If the corrective or preventive action requires a change to a validated system configuration, an SOP, or a controlled process, a formal Change Control must be raised. The deviation and CC records are cross-linked. The deviation cannot close until the CC is completed (or the CC is formally deferred with a documented risk acceptance). Common change-requiring corrections:</p>
+          <ul class="checklist" style="margin-top:10px;">
+            <li>Adding a validation rule or constraint to a system (e.g., uniqueness constraint on a field)</li>
+            <li>Modifying a workflow configuration in a validated LIMS or QMS</li>
+            <li>Revising an SOP or work instruction</li>
+            <li>Changing an instrument calibration procedure or frequency</li>
+          </ul>
+        </div>
+
+        <div id="dv-training" class="capa-detail" style="display:none;">
+          <div class="capa-detail-title">🟣 SOP / Training Update</div>
+          <p>If the investigation identified an SOP gap or a training gap as a contributing factor, the relevant SOP must be revised and all affected users retrained before the deviation can close. The sequence matters:</p>
+          <ol style="padding-left:20px;color:var(--text2);font-size:13.5px;line-height:1.8;">
+            <li>SOP revised and approved through the document control workflow</li>
+            <li>Training assignments auto-generated for all users in affected roles</li>
+            <li>Training completed and records filed (e-signature on training assignment)</li>
+            <li>Training completion report attached as evidence to deviation</li>
+          </ol>
+          <div class="callout" style="margin-top:12px;"><strong>Sequence rule:</strong> Users cannot return to the activity governed by the updated SOP until training is complete. Going live with an updated SOP before retraining is itself a deviation.</div>
+        </div>
+
+        <div id="dv-effect" class="capa-detail" style="display:none;">
+          <div class="capa-detail-title">🔵 Effectiveness Check</div>
+          <p>After corrective actions are implemented, you must verify they worked. The effectiveness check is not just a sign-off that the action was completed — it is evidence that the root cause has been eliminated and the deviation scenario does not recur.</p>
+          <ul class="checklist" style="margin-top:10px;">
+            <li><strong>For system changes:</strong> Re-execute the test case that replicates the deviation scenario. Document the result (system now prevents the error). Attach test execution record.</li>
+            <li><strong>For process changes:</strong> Monitor the process for an agreed period (e.g., 30 days, 10 runs, next 3 batches). No recurrence of the same deviation pattern = effective.</li>
+            <li><strong>For training gaps:</strong> Assessment or knowledge check after retraining. Or monitored observation of the affected activity being performed correctly.</li>
+          </ul>
+          <div class="callout callout-blue" style="margin-top:12px;"><strong>If not effective:</strong> The deviation returns to the investigation stage. Root cause may have been incorrectly identified, or the corrective action did not address it fully. This is documented in the deviation record and the loop restarts. Repeat deviations with the same root cause are a red flag in regulatory inspections.</div>
+        </div>
+
+        <div id="dv-close" class="capa-detail" style="display:none;">
+          <div class="capa-detail-title">✅ Deviation Closed — Final Checklist</div>
+          <p>Before QA signs off closure, every item on this checklist must be complete:</p>
+          <ul class="checklist" style="margin-top:10px;">
+            <li>Root cause documented, evidenced, and QA-accepted</li>
+            <li>Impact assessment complete — all affected records identified and remediated</li>
+            <li>All corrective actions completed on time (or overdue with documented justification)</li>
+            <li>Change Control closed (if a system or process change was required)</li>
+            <li>SOP updated and all affected users retrained (if required)</li>
+            <li>CAPA opened and linked (if risk score met threshold)</li>
+            <li>Effectiveness check completed with supporting evidence attached</li>
+            <li>No open blocking items</li>
+          </ul>
+          <p style="margin-top:12px;">QA applies their electronic signature with meaning "I confirm this deviation has been fully investigated, all actions completed, and the record is approved for closure." The record is locked in the QMS — no further edits possible. Retained per the applicable data retention policy.</p>
+          <div class="callout callout-green" style="margin-top:14px;"><strong>Retention:</strong> Deviation records must be retained for the life of the batch/product plus the regulatory retention period — typically a minimum of 3 years after batch expiry in the US. For systems, retain for the life of the validated system plus applicable period. Records must remain accessible for regulatory inspection throughout that window.</div>
+        </div>
+
+      </div><!-- /section -->
+
+      <!-- CLOSURE CRITERIA QUICK REFERENCE -->
+      <div class="section">
+        <div class="section-title">Closure Criteria — Quick Reference</div>
+        <table class="deliv-table">
+          <thead><tr><th>Item</th><th>Required for Closure</th><th>Evidence Attached</th></tr></thead>
+          <tbody>
+            <tr><td>Root cause</td><td>Documented, evidenced, QA-accepted</td><td>Investigation report</td></tr>
+            <tr><td>Impact assessment</td><td>All affected records identified</td><td>Impacted record list + disposition</td></tr>
+            <tr><td>Containment</td><td>All containment actions completed</td><td>Documented in record at time of action</td></tr>
+            <tr><td>Corrective actions</td><td>All completed or formally deferred</td><td>Completion notes + dates</td></tr>
+            <tr><td>Change control</td><td>Closed (if required)</td><td>CC record number + closure date</td></tr>
+            <tr><td>SOP / training</td><td>Updated SOP approved + training complete</td><td>Training completion report</td></tr>
+            <tr><td>CAPA</td><td>Opened and linked (if threshold met)</td><td>CAPA record number</td></tr>
+            <tr><td>Effectiveness</td><td>Evidence of no recurrence</td><td>Test result or monitoring period summary</td></tr>
+            <tr><td>QA e-signature</td><td>Mandatory</td><td>Audit trail entry in QMS</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Deviation Start-to-Close Reference · GxP · ALCOA+ · 21 CFR Part 11 · EU GMP Annex 11
+      </div>
+    </div><!-- /phase14 -->
+
   </main>
 </div>
 
@@ -1027,6 +1791,13 @@
     document.getElementById(phaseId).classList.add('active');
     navEl.classList.add('active');
     document.querySelector('.content').scrollTop = 0;
+  }
+
+  function toggleCapaDetail(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const isOpen = el.style.display !== 'none';
+    el.style.display = isOpen ? 'none' : 'block';
   }
 </script>
 </body>
