@@ -1,0 +1,1822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LabWare LIMS — End-to-End Reference</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,300&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg:      #0d0f14;
+    --surface: #13161d;
+    --surface2:#1a1e28;
+    --surface3:#1f2436;
+    --border:  #252a38;
+    --border2: #2e3448;
+    --accent:  #4fffb0;
+    --accent2: #00d4ff;
+    --accent3: #ff9d4d;
+    --accent4: #c87dff;
+    --text:    #e8eaf0;
+    --text2:   #8b90a8;
+    --text3:   #555c78;
+    --danger:  #ff5f6d;
+    --warn:    #ffd166;
+    --gold:    #f0c040;
+  }
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ══ HEADER ══ */
+  .header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 48px;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .header-left { display: flex; align-items: center; gap: 16px; }
+
+  .header-badge {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #000;
+    font-family: 'DM Mono', monospace;
+    font-size: 9.5px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    padding: 4px 10px;
+    border-radius: 3px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .header h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+
+  .header p { color: var(--text2); font-size: 12.5px; margin-top: 1px; }
+
+  .header-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    padding: 4px 10px;
+    border-radius: 3px;
+    border: 1px solid var(--border2);
+    color: var(--text3);
+    cursor: pointer;
+    transition: all 0.15s;
+    text-transform: uppercase;
+  }
+
+  .pill:hover, .pill.active { background: var(--surface2); color: var(--text); border-color: var(--accent); }
+  .pill.active { color: var(--accent); }
+
+  /* ══ LAYOUT ══ */
+  .layout {
+    display: grid;
+    grid-template-columns: 252px 1fr;
+    min-height: calc(100vh - 76px);
+  }
+
+  /* ══ SIDEBAR ══ */
+  .sidebar {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 24px 0 40px;
+    position: sticky;
+    top: 76px;
+    height: calc(100vh - 76px);
+    overflow-y: auto;
+  }
+
+  .sidebar::-webkit-scrollbar { width: 3px; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border2); }
+
+  .nav-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    color: var(--text3);
+    text-transform: uppercase;
+    padding: 16px 22px 5px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 22px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text2);
+    border-left: 2px solid transparent;
+    transition: all 0.12s;
+    line-height: 1.35;
+  }
+
+  .nav-item:hover { background: var(--surface2); color: var(--text); }
+  .nav-item.active { color: var(--accent); border-left-color: var(--accent); background: rgba(79,255,176,0.04); }
+
+  .nav-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text3); flex-shrink: 0; transition: background 0.15s; }
+  .nav-item.active .nav-dot { background: var(--accent); }
+
+  .nav-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--text3);
+    flex-shrink: 0;
+    width: 18px;
+  }
+
+  /* ══ CONTENT AREA ══ */
+  .content {
+    padding: 40px 52px 80px;
+    max-width: 980px;
+  }
+
+  /* ══ STAGE SECTIONS ══ */
+  .stage-section {
+    margin-bottom: 64px;
+    scroll-margin-top: 92px;
+  }
+
+  .stage-section.hidden { display: none; }
+
+  /* Stage header */
+  .stage-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stage-num-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 4px;
+    border: 1px solid;
+  }
+
+  .stage-title {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .stage-subtitle { color: var(--text2); font-size: 14px; line-height: 1.65; max-width: 600px; }
+
+  /* ══ FLOW DIAGRAM ══ */
+  .flow-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px 16px;
+    margin-bottom: 24px;
+    overflow-x: auto;
+  }
+
+  /* ══ DETAIL PANELS ══ */
+  .detail-panel {
+    display: none;
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    padding: 22px 26px;
+    margin: 8px 0 16px;
+    animation: slideIn 0.22s ease both;
+  }
+
+  .detail-panel.open { display: block; }
+
+  @keyframes slideIn {
+    from { opacity:0; transform: translateY(-5px); }
+    to   { opacity:1; transform: translateY(0); }
+  }
+
+  .dp-title {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .dp-body { font-size: 13.5px; color: var(--text2); line-height: 1.75; }
+  .dp-body p { margin-bottom: 10px; }
+  .dp-body p:last-child { margin-bottom: 0; }
+  .dp-body strong { color: var(--text); font-weight: 600; }
+
+  .dp-body ul { list-style: none; padding: 0; margin: 10px 0; display: flex; flex-direction: column; gap: 7px; }
+  .dp-body ul li { display: flex; gap: 10px; align-items: flex-start; }
+  .dp-body ul li::before { content: '▸'; color: var(--accent); font-size: 10px; margin-top: 5px; flex-shrink: 0; }
+
+  .dp-body ol { padding-left: 20px; margin: 10px 0; display: flex; flex-direction: column; gap: 7px; }
+  .dp-body ol li { font-size: 13.5px; color: var(--text2); }
+
+  /* Sub-table inside panels */
+  .sub-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+  .sub-table th { font-family: 'DM Mono', monospace; font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); padding: 8px 12px; border-bottom: 1px solid var(--border); text-align: left; }
+  .sub-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--text2); vertical-align: top; }
+  .sub-table tr:hover td { background: var(--surface3); color: var(--text); }
+  .sub-table td:first-child { font-weight: 600; color: var(--text); white-space: nowrap; }
+
+  /* Callouts */
+  .callout { border-left: 3px solid var(--accent3); background: rgba(255,157,77,0.06); border-radius: 0 6px 6px 0; padding: 13px 18px; margin: 14px 0; font-size: 13px; color: var(--text2); }
+  .callout strong { color: var(--accent3); }
+  .callout-blue { border-left-color: var(--accent2); background: rgba(0,212,255,0.05); }
+  .callout-blue strong { color: var(--accent2); }
+  .callout-green { border-left-color: var(--accent); background: rgba(79,255,176,0.04); }
+  .callout-green strong { color: var(--accent); }
+  .callout-danger { border-left-color: var(--danger); background: rgba(255,95,109,0.05); }
+  .callout-danger strong { color: var(--danger); }
+
+  /* Code */
+  .code { font-family: 'DM Mono', monospace; font-size: 11.5px; background: var(--surface); border: 1px solid var(--border); border-radius: 5px; padding: 13px 16px; margin: 12px 0; color: var(--text2); white-space: pre-wrap; line-height: 1.65; }
+
+  /* Two-col */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 14px 0; }
+  @media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } }
+
+  .mini-card { background: var(--surface); border: 1px solid var(--border); border-radius: 7px; padding: 16px 18px; }
+  .mini-card-title { font-weight: 700; font-size: 13.5px; color: var(--text); margin-bottom: 8px; }
+  .mini-card-body { font-size: 13px; color: var(--text2); line-height: 1.65; }
+
+  /* Badges */
+  .badge { display: inline-block; font-family: 'DM Mono', monospace; font-size: 9.5px; letter-spacing: 0.08em; padding: 2px 8px; border-radius: 3px; }
+  .badge-green  { background: rgba(79,255,176,0.1);  color: var(--accent);  border: 1px solid rgba(79,255,176,0.25); }
+  .badge-blue   { background: rgba(0,212,255,0.1);   color: var(--accent2); border: 1px solid rgba(0,212,255,0.2); }
+  .badge-orange { background: rgba(255,157,77,0.1);  color: var(--accent3); border: 1px solid rgba(255,157,77,0.2); }
+  .badge-purple { background: rgba(200,125,255,0.1); color: var(--accent4); border: 1px solid rgba(200,125,255,0.2); }
+  .badge-red    { background: rgba(255,95,109,0.1);  color: var(--danger);  border: 1px solid rgba(255,95,109,0.2); }
+  .badge-warn   { background: rgba(255,209,102,0.1); color: var(--warn);    border: 1px solid rgba(255,209,102,0.2); }
+
+  /* SVG node hover */
+  .lw-node rect, .lw-node polygon { transition: filter 0.15s, stroke-width 0.15s; }
+  .lw-node:hover rect, .lw-node:hover polygon { filter: brightness(1.2); stroke-width: 1.4 !important; cursor: pointer; }
+
+  /* Click hint */
+  .click-hint { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text3); margin-bottom: 14px; letter-spacing: 0.06em; }
+
+  /* Section title */
+  .sec-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--text3);
+    text-transform: uppercase;
+    margin: 28px 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .sec-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* Footer */
+  .page-footer {
+    margin-top: 60px;
+    padding-top: 22px;
+    border-top: 1px solid var(--border);
+    font-size: 11.5px;
+    font-family: 'DM Mono', monospace;
+    color: var(--text3);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ HEADER ══ -->
+<header class="header">
+  <div class="header-left">
+    <div class="header-badge">LABWARE LIMS · END-TO-END</div>
+    <div>
+      <h1>LabWare LIMS — Complete System Reference</h1>
+      <p>Architecture · Configuration · Sample Lifecycle · Results · OOS · Instruments · Validation · Batch Release</p>
+    </div>
+  </div>
+  <div class="header-pills">
+    <span class="pill active" onclick="filterStage('all',this)">All Stages</span>
+    <span class="pill" onclick="filterStage('arch',this)">Architecture</span>
+    <span class="pill" onclick="filterStage('sample',this)">Sample Flow</span>
+    <span class="pill" onclick="filterStage('results',this)">Results</span>
+    <span class="pill" onclick="filterStage('compliance',this)">Compliance</span>
+  </div>
+</header>
+
+<!-- ══ LAYOUT ══ -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="nav-label">Architecture</div>
+    <div class="nav-item active" onclick="scrollTo('s01',this)"><span class="nav-num">01</span><div class="nav-dot"></div>System Architecture</div>
+    <div class="nav-item" onclick="scrollTo('s02',this)"><span class="nav-num">02</span><div class="nav-dot"></div>Data Model</div>
+    <div class="nav-item" onclick="scrollTo('s03',this)"><span class="nav-num">03</span><div class="nav-dot"></div>Security &amp; Access</div>
+
+    <div class="nav-label">Sample Lifecycle</div>
+    <div class="nav-item" onclick="scrollTo('s04',this)"><span class="nav-num">04</span><div class="nav-dot"></div>Sample Login</div>
+    <div class="nav-item" onclick="scrollTo('s05',this)"><span class="nav-num">05</span><div class="nav-dot"></div>Test Assignment</div>
+    <div class="nav-item" onclick="scrollTo('s06',this)"><span class="nav-num">06</span><div class="nav-dot"></div>Worksheets &amp; Scheduling</div>
+    <div class="nav-item" onclick="scrollTo('s07',this)"><span class="nav-num">07</span><div class="nav-dot"></div>Result Entry &amp; Review</div>
+    <div class="nav-item" onclick="scrollTo('s08',this)"><span class="nav-num">08</span><div class="nav-dot"></div>Calculations &amp; LBMS</div>
+
+    <div class="nav-label">Quality &amp; Compliance</div>
+    <div class="nav-item" onclick="scrollTo('s09',this)"><span class="nav-num">09</span><div class="nav-dot"></div>OOS / OOT Handling</div>
+    <div class="nav-item" onclick="scrollTo('s10',this)"><span class="nav-num">10</span><div class="nav-dot"></div>Batch Release &amp; CoA</div>
+    <div class="nav-item" onclick="scrollTo('s11',this)"><span class="nav-num">11</span><div class="nav-dot"></div>Stability Management</div>
+
+    <div class="nav-label">Integration &amp; Validation</div>
+    <div class="nav-item" onclick="scrollTo('s12',this)"><span class="nav-num">12</span><div class="nav-dot"></div>Instrument Integration</div>
+    <div class="nav-item" onclick="scrollTo('s13',this)"><span class="nav-num">13</span><div class="nav-dot"></div>ERP / SAP Integration</div>
+    <div class="nav-item" onclick="scrollTo('s14',this)"><span class="nav-num">14</span><div class="nav-dot"></div>CSV &amp; Validation</div>
+    <div class="nav-item" onclick="scrollTo('s15',this)"><span class="nav-num">15</span><div class="nav-dot"></div>Upgrades &amp; Maintenance</div>
+  </nav>
+
+  <!-- CONTENT -->
+  <main class="content">
+
+    <!-- ════════════════════════════════
+         STAGE 01 — SYSTEM ARCHITECTURE
+    ════════════════════════════════ -->
+    <section class="stage-section" id="s01" data-tags="arch">
+      <div class="stage-header">
+        <div class="stage-num-badge" style="color:var(--accent);border-color:rgba(79,255,176,0.3);background:rgba(79,255,176,0.07);">01</div>
+        <div>
+          <div class="stage-title">System Architecture</div>
+          <div class="stage-subtitle">How LabWare is structured — the application tiers, database layer, deployment models, and what each component does. The foundation everything else sits on.</div>
+        </div>
+      </div>
+
+      <div class="click-hint">▸ Click any node to expand details</div>
+
+      <div class="flow-wrap">
+        <svg width="100%" viewBox="0 0 720 420" style="display:block;">
+          <defs>
+            <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+              <path d="M2 1L8 5L2 9" fill="none" stroke="#2e3448" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </marker>
+          </defs>
+
+          <!-- TIER LABELS -->
+          <text font-family="'DM Mono',monospace" font-size="9" fill="#555c78" letter-spacing="0.1em" text-anchor="middle" transform="translate(22,80) rotate(-90)">CLIENT</text>
+          <text font-family="'DM Mono',monospace" font-size="9" fill="#555c78" letter-spacing="0.1em" text-anchor="middle" transform="translate(22,210) rotate(-90)">APPLICATION</text>
+          <text font-family="'DM Mono',monospace" font-size="9" fill="#555c78" letter-spacing="0.1em" text-anchor="middle" transform="translate(22,340) rotate(-90)">DATA</text>
+
+          <line x1="44" y1="130" x2="700" y2="130" stroke="#252a38" stroke-width="0.5" stroke-dasharray="4 3"/>
+          <line x1="44" y1="270" x2="700" y2="270" stroke="#252a38" stroke-width="0.5" stroke-dasharray="4 3"/>
+
+          <!-- CLIENT TIER -->
+          <g class="lw-node" onclick="toggleDP('dp-webclient')">
+            <rect x="60" y="26" width="140" height="52" rx="7" fill="rgba(79,255,176,0.07)" stroke="#4fffb0" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="12" font-weight="600" fill="#4fffb0" text-anchor="middle" x="130" y="48">Web Browser</text>
+            <text font-family="'DM Mono',monospace" font-size="9.5" fill="#8b90a8" text-anchor="middle" x="130" y="66">HTTPS · Zero install</text>
+          </g>
+          <g class="lw-node" onclick="toggleDP('dp-thinclient')">
+            <rect x="230" y="26" width="140" height="52" rx="7" fill="rgba(0,212,255,0.06)" stroke="#00d4ff" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="12" font-weight="600" fill="#00d4ff" text-anchor="middle" x="300" y="48">Thin Client</text>
+            <text font-family="'DM Mono',monospace" font-size="9.5" fill="#8b90a8" text-anchor="middle" x="300" y="66">LabWare desktop app</text>
+          </g>
+          <g class="lw-node" onclick="toggleDP('dp-mobile')">
+            <rect x="400" y="26" width="140" height="52" rx="7" fill="rgba(200,125,255,0.07)" stroke="#c87dff" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="12" font-weight="600" fill="#c87dff" text-anchor="middle" x="470" y="48">Mobile / Tablet</text>
+            <text font-family="'DM Mono',monospace" font-size="9.5" fill="#8b90a8" text-anchor="middle" x="470" y="66">Field sampling · Barcode scan</text>
+          </g>
+          <g class="lw-node" onclick="toggleDP('dp-api')">
+            <rect x="560" y="26" width="130" height="52" rx="7" fill="rgba(255,157,77,0.07)" stroke="#ff9d4d" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="12" font-weight="600" fill="#ff9d4d" text-anchor="middle" x="625" y="48">REST API</text>
+            <text font-family="'DM Mono',monospace" font-size="9.5" fill="#8b90a8" text-anchor="middle" x="625" y="66">External integrations</text>
+          </g>
+
+          <!-- connectors to app tier -->
+          <line x1="130" y1="78" x2="130" y2="148" stroke="#2e3448" stroke-width="0.8" marker-end="url(#arr)"/>
+          <line x1="300" y1="78" x2="300" y2="148" stroke="#2e3448" stroke-width="0.8" marker-end="url(#arr)"/>
+          <line x1="470" y1="78" x2="400" y2="148" stroke="#2e3448" stroke-width="0.8" marker-end="url(#arr)"/>
+          <line x1="625" y1="78" x2="550" y2="148" stroke="#2e3448" stroke-width="0.8" marker-end="url(#arr)"/>
+
+          <!-- APP TIER -->
+          <g class="lw-node" onclick="toggleDP('dp-appserver')">
+            <rect x="60" y="148" width="220" height="52" rx="7" fill="rgba(0,212,255,0.06)" stroke="#00d4ff" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="12" font-weight="600" fill="#00d4ff" text-anchor="middle" x="170" y="170">LabWare App Server</text>
+            <text font-family="'DM Mono',monospace" font-size="9.5" fill="#8b90a8" text-anchor="middle" x="170" y="188">WebLogic / Tomcat · Business logic</text>
+          </g>
+          <g class="lw-node" onclick="toggleDP('dp-lbms')">
+            <rect x="300" y="148" width="180" height="52" rx="7" fill="rgba(200,125,255,0.07)" stroke="#c87dff" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="12" font-weight="600" fill="#c87dff" text-anchor="middle" x="390" y="170">LBMS Engine</text>
+            <text font-family="'DM Mono',monospace" font-size="9.5" fill="#8b90a8" text-anchor="middle" x="390" y="188">Scripting · Triggers · Calcs</text>
+          </g>
+          <g class="lw-node" onclick="toggleDP('dp-rptserver')">
+            <rect x="500" y="148" width="180" height="52" rx="7" fill="rgba(255,209,102,0.07)" stroke="#ffd166" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="12" font-weight="600" fill="#ffd166" text-anchor="middle" x="590" y="170">Report Server</text>
+            <text font-family="'DM Mono',monospace" font-size="9.5" fill="#8b90a8" text-anchor="middle" x="590" y="188">Crystal Reports · CoA · Labels</text>
+          </g>
+
+          <!-- connectors to data tier -->
+          <line x1="170" y1="200" x2="200" y2="288" stroke="#2e3448" stroke-width="0.8" marker-end="url(#arr)"/>
+          <line x1="390" y1="200" x2="360" y2="288" stroke="#2e3448" stroke-width="0.8" marker-end="url(#arr)"/>
+          <line x1="590" y1="200" x2="500" y2="288" stroke="#2e3448" stroke-width="0.8" marker-end="url(#arr)"/>
+
+          <!-- DATA TIER -->
+          <g class="lw-node" onclick="toggleDP('dp-oracle')">
+            <rect x="60" y="288" width="200" height="56" rx="7" fill="rgba(255,95,109,0.07)" stroke="#ff5f6d" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="12" font-weight="600" fill="#ff5f6d" text-anchor="middle" x="160" y="311">Oracle / SQL Server</text>
+            <text font-family="'DM Mono',monospace" font-size="9.5" fill="#8b90a8" text-anchor="middle" x="160" y="330">Primary LIMS database</text>
+          </g>
+          <g class="lw-node" onclick="toggleDP('dp-filestore')">
+            <rect x="280" y="288" width="200" height="56" rx="7" fill="rgba(79,255,176,0.06)" stroke="#4fffb0" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="12" font-weight="600" fill="#4fffb0" text-anchor="middle" x="380" y="311">File Storage</text>
+            <text font-family="'DM Mono',monospace" font-size="9.5" fill="#8b90a8" text-anchor="middle" x="380" y="330">Attachments · Raw data files</text>
+          </g>
+          <g class="lw-node" onclick="toggleDP('dp-archive')">
+            <rect x="500" y="288" width="190" height="56" rx="7" fill="rgba(0,212,255,0.05)" stroke="#00d4ff" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="12" font-weight="600" fill="#00d4ff" text-anchor="middle" x="595" y="311">Archive / DR</text>
+            <text font-family="'DM Mono',monospace" font-size="9.5" fill="#8b90a8" text-anchor="middle" x="595" y="330">Backup · Offsite · DR instance</text>
+          </g>
+
+          <!-- Env labels -->
+          <text font-family="'DM Mono',monospace" font-size="9" fill="#555c78" text-anchor="middle" x="380" y="395">DEV → QA / TEST → PROD  (environment promotion path)</text>
+        </svg>
+      </div>
+
+      <!-- Detail panels for Stage 01 -->
+      <div id="dp-webclient" class="detail-panel">
+        <div class="dp-title">🌐 Web Browser Client</div>
+        <div class="dp-body">
+          <p>LabWare LIMS v7+ delivers a full HTML5 web interface accessible from any modern browser — no desktop client install required. This is the primary access method for most users in current deployments.</p>
+          <ul>
+            <li><strong>Zero-install:</strong> Users access LIMS via HTTPS URL. Browser renders the full application. Only supported browsers (Chrome, Edge, Firefox — versions defined in IQ) are validated.</li>
+            <li><strong>Responsive layout:</strong> Adapts to screen size. Larger screens show full sample/result grids; tablets show simplified data entry views.</li>
+            <li><strong>Session management:</strong> Inactivity timeout configurable (typically 15–30 min for GxP compliance). Session expiry forces re-authentication — Part 11 requirement.</li>
+            <li><strong>Audit trail:</strong> All actions taken through the web client are captured in the system audit trail with user ID, timestamp, and IP address.</li>
+          </ul>
+          <div class="callout callout-blue"><strong>OQ test:</strong> Verify that a session automatically expires after the configured inactivity period and requires re-login before any further GxP actions can be performed.</div>
+        </div>
+      </div>
+
+      <div id="dp-thinclient" class="detail-panel">
+        <div class="dp-title">🖥️ Thin Client (LabWare Desktop)</div>
+        <div class="dp-body">
+          <p>The legacy LabWare thick/thin client is a Windows application used in older deployments or for specific functions not yet migrated to the web UI (e.g., advanced admin configuration, specific instrument interface utilities). Being phased out in favour of the web interface in v7+.</p>
+          <ul>
+            <li>Connects to the application server via TCP/IP on a defined port</li>
+            <li>Must be version-matched to the server — mismatches cause connection failures and are a common post-upgrade issue</li>
+            <li>IQ must document the installed version on every workstation that uses the thin client</li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="dp-mobile" class="detail-panel">
+        <div class="dp-title">📱 Mobile / Tablet Access</div>
+        <div class="dp-body">
+          <p>LabWare supports mobile access for field sampling and barcode-driven workflows. Key use cases:</p>
+          <ul>
+            <li><strong>Field sample login:</strong> Lab tech scans a barcode at the sampling point. Mobile app creates the sample record with GPS-tagged location and timestamp — contemporaneous recording (ALCOA "C").</li>
+            <li><strong>Sample receipt confirmation:</strong> Receiving lab scans incoming samples to confirm receipt. Status updates in real-time.</li>
+            <li><strong>Stability pull confirmation:</strong> Analyst scans stability samples at pull time — system records the actual pull date vs scheduled pull date for deviation tracking.</li>
+          </ul>
+          <div class="callout"><strong>Validation note:</strong> Mobile devices used for GxP data entry must be included in the IQ (device model, OS version, browser version). The mobile workflow is a separate OQ test scope from the desktop workflow.</div>
+        </div>
+      </div>
+
+      <div id="dp-api" class="detail-panel">
+        <div class="dp-title">🔌 REST API Access</div>
+        <div class="dp-body">
+          <p>LabWare v7+ exposes a RESTful API for programmatic access — used for system integrations (ERP, ELN, instruments) and automation.</p>
+          <ul>
+            <li><strong>Authentication:</strong> OAuth 2.0 or API key. Service accounts used for integrations must be named (not shared), have minimal permissions, and be included in access reviews.</li>
+            <li><strong>Key endpoints:</strong> Sample creation, result submission, status queries, report retrieval, user management.</li>
+            <li><strong>Audit trail:</strong> API-sourced changes carry the service account user ID in the audit trail. Distinguishable from human-entered records — ALCOA "Attributable" requirement.</li>
+          </ul>
+          <div class="callout callout-blue"><strong>Validation scope:</strong> API integrations are validated interfaces. Each endpoint used in GxP workflows needs an IQ (connectivity established) and OQ (data sent via API appears correctly in LIMS with proper audit trail attribution).</div>
+        </div>
+      </div>
+
+      <div id="dp-appserver" class="detail-panel">
+        <div class="dp-title">⚙️ LabWare Application Server</div>
+        <div class="dp-body">
+          <p>The application server is the core processing layer — it runs on WebLogic or Apache Tomcat (depending on version and deployment). All business logic, workflow routing, and LBMS script execution happens here.</p>
+          <ul>
+            <li><strong>Clustered deployment:</strong> Production systems use multiple app server nodes in a cluster for high availability. Load balancer distributes user sessions across nodes.</li>
+            <li><strong>GxP implication:</strong> If one node fails, user sessions may be interrupted. The recovery behaviour (session persistence, re-authentication) must be tested in OQ under a failover scenario.</li>
+            <li><strong>JVM tuning:</strong> Heap size and thread pool settings affect performance under high concurrent user load. Performance testing (concurrent users, response time under load) is part of PQ for high-throughput labs.</li>
+            <li><strong>Environments:</strong> A separate DEV, QA/TEST, and PROD app server instance is required for a validated LabWare deployment. Changes promoted DEV → QA (test) → PROD only after validation sign-off.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="dp-lbms" class="detail-panel">
+        <div class="dp-title">📝 LBMS Engine (LabWare Basic for Microsoft)</div>
+        <div class="dp-body">
+          <p>LBMS is LabWare's built-in VBA-like scripting engine. It runs inside the application server and executes custom logic in response to system events.</p>
+          <ul>
+            <li><strong>Event triggers:</strong> On-Save, On-Status-Change, On-Login, On-Approval, On-Report-Generation</li>
+            <li><strong>Use cases:</strong> Complex multi-component calculations, dynamic test assignment logic, custom OOS rules, notification routing, instrument data parsing, report population</li>
+            <li><strong>GAMP Category:</strong> Any LBMS script written by your team is GAMP Cat 5 (custom code) — requires code review, unit testing, and formal OQ validation. Not covered by LabWare's vendor qualification.</li>
+          </ul>
+          <div class="callout callout-danger"><strong>Critical admin risk:</strong> LBMS scripts accumulate over years and are often undocumented. Every script in a validated vault must be inventoried, version-controlled (source code management), and tested. A script inventory audit is mandatory at every periodic review. Undocumented scripts running in production are a critical finding.</div>
+        </div>
+      </div>
+
+      <div id="dp-rptserver" class="detail-panel">
+        <div class="dp-title">📊 Report Server — Crystal Reports &amp; CoA Generation</div>
+        <div class="dp-body">
+          <p>LabWare uses SAP Crystal Reports as its primary reporting engine. The report server renders reports on demand from LIMS data.</p>
+          <ul>
+            <li><strong>Certificate of Analysis (CoA):</strong> The most GxP-critical report. Generated at batch release — contains all test results, specifications, and pass/fail status for a product batch. Must be validated to confirm it accurately reflects the LIMS data and cannot be manually edited after generation.</li>
+            <li><strong>Audit trail reports:</strong> Regulators request LIMS audit trail reports during inspections. Pre-built and validated audit trail report templates are essential.</li>
+            <li><strong>Label printing:</strong> Sample labels, stability rack labels, and reagent labels generated via Crystal Reports and sent to barcode printers on the network.</li>
+            <li><strong>Report validation:</strong> Each GxP report is a validated function. OQ tests: correct data populates report, calculated fields are accurate, report cannot be modified after generation, and the report format (field positions, headers, footers) matches the approved template.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="dp-oracle" class="detail-panel">
+        <div class="dp-title">🗄️ Oracle / SQL Server Database</div>
+        <div class="dp-body">
+          <p>LabWare's primary data store. Oracle is most common in large enterprise deployments; SQL Server used in some smaller/mid-size implementations.</p>
+          <ul>
+            <li><strong>Schema:</strong> LabWare installs a complex schema with hundreds of tables. Core tables: SAMPLE, TEST, COMPONENT, RESULT, AUDIT_TRAIL, USER_MASTER, PRODUCT, SPECIFICATION. Never modify the schema directly — all customisation goes through LabWare's admin interface or approved DB procedures.</li>
+            <li><strong>Direct DB access control:</strong> Only DBAs should have direct SQL access to production. All admin changes through the LIMS UI. Direct DB queries for reporting should use read-only accounts. Any direct DB modification in production is an emergency-only action requiring retrospective change control and is visible to auditors.</li>
+            <li><strong>IQ requirements:</strong> Oracle version, character set, tablespace sizing, backup schedule, and DBA access list all documented in IQ.</li>
+          </ul>
+          <div class="callout callout-danger"><strong>Audit exposure:</strong> Oracle's audit trail (v$aud table) captures direct DB-level access. If an inspector requests this and finds direct SQL updates to GxP tables outside of the LIMS workflow, it is a critical data integrity finding. All data changes must flow through the application layer.</div>
+        </div>
+      </div>
+
+      <div id="dp-filestore" class="detail-panel">
+        <div class="dp-title">📁 File Storage — Attachments &amp; Raw Data</div>
+        <div class="dp-body">
+          <p>LIMS stores binary files (instrument raw data files, PDFs, images, spectra) in a network file store linked to result and sample records.</p>
+          <ul>
+            <li>Each attachment is linked to a specific result, sample, or experiment record</li>
+            <li>File integrity verification: LabWare stores a hash (checksum) of each attached file. Verification can confirm the file has not been altered since attachment.</li>
+            <li>Backup must cover the file store AND the database — restoring the DB without the file store results in broken record links</li>
+            <li>Retention policy: files must be retained for the same period as their linked GxP records (batch life + applicable regulatory retention)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="dp-archive" class="detail-panel">
+        <div class="dp-title">🔒 Archive &amp; Disaster Recovery</div>
+        <div class="dp-body">
+          <p>GxP systems require documented, tested backup and DR procedures as part of validation.</p>
+          <ul>
+            <li><strong>Backup frequency:</strong> Daily full backup minimum; transaction log backups every 1–4 hours for near-zero RPO</li>
+            <li><strong>Backup verification:</strong> Monthly restore test from backup — not just a backup job completing successfully, but verifying the restore actually produces a working system</li>
+            <li><strong>DR instance:</strong> High-criticality LIMS systems (batch release) should have a DR instance that can be activated within the defined RTO (Recovery Time Objective). RTO must be defined in the URS and tested in IQ/OQ.</li>
+            <li><strong>Audit trail of backup activity:</strong> Backup job logs are compliance evidence. Include in periodic review.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════
+         STAGE 02 — DATA MODEL
+    ════════════════════════════════ -->
+    <section class="stage-section" id="s02" data-tags="arch">
+      <div class="stage-header">
+        <div class="stage-num-badge" style="color:var(--accent2);border-color:rgba(0,212,255,0.3);background:rgba(0,212,255,0.06);">02</div>
+        <div>
+          <div class="stage-title">LabWare Data Model</div>
+          <div class="stage-subtitle">The core object hierarchy — how Sample, Test, Component, and Result relate, and where specifications and products fit in. This is the mental model you must have cold.</div>
+        </div>
+      </div>
+
+      <div class="click-hint">▸ Click any object to expand what it contains and how it relates</div>
+
+      <div class="flow-wrap">
+        <svg width="100%" viewBox="0 0 720 300" style="display:block;">
+          <defs>
+            <marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+              <path d="M2 1L8 5L2 9" fill="none" stroke="#2e3448" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </marker>
+          </defs>
+
+          <!-- Top: Product / Spec -->
+          <g class="lw-node" onclick="toggleDP('dp-product')">
+            <rect x="260" y="20" width="200" height="56" rx="7" fill="rgba(255,209,102,0.07)" stroke="#ffd166" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="13" font-weight="700" fill="#ffd166" text-anchor="middle" x="360" y="43">PRODUCT / MATRIX</text>
+            <text font-family="'DM Mono',monospace" font-size="9.5" fill="#8b90a8" text-anchor="middle" x="360" y="62">Product name · NDC · Test plan · Specs</text>
+          </g>
+
+          <!-- Row 2: Sample -->
+          <g class="lw-node" onclick="toggleDP('dp-sample')">
+            <rect x="260" y="120" width="200" height="56" rx="7" fill="rgba(79,255,176,0.08)" stroke="#4fffb0" stroke-width="1"/>
+            <text font-family="'DM Sans',sans-serif" font-size="13" font-weight="700" fill="#4fffb0" text-anchor="middle" x="360" y="143">SAMPLE</text>
+            <text font-family="'DM Mono',monospace" font-size="9.5" fill="#8b90a8" text-anchor="middle" x="360" y="162">Lot · Matrix · Login date · Status</text>
+          </g>
+
+          <!-- 1-to-many -->
+          <path d="M360 76 L360 120" fill="none" stroke="#2e3448" stroke-width="1" marker-end="url(#arr2)"/>
+          <text font-family="'DM Mono',monospace" font-size="9" fill="#555c78" text-anchor="middle" x="378" y="102">drives</text>
+
+          <!-- Row 3: Test (many per sample) -->
+          <g class="lw-node" onclick="toggleDP('dp-test')">
+            <rect x="260" y="220" width="200" height="56" rx="7" fill="rgba(0,212,255,0.06)" stroke="#00d4ff" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="13" font-weight="700" fill="#00d4ff" text-anchor="middle" x="360" y="243">TEST</text>
+            <text font-family="'DM Mono',monospace" font-size="9.5" fill="#8b90a8" text-anchor="middle" x="360" y="262">Assay · Dissolution · Microbial · ID</text>
+          </g>
+          <path d="M360 176 L360 220" fill="none" stroke="#2e3448" stroke-width="1" marker-end="url(#arr2)"/>
+          <text font-family="'DM Mono',monospace" font-size="9" fill="#555c78" text-anchor="middle" x="382" y="202">1:many</text>
+
+          <!-- Left: Component -->
+          <g class="lw-node" onclick="toggleDP('dp-component')">
+            <rect x="60" y="220" width="170" height="56" rx="7" fill="rgba(200,125,255,0.07)" stroke="#c87dff" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="13" font-weight="700" fill="#c87dff" text-anchor="middle" x="145" y="243">COMPONENT</text>
+            <text font-family="'DM Mono',monospace" font-size="9.5" fill="#8b90a8" text-anchor="middle" x="145" y="262">Param · Units · Spec limits</text>
+          </g>
+          <path d="M260 248 L230 248" fill="none" stroke="#2e3448" stroke-width="0.8" marker-end="url(#arr2)"/>
+          <text font-family="'DM Mono',monospace" font-size="9" fill="#555c78" text-anchor="middle" x="244" y="240">1:many</text>
+
+          <!-- Right: Result -->
+          <g class="lw-node" onclick="toggleDP('dp-result')">
+            <rect x="490" y="220" width="170" height="56" rx="7" fill="rgba(255,95,109,0.08)" stroke="#ff5f6d" stroke-width="1"/>
+            <text font-family="'DM Sans',sans-serif" font-size="13" font-weight="700" fill="#ff5f6d" text-anchor="middle" x="575" y="243">RESULT</text>
+            <text font-family="'DM Mono',monospace" font-size="9.5" fill="#8b90a8" text-anchor="middle" x="575" y="262">Value · OOS flag · Analyst · Approval</text>
+          </g>
+          <path d="M460 248 L490 248" fill="none" stroke="#2e3448" stroke-width="0.8" marker-end="url(#arr2)"/>
+          <text font-family="'DM Mono',monospace" font-size="9" fill="#555c78" text-anchor="middle" x="475" y="240">1:1</text>
+
+          <!-- Top-right: Stability -->
+          <g class="lw-node" onclick="toggleDP('dp-stability-dm')">
+            <rect x="510" y="120" width="170" height="56" rx="7" fill="rgba(255,157,77,0.07)" stroke="#ff9d4d" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="13" font-weight="700" fill="#ff9d4d" text-anchor="middle" x="595" y="143">STABILITY</text>
+            <text font-family="'DM Mono',monospace" font-size="9.5" fill="#8b90a8" text-anchor="middle" x="595" y="162">Schedule · Pull · Protocol</text>
+          </g>
+          <path d="M460 152 L510 152" fill="none" stroke="#2e3448" stroke-width="0.8" marker-end="url(#arr2)"/>
+
+          <!-- Top-left: OOS -->
+          <g class="lw-node" onclick="toggleDP('dp-oos-dm')">
+            <rect x="60" y="120" width="170" height="56" rx="7" fill="rgba(255,95,109,0.07)" stroke="#ff5f6d" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="13" font-weight="700" fill="#ff5f6d" text-anchor="middle" x="145" y="143">OOS RECORD</text>
+            <text font-family="'DM Mono',monospace" font-size="9.5" fill="#8b90a8" text-anchor="middle" x="145" y="162">Investigation · Phase 1 / 2</text>
+          </g>
+          <path d="M260 152 L230 152" fill="none" stroke="#ff5f6d" stroke-width="0.8" stroke-dasharray="4 3" marker-end="url(#arr2)"/>
+          <text font-family="'DM Mono',monospace" font-size="9" fill="#ff5f6d" text-anchor="middle" x="246" y="144">auto-creates</text>
+        </svg>
+      </div>
+
+      <div id="dp-product" class="detail-panel">
+        <div class="dp-title">🏷️ Product / Matrix — The Configuration Foundation</div>
+        <div class="dp-body">
+          <p>The Product (also called Matrix in LabWare) is the master configuration record that defines everything about a specific drug product or material. Every sample that ever enters the LIMS traces back to a Product record.</p>
+          <p><strong>What a Product record contains:</strong></p>
+          <ul>
+            <li><strong>Identity:</strong> Product name, product code, NDC (National Drug Code), CAS number, active ingredients, dosage form, strength</li>
+            <li><strong>Matrix type:</strong> Raw Material, API, Drug Product, In-Process, Finished Product, Stability, Reference Standard — determines which workflows and validations apply</li>
+            <li><strong>Test Plan:</strong> The list of analyses required for this product (Identification, Assay, Dissolution, Microbial, Related Substances, etc.) and the conditions under which each is required (Release testing vs. Stability T=0 vs. Stability T=6mo)</li>
+            <li><strong>Specifications:</strong> For each test component — lower limit, upper limit, target, units, decimal places, rounding rules, OOS threshold</li>
+            <li><strong>Storage conditions:</strong> Temperature, humidity, light requirements — relevant for stability scheduling</li>
+          </ul>
+          <div class="callout"><strong>Config governance:</strong> Product records are GxP configuration. Creating or modifying a Product record in production must go through change control. New product additions need documented approval. Specification changes must be traced to an approved specification document and tested in OQ before production.</div>
+        </div>
+      </div>
+
+      <div id="dp-sample" class="detail-panel">
+        <div class="dp-title">🧪 Sample — The Primary GxP Record</div>
+        <div class="dp-body">
+          <p>The Sample is the top-level GxP record. Every analytical result in LabWare belongs to a Sample. The Sample is what QA ultimately approves for batch release.</p>
+          <p><strong>Key sample fields:</strong></p>
+          <table class="sub-table">
+            <thead><tr><th>Field</th><th>Description</th><th>GxP Significance</th></tr></thead>
+            <tbody>
+              <tr><td>Sample ID</td><td>System-generated unique identifier. Must be unique across all samples — never reused.</td><td>ALCOA Attributable — uniquely identifies which physical sample this data belongs to</td></tr>
+              <tr><td>Login Date</td><td>Date/time the sample was registered. System-generated, cannot be backdated.</td><td>ALCOA Contemporaneous — record created at time of receipt</td></tr>
+              <tr><td>Batch / Lot Number</td><td>Manufacturing batch this sample represents</td><td>Links to batch release decision</td></tr>
+              <tr><td>Sampling Date</td><td>When and where the physical sample was taken</td><td>Traceability to the manufacturing event</td></tr>
+              <tr><td>Status</td><td>U / I / C / A / D / X (lifecycle states)</td><td>Controls access and edit permissions at each stage</td></tr>
+              <tr><td>Expiry Date</td><td>Sample retention expiry</td><td>Drives disposal workflow and retention compliance</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="dp-test" class="detail-panel">
+        <div class="dp-title">🔬 Test — The Analytical Procedure Unit</div>
+        <div class="dp-body">
+          <p>A Test represents one analytical method assigned to a sample. A single sample may have many tests (e.g., Assay, Dissolution, Identification, Microbial Limits, Related Substances — all separate tests on the same sample).</p>
+          <ul>
+            <li><strong>Test template:</strong> Each test is based on a template that defines its components, calculation logic, worksheets, and equipment required</li>
+            <li><strong>Test status:</strong> Mirrors sample status — Scheduled, In Progress, Completed, Approved. Tests can be individually approved before the parent sample is approved (useful when different analysts handle different tests)</li>
+            <li><strong>Analyst assignment:</strong> Tests are assigned to specific analysts (or analyst groups). Only the assigned analyst can enter results unless an override is used (which creates an audit trail entry)</li>
+            <li><strong>Due date:</strong> Tests have due dates calculated from the sample login date based on configured turnaround time. Overdue tests trigger notification workflows</li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="dp-component" class="detail-panel">
+        <div class="dp-title">⚗️ Component — The Individual Measurable Parameter</div>
+        <div class="dp-body">
+          <p>A Component is a single measurable parameter within a test. It is the level at which specifications are defined and at which OOS is evaluated.</p>
+          <p><strong>Example — HPLC Assay test:</strong></p>
+          <div class="code">HPLC Assay Test
+├── Component: Active Ingredient %         Spec: 97.0 – 103.0 %
+├── Component: Related Substance A %       Spec: ≤ 0.1 %
+├── Component: Related Substance B %       Spec: ≤ 0.2 %
+└── Component: Total Impurities %          Spec: ≤ 0.5 %</div>
+          <p>Each component has: data type (numeric, text, pass/fail), units, specification type (between, less than, greater than, equals), decimal places for display and rounding, and whether it contributes to the OOS flag on the parent test.</p>
+        </div>
+      </div>
+
+      <div id="dp-result" class="detail-panel">
+        <div class="dp-title">📋 Result — The Atomic GxP Data Unit</div>
+        <div class="dp-body">
+          <p>The Result record is the most important object in LabWare from a regulatory perspective. It holds the actual data that supports every quality and batch release decision.</p>
+          <ul>
+            <li><strong>Entered value:</strong> The raw value as entered by the analyst</li>
+            <li><strong>Calculated value:</strong> If a calculation formula is applied (LBMS script), the calculated result is stored separately from the entered value — both retained</li>
+            <li><strong>OOS flag:</strong> Boolean — set automatically by the system when the entered/calculated value is outside specification. Cannot be manually cleared without an OOS investigation workflow</li>
+            <li><strong>Entered by / date:</strong> System-recorded — who entered this value and when. Cannot be modified.</li>
+            <li><strong>Reviewed by / date:</strong> Supervisor review — captured as a separate event</li>
+            <li><strong>Approved by / date:</strong> QA approval with e-signature</li>
+            <li><strong>Data correction history:</strong> If a result is corrected post-entry, the original value, new value, reason, corrector, and QA approver are all preserved in the result's correction history</li>
+          </ul>
+          <div class="callout callout-green"><strong>ALCOA+ compliance check:</strong> Attributable (who entered) ✓ · Legible (stored digitally) ✓ · Contemporaneous (system timestamp) ✓ · Original (first entry preserved) ✓ · Accurate (OOS check against spec) ✓</div>
+        </div>
+      </div>
+
+      <div id="dp-stability-dm" class="detail-panel">
+        <div class="dp-title">📅 Stability Records</div>
+        <div class="dp-body"><p>Stability samples are a special Sample subtype with a linked Stability Protocol that defines timepoints (T=0, T=1mo, T=3mo, T=6mo, T=12mo, T=24mo), storage conditions (25°C/60%RH, 40°C/75%RH), and test requirements at each timepoint. LabWare auto-schedules pull dates and generates alerts when pulls are due. Stability results flow through the same Sample→Test→Component→Result hierarchy but are tracked against the protocol schedule. OOT (Out of Trend) detection uses trend analysis across timepoints. See Stage 11 for full detail.</p></div>
+      </div>
+
+      <div id="dp-oos-dm" class="detail-panel">
+        <div class="dp-title">🚨 OOS Record — Auto-Generated Linkage</div>
+        <div class="dp-body"><p>When a Result's OOS flag is triggered, LabWare can be configured to automatically create a linked OOS Investigation record in the QMS (or internal OOS module). The OOS record carries the parent Sample ID, Test, Component, specification limits, and the actual failing value. The OOS investigation must be resolved (or the result invalidated with documented justification) before the parent sample can move to Approved status. See Stage 09 for the complete OOS workflow.</p></div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════
+         STAGE 03 — SECURITY & ACCESS
+    ════════════════════════════════ -->
+    <section class="stage-section" id="s03" data-tags="arch">
+      <div class="stage-header">
+        <div class="stage-num-badge" style="color:var(--accent4);border-color:rgba(200,125,255,0.3);background:rgba(200,125,255,0.07);">03</div>
+        <div>
+          <div class="stage-title">Security, Roles &amp; Access Control</div>
+          <div class="stage-subtitle">How users are authenticated, how roles restrict what they can see and do, and how 21 CFR Part 11 separation-of-duties is enforced in configuration.</div>
+        </div>
+      </div>
+
+      <div class="click-hint">▸ Click any role tier to see permissions and Part 11 implications</div>
+
+      <div class="flow-wrap">
+        <svg width="100%" viewBox="0 0 720 320" style="display:block;">
+          <!-- Role pyramid -->
+          <!-- System Admin -->
+          <g class="lw-node" onclick="toggleDP('dp-sysadmin')">
+            <rect x="280" y="20" width="160" height="52" rx="7" fill="rgba(255,209,102,0.1)" stroke="#ffd166" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="12" font-weight="700" fill="#ffd166" text-anchor="middle" x="360" y="42">System Admin</text>
+            <text font-family="'DM Mono',monospace" font-size="9.5" fill="#8b90a8" text-anchor="middle" x="360" y="60">Config · Users · Scripts</text>
+          </g>
+          <!-- QA Approver -->
+          <g class="lw-node" onclick="toggleDP('dp-qaapprover')">
+            <rect x="160" y="110" width="170" height="52" rx="7" fill="rgba(79,255,176,0.08)" stroke="#4fffb0" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="12" font-weight="700" fill="#4fffb0" text-anchor="middle" x="245" y="132">QA Approver</text>
+            <text font-family="'DM Mono',monospace" font-size="9.5" fill="#8b90a8" text-anchor="middle" x="245" y="150">E-sig · Approve · Release</text>
+          </g>
+          <!-- QC Supervisor -->
+          <g class="lw-node" onclick="toggleDP('dp-qcsupervisor')">
+            <rect x="390" y="110" width="170" height="52" rx="7" fill="rgba(0,212,255,0.06)" stroke="#00d4ff" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="12" font-weight="700" fill="#00d4ff" text-anchor="middle" x="475" y="132">QC Supervisor</text>
+            <text font-family="'DM Mono',monospace" font-size="9.5" fill="#8b90a8" text-anchor="middle" x="475" y="150">Review · Override · OOS</text>
+          </g>
+          <!-- QC Analyst -->
+          <g class="lw-node" onclick="toggleDP('dp-qcanalyst')">
+            <rect x="90" y="210" width="160" height="52" rx="7" fill="rgba(200,125,255,0.07)" stroke="#c87dff" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="12" font-weight="700" fill="#c87dff" text-anchor="middle" x="170" y="232">QC Analyst</text>
+            <text font-family="'DM Mono',monospace" font-size="9.5" fill="#8b90a8" text-anchor="middle" x="170" y="250">Enter results · View own work</text>
+          </g>
+          <!-- Sample Login -->
+          <g class="lw-node" onclick="toggleDP('dp-loginuser')">
+            <rect x="280" y="210" width="160" height="52" rx="7" fill="rgba(255,157,77,0.07)" stroke="#ff9d4d" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="12" font-weight="700" fill="#ff9d4d" text-anchor="middle" x="360" y="232">Login Clerk</text>
+            <text font-family="'DM Mono',monospace" font-size="9.5" fill="#8b90a8" text-anchor="middle" x="360" y="250">Sample login only</text>
+          </g>
+          <!-- Read Only -->
+          <g class="lw-node" onclick="toggleDP('dp-readonly')">
+            <rect x="470" y="210" width="160" height="52" rx="7" fill="rgba(85,92,120,0.15)" stroke="#555c78" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="12" font-weight="700" fill="#8b90a8" text-anchor="middle" x="550" y="232">Read Only</text>
+            <text font-family="'DM Mono',monospace" font-size="9.5" fill="#555c78" text-anchor="middle" x="550" y="250">View approved records</text>
+          </g>
+
+          <!-- Part 11 key rule banner -->
+          <rect x="60" y="282" width="600" height="28" rx="5" fill="rgba(255,95,109,0.07)" stroke="#ff5f6d" stroke-width="0.6"/>
+          <text font-family="'DM Mono',monospace" font-size="10" fill="#ff5f6d" text-anchor="middle" x="360" y="300">21 CFR Part 11: Analyst CANNOT approve their own results — role separation enforced at access profile level</text>
+
+          <!-- Connectors -->
+          <path d="M320 72 L245 110" fill="none" stroke="#2e3448" stroke-width="0.7"/>
+          <path d="M400 72 L475 110" fill="none" stroke="#2e3448" stroke-width="0.7"/>
+          <path d="M245 162 L170 210" fill="none" stroke="#2e3448" stroke-width="0.7"/>
+          <path d="M475 162 L360 210" fill="none" stroke="#2e3448" stroke-width="0.7"/>
+          <path d="M475 162 L550 210" fill="none" stroke="#2e3448" stroke-width="0.7"/>
+        </svg>
+      </div>
+
+      <div id="dp-sysadmin" class="detail-panel">
+        <div class="dp-title">🔑 System Admin — Most Powerful, Most Controlled</div>
+        <div class="dp-body">
+          <p><strong>What System Admin can do:</strong> Everything. Create/modify products, tests, specifications. Create/disable user accounts. Modify access profiles. Execute LBMS scripts. Run direct DB queries (if DB access granted). Access all menus including configuration menus hidden from regular users.</p>
+          <div class="callout callout-danger"><strong>Critical governance rule:</strong> System Admin access must be granted only to named individuals — typically 2–4 people maximum. No shared admin accounts. Admin accounts must be reviewed quarterly. Separation of duties: the person who makes a configuration change should not be the same person who approves the change control authorising it. Every admin action is captured in the admin audit trail — inspectors will ask to see it.</div>
+          <ul>
+            <li>Admin account access requires business justification and QA approval</li>
+            <li>Admin actions in production must correspond to approved change controls</li>
+            <li>Former employee admin accounts must be disabled within 24 hours of departure</li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="dp-qaapprover" class="detail-panel">
+        <div class="dp-title">✅ QA Approver Role</div>
+        <div class="dp-body">
+          <p><strong>Key permissions:</strong></p>
+          <ul>
+            <li>Can move samples from Completed → Approved status (requires e-signature)</li>
+            <li>Can approve OOS investigation records</li>
+            <li>Can approve data correction requests</li>
+            <li>Can generate and approve Certificates of Analysis</li>
+            <li>Can view all samples across all products and sites</li>
+            <li><strong>Cannot:</strong> Enter or modify results (separation from analytical work)</li>
+          </ul>
+          <div class="callout callout-green"><strong>Part 11 enforcement:</strong> The access profile for QA Approver blocks UPDATE permission on RESULT table records where the ENTERED_BY field matches the current user. System-level enforcement of self-approval prohibition.</div>
+        </div>
+      </div>
+
+      <div id="dp-qcsupervisor" class="detail-panel">
+        <div class="dp-title">👁️ QC Supervisor Role</div>
+        <div class="dp-body">
+          <p><strong>Key permissions:</strong></p>
+          <ul>
+            <li>Can review results entered by analysts (review ≠ approval — separate action)</li>
+            <li>Can perform Phase 1 laboratory investigation for OOS events</li>
+            <li>Can authorise analyst overrides (e.g., use a different instrument than assigned)</li>
+            <li>Can move samples from In Progress → Completed (supervisor sign-off that all tests are entered)</li>
+            <li>Can view all samples in their assigned department/site</li>
+            <li><strong>Cannot:</strong> Approve samples for batch release (QA role only), modify specifications</li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="dp-qcanalyst" class="detail-panel">
+        <div class="dp-title">⚗️ QC Analyst Role</div>
+        <div class="dp-body">
+          <p><strong>Key permissions:</strong></p>
+          <ul>
+            <li>Can enter results on tests assigned to them</li>
+            <li>Can view samples assigned to their login group</li>
+            <li>Can attach raw data files (instrument outputs) to result records</li>
+            <li>Can print worksheets and labels</li>
+            <li><strong>Cannot:</strong> Approve their own results, modify specification limits, create/delete samples, access admin menus</li>
+          </ul>
+          <p><strong>Status-based restriction:</strong> Once a result reaches Completed or Approved status, the Analyst role loses UPDATE permission on it. Any post-completion correction requires a formal data correction workflow with Supervisor + QA authorisation.</p>
+        </div>
+      </div>
+
+      <div id="dp-loginuser" class="detail-panel">
+        <div class="dp-title">📥 Login Clerk Role</div>
+        <div class="dp-body"><p>Narrowest operational role. Can only create new sample records (log samples into the system) and print labels. Cannot enter results, cannot view test data, cannot approve anything. Used in labs where sample receipt is handled by a separate team from analytical testing. Ensures that the person logging the sample cannot also manipulate the analytical data — separation of duties at the sample receipt stage.</p></div>
+      </div>
+
+      <div id="dp-readonly" class="detail-panel">
+        <div class="dp-title">👁️ Read-Only Role</div>
+        <div class="dp-body"><p>View-only access to approved records. Typically used for: regulatory affairs staff reviewing test data for submissions, external auditors granted temporary access, manufacturing personnel checking batch release status. Cannot create, edit, or delete any record. All access is still audit-trailed — even views of sensitive records are captured, which can be reviewed to detect unauthorised access patterns.</p></div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════
+         STAGE 04 — SAMPLE LOGIN
+    ════════════════════════════════ -->
+    <section class="stage-section" id="s04" data-tags="sample">
+      <div class="stage-header">
+        <div class="stage-num-badge" style="color:var(--accent);border-color:rgba(79,255,176,0.3);background:rgba(79,255,176,0.07);">04</div>
+        <div>
+          <div class="stage-title">Sample Login</div>
+          <div class="stage-subtitle">The moment a physical sample enters the LIMS. This is where the chain of custody begins and the GxP record is created. Every downstream action traces back to this event.</div>
+        </div>
+      </div>
+
+      <div class="click-hint">▸ Click each step in the login flow</div>
+      <div class="flow-wrap">
+        <svg width="100%" viewBox="0 0 720 130" style="display:block;">
+          <defs>
+            <marker id="arr3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+              <path d="M2 1L8 5L2 9" fill="none" stroke="#2e3448" stroke-width="1.5"/>
+            </marker>
+          </defs>
+          <g class="lw-node" onclick="toggleDP('dp-sl-scan')">
+            <rect x="20" y="36" width="120" height="58" rx="7" fill="rgba(79,255,176,0.07)" stroke="#4fffb0" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="11" font-weight="600" fill="#4fffb0" text-anchor="middle" x="80" y="57">Scan / Enter</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="80" y="72">Sample ID or</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="80" y="84">barcode</text>
+          </g>
+          <line x1="140" y1="65" x2="160" y2="65" stroke="#2e3448" stroke-width="1" marker-end="url(#arr3)"/>
+          <g class="lw-node" onclick="toggleDP('dp-sl-form')">
+            <rect x="160" y="36" width="120" height="58" rx="7" fill="rgba(0,212,255,0.06)" stroke="#00d4ff" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="11" font-weight="600" fill="#00d4ff" text-anchor="middle" x="220" y="57">Login Form</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="220" y="72">Product · Lot · Date</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="220" y="84">Qty · Source</text>
+          </g>
+          <line x1="280" y1="65" x2="300" y2="65" stroke="#2e3448" stroke-width="1" marker-end="url(#arr3)"/>
+          <g class="lw-node" onclick="toggleDP('dp-sl-validate')">
+            <rect x="300" y="36" width="120" height="58" rx="7" fill="rgba(255,209,102,0.07)" stroke="#ffd166" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="11" font-weight="600" fill="#ffd166" text-anchor="middle" x="360" y="57">Validation</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="360" y="72">Mandatory fields</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="360" y="84">Duplicate check</text>
+          </g>
+          <line x1="420" y1="65" x2="440" y2="65" stroke="#2e3448" stroke-width="1" marker-end="url(#arr3)"/>
+          <g class="lw-node" onclick="toggleDP('dp-sl-assign')">
+            <rect x="440" y="36" width="120" height="58" rx="7" fill="rgba(200,125,255,0.07)" stroke="#c87dff" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="11" font-weight="600" fill="#c87dff" text-anchor="middle" x="500" y="57">Auto-Assign</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="500" y="72">Tests from</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="500" y="84">Product test plan</text>
+          </g>
+          <line x1="560" y1="65" x2="580" y2="65" stroke="#2e3448" stroke-width="1" marker-end="url(#arr3)"/>
+          <g class="lw-node" onclick="toggleDP('dp-sl-label')">
+            <rect x="580" y="36" width="120" height="58" rx="7" fill="rgba(79,255,176,0.07)" stroke="#4fffb0" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="11" font-weight="600" fill="#4fffb0" text-anchor="middle" x="640" y="57">Label Print</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="640" y="72">Barcode label</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="640" y="84">→ physical sample</text>
+          </g>
+        </svg>
+      </div>
+
+      <div id="dp-sl-scan" class="detail-panel">
+        <div class="dp-title">🔍 Step 1 — Scan or Manual Entry</div>
+        <div class="dp-body">
+          <p>Sample login can be initiated in three ways:</p>
+          <ul>
+            <li><strong>Barcode scan:</strong> Pre-printed sample container barcode scanned at receipt — automatically populates the Sample ID field and may pre-fill product data if the barcode carries a GTIN or product code. Fastest and most accurate method — reduces transcription errors.</li>
+            <li><strong>Manual entry:</strong> Analyst types the sample information. More error-prone — validation rules (duplicate checks, format rules) compensate.</li>
+            <li><strong>Batch login:</strong> For high-throughput labs, multiple samples logged simultaneously via a CSV upload or a batch login screen. Each record still gets a unique Sample ID and independent audit trail.</li>
+          </ul>
+          <div class="callout"><strong>Best practice:</strong> Barcode-driven login is preferred for all GxP labs. It enforces ALCOA "Attributable" — the barcode carries the sample identity from the point of origin and eliminates name/ID transcription errors that can create data integrity questions.</div>
+        </div>
+      </div>
+
+      <div id="dp-sl-form" class="detail-panel">
+        <div class="dp-title">📝 Step 2 — Login Form Completion</div>
+        <div class="dp-body">
+          <p>The login form is configured in LabWare admin. Fields and their mandatory status are defined per product type or matrix. Common fields:</p>
+          <div class="two-col">
+            <div class="mini-card">
+              <div class="mini-card-title">Always Required</div>
+              <div class="mini-card-body">Product / Matrix • Batch/Lot Number • Sample Type (Release/Stability/In-Process) • Collection Date • Quantity • Unit of Measure • Received By</div>
+            </div>
+            <div class="mini-card">
+              <div class="mini-card-title">Conditionally Required</div>
+              <div class="mini-card-body">Sampling Location (required for environmental) • Stability Protocol (required for stability type) • Expiry Date (required for reference standards) • Storage Condition (for temp-sensitive)</div>
+            </div>
+          </div>
+          <p style="margin-top:12px;">LBMS scripts can enforce additional business rules at login — for example, blocking login of a new batch if a previous batch of the same product has an open OOS investigation.</p>
+        </div>
+      </div>
+
+      <div id="dp-sl-validate" class="detail-panel">
+        <div class="dp-title">✔️ Step 3 — System Validation Rules</div>
+        <div class="dp-body">
+          <p>Before the sample record is created, LabWare runs a series of validation checks:</p>
+          <ul>
+            <li><strong>Mandatory field check:</strong> All required fields populated. Configurable per product/matrix.</li>
+            <li><strong>Duplicate check:</strong> Is there already an active sample with this Lot Number and Product? Configurable: warn or block. Prevents the same batch being tested twice accidentally.</li>
+            <li><strong>Format validation:</strong> Lot number format matches the expected pattern (e.g., must be 8 characters alphanumeric). Date fields within valid range. Numeric fields within expected range.</li>
+            <li><strong>Reference data lookup:</strong> Product code exists in the system. If entered product is not configured — block login and alert admin.</li>
+          </ul>
+          <div class="callout callout-danger"><strong>Uniqueness of identifiers (WeightID / SampleID):</strong> Any field intended to be a unique identifier MUST have a system-enforced uniqueness constraint — both at the application validation layer and at the database unique index level. The 2024 LabX WeightID duplicate incident was caused by exactly this gap. Configure and validate uniqueness on ALL identifier fields during initial configuration.</div>
+        </div>
+      </div>
+
+      <div id="dp-sl-assign" class="detail-panel">
+        <div class="dp-title">⚡ Step 4 — Automatic Test Assignment</div>
+        <div class="dp-body">
+          <p>The moment the sample is saved, LabWare reads the product's Test Plan and automatically creates Test records for every analysis required for this sample type and purpose.</p>
+          <p><strong>Example — Drug Product Tablet, Release Testing:</strong></p>
+          <div class="code">Product: Drug Product Tablet 500mg  ·  Purpose: Release
+Auto-created tests:
+  TEST-001  Identification (IR)        Assigned to: QC Analyst Group
+  TEST-002  Assay (HPLC)               Assigned to: HPLC Analyst Group
+  TEST-003  Related Substances (HPLC)  Assigned to: HPLC Analyst Group
+  TEST-004  Dissolution                Assigned to: Dissolution Team
+  TEST-005  Microbial Limits           Assigned to: Microbiology Lab
+  TEST-006  Water Content (KF)         Assigned to: QC Analyst Group
+  TEST-007  Appearance                 Assigned to: QC Analyst Group</div>
+          <p>Each test gets a due date, an analyst assignment, and a Scheduled status. The QC scheduling board now shows this sample as a live work item.</p>
+        </div>
+      </div>
+
+      <div id="dp-sl-label" class="detail-panel">
+        <div class="dp-title">🏷️ Step 5 — Label Printing</div>
+        <div class="dp-body">
+          <p>On successful login, LabWare triggers label printing for the physical sample container(s). The label contains:</p>
+          <ul>
+            <li>Sample ID (human-readable + 1D/2D barcode)</li>
+            <li>Product name and lot number</li>
+            <li>Login date</li>
+            <li>Storage condition indicator (colour-coded or text)</li>
+            <li>Lab identifier</li>
+          </ul>
+          <p>Label format is defined in a Crystal Reports template validated as part of the OQ. The label template cannot be modified without a change control. Labels are the physical link between the database record and the physical sample — if a label is lost or damaged, a reprint workflow with audit trail entry is required.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════
+         STAGE 05 — TEST ASSIGNMENT
+    ════════════════════════════════ -->
+    <section class="stage-section" id="s05" data-tags="sample">
+      <div class="stage-header">
+        <div class="stage-num-badge" style="color:var(--accent2);border-color:rgba(0,212,255,0.3);background:rgba(0,212,255,0.06);">05</div>
+        <div>
+          <div class="stage-title">Test Assignment &amp; Scheduling</div>
+          <div class="stage-subtitle">How tests get to the right analysts, how priority and due dates are managed, and how the QC scheduling board works.</div>
+        </div>
+      </div>
+
+      <div id="dp-testassign-main" class="detail-panel open" style="margin-top:0;">
+        <div class="dp-title">🗓️ Test Assignment Architecture</div>
+        <div class="dp-body">
+          <p>LabWare test assignment operates on a <strong>Group → Analyst</strong> model:</p>
+          <ul>
+            <li><strong>Login Group assignment:</strong> Tests are initially assigned to a Login Group (e.g., "HPLC Team", "Microbiology"). Any analyst in that group can pick up the test.</li>
+            <li><strong>Individual pickup:</strong> Analyst selects a test from their group's worklist and "claims" it — the test is now assigned to them specifically. Their initials appear on the test record. Other analysts can no longer edit results on that test without an authorised override.</li>
+            <li><strong>Due date calculation:</strong> System calculates due date = Login Date + configured TAT (Turnaround Time) for the test type. TAT is defined per test in the Product test plan. Overdue tests are highlighted on the scheduling board and trigger escalation notifications.</li>
+            <li><strong>Priority override:</strong> Supervisors can mark a sample as Priority/STAT. Priority samples float to the top of every analyst's worklist and receive a visual flag.</li>
+          </ul>
+          <div class="two-col">
+            <div class="mini-card">
+              <div class="mini-card-title">Scheduling Board View</div>
+              <div class="mini-card-body">Real-time grid showing all open tests, grouped by analyst or test type, with colour-coded status (On Time / Due Soon / Overdue). Supervisors use this to balance workload and spot bottlenecks.</div>
+            </div>
+            <div class="mini-card">
+              <div class="mini-card-title">Capacity Planning</div>
+              <div class="mini-card-body">LabWare reports show incoming sample volume vs. available analyst capacity. Used for resource planning — scheduling overtime or requesting temp support before TAT is at risk.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════
+         STAGE 06 — WORKSHEETS
+    ════════════════════════════════ -->
+    <section class="stage-section" id="s06" data-tags="sample">
+      <div class="stage-header">
+        <div class="stage-num-badge" style="color:var(--accent3);border-color:rgba(255,157,77,0.3);background:rgba(255,157,77,0.07);">06</div>
+        <div>
+          <div class="stage-title">Worksheets &amp; Instrument Scheduling</div>
+          <div class="stage-subtitle">How batches of tests are grouped for instrument runs, how worksheets organise multiple samples on one analytical run, and how QC standards and blanks are managed.</div>
+        </div>
+      </div>
+
+      <div id="dp-worksheets-main" class="detail-panel open" style="margin-top:0;">
+        <div class="dp-title">📋 Worksheet Architecture</div>
+        <div class="dp-body">
+          <p>A <strong>Worksheet</strong> in LabWare groups multiple test records into a single analytical run — matching how a real lab instruments work (you don't run one sample per HPLC injection, you run a sequence of 20–30).</p>
+          <ul>
+            <li><strong>Worksheet template:</strong> Pre-configured in admin. Defines: how many samples per run, what QC positions are required (System Suitability, Calibration Standard, Blank, Control), the injection sequence order, and what fields must be filled before the run can be approved.</li>
+            <li><strong>Auto-population:</strong> When an analyst creates a worksheet, LabWare populates it with pending tests of the matching type from the queue — up to the capacity defined in the template. Analyst reviews the population and can add, remove, or reorder.</li>
+            <li><strong>QC positions (System Suitability / Calibration):</strong> Mandatory positions for reference standards and blanks are auto-inserted per the template. Results for these positions are evaluated against QC acceptance criteria before any sample results can be finalised. If QC fails → all sample results in the run are held pending investigation.</li>
+            <li><strong>Instrument linking:</strong> The worksheet is linked to the specific instrument used for the run. Instrument calibration status is checked — if the instrument is overdue for calibration, the worksheet cannot be started. This is a system-enforced control: you cannot generate GxP results on an out-of-calibration instrument.</li>
+          </ul>
+          <div class="callout callout-blue"><strong>OQ test:</strong> Attempt to start a worksheet on an instrument whose calibration is expired. Verify system blocks with a clear error message. This is a critical GxP control test — instrument calibration status must gate result entry.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════
+         STAGE 07 — RESULT ENTRY & REVIEW
+    ════════════════════════════════ -->
+    <section class="stage-section" id="s07" data-tags="results">
+      <div class="stage-header">
+        <div class="stage-num-badge" style="color:var(--accent);border-color:rgba(79,255,176,0.3);background:rgba(79,255,176,0.07);">07</div>
+        <div>
+          <div class="stage-title">Result Entry, Review &amp; Approval</div>
+          <div class="stage-subtitle">The complete data flow from analyst entering a value through supervisor review to final QA approval — every step, every control, every e-signature.</div>
+        </div>
+      </div>
+
+      <div class="click-hint">▸ Click each stage in the approval chain</div>
+      <div class="flow-wrap">
+        <svg width="100%" viewBox="0 0 720 150" style="display:block;">
+          <defs>
+            <marker id="arr4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+              <path d="M2 1L8 5L2 9" fill="none" stroke="#2e3448" stroke-width="1.5"/>
+            </marker>
+          </defs>
+          <g class="lw-node" onclick="toggleDP('dp-entry')">
+            <rect x="16" y="46" width="108" height="58" rx="7" fill="rgba(200,125,255,0.07)" stroke="#c87dff" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="11" font-weight="600" fill="#c87dff" text-anchor="middle" x="70" y="67">Analyst Entry</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="70" y="82">Manual / Import</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="70" y="94">e-sig optional</text>
+          </g>
+          <line x1="124" y1="75" x2="144" y2="75" stroke="#2e3448" stroke-width="1" marker-end="url(#arr4)"/>
+          <g class="lw-node" onclick="toggleDP('dp-speccheck')">
+            <rect x="144" y="46" width="108" height="58" rx="7" fill="rgba(255,209,102,0.07)" stroke="#ffd166" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="11" font-weight="600" fill="#ffd166" text-anchor="middle" x="198" y="67">Spec Check</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="198" y="82">Instant OOS/OOT</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="198" y="94">evaluation</text>
+          </g>
+          <line x1="252" y1="75" x2="272" y2="75" stroke="#2e3448" stroke-width="1" marker-end="url(#arr4)"/>
+          <g class="lw-node" onclick="toggleDP('dp-calculation')">
+            <rect x="272" y="46" width="108" height="58" rx="7" fill="rgba(0,212,255,0.06)" stroke="#00d4ff" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="11" font-weight="600" fill="#00d4ff" text-anchor="middle" x="326" y="67">Calculation</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="326" y="82">LBMS formula</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="326" y="94">applied</text>
+          </g>
+          <line x1="380" y1="75" x2="400" y2="75" stroke="#2e3448" stroke-width="1" marker-end="url(#arr4)"/>
+          <g class="lw-node" onclick="toggleDP('dp-suprevw')">
+            <rect x="400" y="46" width="108" height="58" rx="7" fill="rgba(0,212,255,0.06)" stroke="#00d4ff" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="11" font-weight="600" fill="#00d4ff" text-anchor="middle" x="454" y="67">Supervisor</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="454" y="82">Review</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="454" y="94">Second set of eyes</text>
+          </g>
+          <line x1="508" y1="75" x2="528" y2="75" stroke="#2e3448" stroke-width="1" marker-end="url(#arr4)"/>
+          <g class="lw-node" onclick="toggleDP('dp-qaapprv')">
+            <rect x="528" y="46" width="108" height="58" rx="7" fill="rgba(79,255,176,0.08)" stroke="#4fffb0" stroke-width="1"/>
+            <text font-family="'DM Sans',sans-serif" font-size="11" font-weight="600" fill="#4fffb0" text-anchor="middle" x="582" y="67">QA Approval</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="582" y="82">E-sig required</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="582" y="94">Record locked</text>
+          </g>
+          <!-- OOS branch -->
+          <path d="M198 104 L198 130 L326 130" fill="none" stroke="#ff5f6d" stroke-width="0.8" stroke-dasharray="4 3"/>
+          <text font-family="'DM Mono',monospace" font-size="9" fill="#ff5f6d" x="204" y="128">OOS → investigation</text>
+        </svg>
+      </div>
+
+      <div id="dp-entry" class="detail-panel">
+        <div class="dp-title">✍️ Analyst Result Entry</div>
+        <div class="dp-body">
+          <p>Results can be entered in three ways — all generate equivalent audit trail records:</p>
+          <ul>
+            <li><strong>Manual keyboard entry:</strong> Analyst types the value into the result field. System records: value, analyst ID, date/time.</li>
+            <li><strong>Instrument import:</strong> Results transferred automatically from instrument system (Empower, Chromeleon) via file import or API. Audit trail records source as "instrument import" with file name and timestamp — distinguishable from manual entry (ALCOA Attributable).</li>
+            <li><strong>Calculated from raw entry:</strong> Analyst enters raw data (e.g., peak area from instrument) and LBMS calculates the reportable result. Both raw entry and calculated result stored.</li>
+          </ul>
+          <div class="callout callout-danger"><strong>Critical: No result shopping.</strong> All instrument runs must be imported, not just the "best" run. If LabWare is configured for automatic import from the instrument, the system imports ALL runs. Analyst selecting only passing results to enter is a data integrity violation (ALCOA Original). This must be tested in OQ: perform 3 instrument runs, verify all 3 appear in LIMS.</div>
+        </div>
+      </div>
+
+      <div id="dp-speccheck" class="detail-panel">
+        <div class="dp-title">⚠️ Spec Check — Immediate OOS/OOT Evaluation</div>
+        <div class="dp-body">
+          <p>The moment a result value is saved, LabWare evaluates it against the specification limits defined on the component. This is <strong>automatic, immediate, and cannot be bypassed.</strong></p>
+          <ul>
+            <li><strong>OOS flag:</strong> Value outside spec limits → Result flagged OOS → Sample blocked from completion → OOS investigation auto-initiated</li>
+            <li><strong>OOT flag:</strong> Value within spec but outside trend limits → Result flagged OOT → Notification to stability/QC lead → Not blocking but requires review</li>
+            <li><strong>Visual indicator:</strong> OOS results highlighted in red on the result entry screen. Analyst cannot ignore it — it's the first thing visible upon save.</li>
+            <li><strong>No manual override of OOS flag:</strong> The OOS flag is set by the system based on the spec. Only two ways to clear it: (1) OOS investigation that invalidates the result with documented scientific justification and QA approval, or (2) specification change (which requires change control and re-evaluation of all affected historical results).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="dp-calculation" class="detail-panel">
+        <div class="dp-title">🧮 LBMS Calculation Engine</div>
+        <div class="dp-body">
+          <p>When a result has a configured LBMS calculation formula, the formula fires on save — taking the entered raw value(s) and computing the reportable result.</p>
+          <p><strong>Example — Assay calculation:</strong></p>
+          <div class="code">Raw entry: Peak Area = 845623  (analyst reads from instrument)
+
+LBMS formula:
+  Assay % = (Peak Area Sample / Peak Area Standard) 
+            × (Standard Concentration / Sample Concentration)
+            × (Dilution Factor)
+            × 100
+
+Calculated result: 99.4 %  ← stored as the reportable value
+Raw entry: 845623          ← also stored permanently</div>
+          <div class="callout callout-blue"><strong>Validation requirement (GAMP Cat 5):</strong> Every LBMS calculation formula must be independently verified before use. Write the formula in plain math notation in the FRS. Calculate the expected result manually using test data. OQ: enter the same test data into LabWare and confirm the system output matches the pre-calculated expected value. Any discrepancy = OQ failure = do not proceed to production.</div>
+        </div>
+      </div>
+
+      <div id="dp-suprevw" class="detail-panel">
+        <div class="dp-title">👁️ Supervisor Review</div>
+        <div class="dp-body">
+          <p>After the analyst completes result entry for all tests on a sample, a QC Supervisor reviews the results before the sample can move to Completed status.</p>
+          <ul>
+            <li>Supervisor reviews raw data attachments (instrument output files) against the reported results — verifying the numbers match what the instrument actually produced</li>
+            <li>Checks calculation accuracy (spot-check against manual calculation for complex assays)</li>
+            <li>Reviews any anomalies or analyst notes in the result record</li>
+            <li>Confirms all mandatory attachments are present (raw data file, calculation worksheet)</li>
+            <li>Supervisor e-sign (or initials) captured — separate event in the audit trail from analyst entry</li>
+          </ul>
+          <p><strong>Key point:</strong> Supervisor review is a QC-level control. It does not constitute QA approval. After supervisor review, the sample moves to Completed and awaits QA review.</p>
+        </div>
+      </div>
+
+      <div id="dp-qaapprv" class="detail-panel">
+        <div class="dp-title">✅ QA Approval — E-Signature &amp; Record Lock</div>
+        <div class="dp-body">
+          <p>QA approval is the final gate before a sample's data can be used for batch release decisions. It requires a <strong>21 CFR Part 11 compliant electronic signature.</strong></p>
+          <ul>
+            <li><strong>E-signature event:</strong> QA user clicks Approve, system prompts for password re-entry. Signature meaning displayed: "I approve these results as meeting specification requirements and authorise their use for batch release." User confirms with password → signature captured.</li>
+            <li><strong>What is checked before approval is allowed:</strong> All required tests completed, no open OOS investigations, all mandatory attachments present, supervisor review completed, no open data correction requests.</li>
+            <li><strong>Record lock:</strong> Upon approval, the sample and all its result records are locked. No edits possible by any user (including admin) without a formal data correction workflow that generates its own audit trail.</li>
+            <li><strong>Audit trail entry:</strong> E-signature event recorded: user ID, printed name, timestamp, signature meaning, and the state of the record at the time of signing.</li>
+          </ul>
+          <div class="callout callout-green"><strong>Part 11 OQ test:</strong> Attempt to approve a sample where the QA user was also the analyst who entered results. System must block. Attempt with correct QA user → system prompts for password → correct password accepted → signature recorded. Verify the audit trail entry contains all required Part 11 elements.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════
+         STAGE 08 — CALCULATIONS & LBMS
+    ════════════════════════════════ -->
+    <section class="stage-section" id="s08" data-tags="results">
+      <div class="stage-header">
+        <div class="stage-num-badge" style="color:var(--accent4);border-color:rgba(200,125,255,0.3);background:rgba(200,125,255,0.07);">08</div>
+        <div>
+          <div class="stage-title">Calculations, LBMS &amp; Custom Logic</div>
+          <div class="stage-subtitle">Deep dive into LBMS scripting — types, triggers, validation requirements, and the most common scripts you'll encounter as a LIMS specialist.</div>
+        </div>
+      </div>
+
+      <div id="dp-lbms-deep" class="detail-panel open" style="margin-top:0;">
+        <div class="dp-title">📝 LBMS Script Types — Complete Reference</div>
+        <div class="dp-body">
+          <table class="sub-table">
+            <thead><tr><th>Script Type</th><th>When It Fires</th><th>Common Use Cases</th><th>Validation</th></tr></thead>
+            <tbody>
+              <tr><td>Calculation Formula</td><td>On result save</td><td>Assay%, RSD, recovery correction, moisture correction</td><td>OQ: pre-calculated expected vs. system output with multiple test cases</td></tr>
+              <tr><td>On-Save Trigger</td><td>Any object save</td><td>Auto-populate fields, enforce business rules, send notifications</td><td>OQ: test each trigger condition with positive and negative cases</td></tr>
+              <tr><td>On-Status-Change</td><td>Object status transition</td><td>Auto-create OOS record, notify supervisor, lock fields</td><td>OQ: confirm fires on correct status, does not fire on others</td></tr>
+              <tr><td>Login Script</td><td>User logs in to system</td><td>Display notices, check pending training, enforce site-specific rules</td><td>OQ: verify fires on login, verify content is correct</td></tr>
+              <tr><td>Report Population</td><td>CoA / report generation</td><td>Format data for Crystal Reports, aggregate multi-test results</td><td>OQ: generate report, compare every field to source data</td></tr>
+              <tr><td>Interface Parser</td><td>File import</td><td>Parse instrument CSV/txt, map fields to LIMS components</td><td>OQ: import test file, verify every mapped field correct</td></tr>
+              <tr><td>Scheduled Job</td><td>Timer (daily, hourly)</td><td>OOT trend evaluation, stability pull alert generation, purge old data</td><td>OQ: trigger manually, verify expected action taken</td></tr>
+            </tbody>
+          </table>
+          <div class="callout callout-danger"><strong>Script governance:</strong> Every LBMS script is Cat 5 custom code. Required: (1) Formal specification documented in FRS. (2) Code review by a second developer. (3) OQ test script with pre-defined expected results. (4) Version control — scripts stored in source control (Git), tagged to each release. (5) All scripts inventoried in the Configuration Spec. (6) Script inventory reviewed at every periodic review.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════
+         STAGE 09 — OOS / OOT HANDLING
+    ════════════════════════════════ -->
+    <section class="stage-section" id="s09" data-tags="compliance">
+      <div class="stage-header">
+        <div class="stage-num-badge" style="color:var(--danger);border-color:rgba(255,95,109,0.3);background:rgba(255,95,109,0.07);">09</div>
+        <div>
+          <div class="stage-title">OOS / OOT Handling</div>
+          <div class="stage-subtitle">The most regulated workflow in your LIMS. How Out-of-Specification results are detected, investigated, and resolved — with full FDA guidance alignment.</div>
+        </div>
+      </div>
+
+      <div class="click-hint">▸ Click each phase of the OOS investigation</div>
+      <div class="flow-wrap">
+        <svg width="100%" viewBox="0 0 720 180" style="display:block;">
+          <defs>
+            <marker id="arr5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+              <path d="M2 1L8 5L2 9" fill="none" stroke="#2e3448" stroke-width="1.5"/>
+            </marker>
+          </defs>
+          <!-- OOS trigger -->
+          <g class="lw-node" onclick="toggleDP('dp-oos-trigger')">
+            <rect x="16" y="20" width="110" height="60" rx="7" fill="rgba(255,95,109,0.1)" stroke="#ff5f6d" stroke-width="1"/>
+            <text font-family="'DM Sans',sans-serif" font-size="11" font-weight="700" fill="#ff5f6d" text-anchor="middle" x="71" y="42">OOS Result</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="71" y="57">Auto-flagged</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="71" y="69">Sample blocked</text>
+          </g>
+          <line x1="126" y1="50" x2="146" y2="50" stroke="#2e3448" stroke-width="1" marker-end="url(#arr5)"/>
+          <!-- Phase 1 -->
+          <g class="lw-node" onclick="toggleDP('dp-oos-p1')">
+            <rect x="146" y="20" width="130" height="60" rx="7" fill="rgba(255,157,77,0.08)" stroke="#ff9d4d" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="11" font-weight="600" fill="#ff9d4d" text-anchor="middle" x="211" y="42">Phase 1 — Lab</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="211" y="57">Assignable cause</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="211" y="69">search · same day</text>
+          </g>
+          <!-- P1 outcome diamond -->
+          <polygon points="310,50 350,30 390,50 350,70" fill="rgba(255,209,102,0.07)" stroke="#ffd166" stroke-width="0.8"/>
+          <text font-family="'DM Mono',monospace" font-size="9" fill="#ffd166" text-anchor="middle" x="350" y="53">lab error?</text>
+          <line x1="276" y1="50" x2="310" y2="50" stroke="#2e3448" stroke-width="1" marker-end="url(#arr5)"/>
+          <!-- YES path → invalidate -->
+          <path d="M350 30 L350 10 L490 10 L490 20" fill="none" stroke="#4fffb0" stroke-width="0.8" marker-end="url(#arr5)"/>
+          <text font-family="'DM Mono',monospace" font-size="9" fill="#4fffb0" x="356" y="8">YES</text>
+          <g class="lw-node" onclick="toggleDP('dp-oos-invalidate')">
+            <rect x="440" y="20" width="130" height="60" rx="7" fill="rgba(79,255,176,0.07)" stroke="#4fffb0" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="11" font-weight="600" fill="#4fffb0" text-anchor="middle" x="505" y="42">Invalidate Result</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="505" y="57">Document reason</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="505" y="69">QA approve · Retest</text>
+          </g>
+          <!-- NO path → Phase 2 -->
+          <path d="M390 50 L440 50 L440 110" fill="none" stroke="#ff5f6d" stroke-width="0.8" stroke-dasharray="5 3" marker-end="url(#arr5)"/>
+          <text font-family="'DM Mono',monospace" font-size="9" fill="#ff5f6d" x="394" y="46">NO</text>
+          <g class="lw-node" onclick="toggleDP('dp-oos-p2')">
+            <rect x="300" y="110" width="280" height="58" rx="7" fill="rgba(255,95,109,0.08)" stroke="#ff5f6d" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="11" font-weight="600" fill="#ff5f6d" text-anchor="middle" x="440" y="133">Phase 2 — Full OOS Investigation</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="440" y="151">Full retest · Retain samples · Manufacturing review</text>
+          </g>
+          <!-- Close path -->
+          <g class="lw-node" onclick="toggleDP('dp-oos-close')">
+            <rect x="590" y="20" width="110" height="60" rx="7" fill="rgba(79,255,176,0.08)" stroke="#4fffb0" stroke-width="1"/>
+            <text font-family="'DM Sans',sans-serif" font-size="11" font-weight="600" fill="#4fffb0" text-anchor="middle" x="645" y="42">OOS Closed</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="645" y="57">Batch disposition</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="645" y="69">CAPA if needed</text>
+          </g>
+          <line x1="570" y1="50" x2="590" y2="50" stroke="#2e3448" stroke-width="1" marker-end="url(#arr5)"/>
+          <path d="M580 139 L645 139 L645 80" fill="none" stroke="#2e3448" stroke-width="0.8" marker-end="url(#arr5)"/>
+        </svg>
+      </div>
+
+      <div id="dp-oos-trigger" class="detail-panel">
+        <div class="dp-title">🚨 OOS Trigger — System Response</div>
+        <div class="dp-body">
+          <p>The moment an OOS result is saved, LabWare:</p>
+          <ul>
+            <li>Sets OOS flag on the result record</li>
+            <li>Highlights the result in red on all screens</li>
+            <li>Blocks the sample from moving to Completed status</li>
+            <li>If configured: auto-creates an OOS Investigation record linked to the result</li>
+            <li>If configured: sends immediate notification to QC Supervisor and QA</li>
+            <li>Prevents the analyst from continuing work on the same test without acknowledging the OOS</li>
+          </ul>
+          <div class="callout callout-danger"><strong>FDA 2006 OOS Guidance:</strong> An OOS result must be reported to the laboratory supervisor immediately. LabWare's automatic notification satisfies this requirement electronically — but the supervisor must act, not just receive the notification. The acknowledgment action must be documented in the OOS investigation record.</div>
+        </div>
+      </div>
+
+      <div id="dp-oos-p1" class="detail-panel">
+        <div class="dp-title">🔬 Phase 1 — Laboratory Investigation</div>
+        <div class="dp-body">
+          <p>Phase 1 is a rapid, same-day laboratory investigation to look for an <strong>assignable laboratory cause</strong> — an error in the analytical process rather than a genuine product quality failure.</p>
+          <p><strong>Phase 1 checklist (documented in the OOS record):</strong></p>
+          <ul>
+            <li>Was the correct standard used? Is the standard within its use-by date and properly stored?</li>
+            <li>Was the calculation correct? Check the formula, the dilution factors, the weight taken.</li>
+            <li>Was the instrument within calibration? Was instrument QC passing for this run?</li>
+            <li>Were there any analyst transcription errors between instrument output and LIMS entry?</li>
+            <li>Was the correct sample used? Could samples have been mixed up?</li>
+            <li>Was the sample prepared according to the method? Correct pH, temperature, extraction conditions?</li>
+          </ul>
+          <p>Each item is checked and the finding documented. If a clear, documented, scientifically-justified lab error is found → proceed to invalidation. If no lab error found → mandatory escalation to Phase 2.</p>
+          <div class="callout callout-danger"><strong>FDA critical rule:</strong> Phase 1 cannot be used to simply invalidate an OOS result because "we assume it's a lab error." A specific, documented, scientifically defensible assignable cause must be identified. "The analyst must have made an error" is not acceptable — you must identify what the error actually was.</div>
+        </div>
+      </div>
+
+      <div id="dp-oos-invalidate" class="detail-panel">
+        <div class="dp-title">✔️ OOS Invalidation (Lab Error Confirmed)</div>
+        <div class="dp-body">
+          <p>If Phase 1 identifies a clear, documented laboratory error:</p>
+          <ol>
+            <li>Document the specific assignable cause in the OOS record (e.g., "Standard solution prepared at wrong concentration — calculation shows 10x dilution error consistent with the observed OOS value")</li>
+            <li>QA reviews and approves the invalidation — requires QA e-signature with meaning "I approve the invalidation of this result based on the documented laboratory error"</li>
+            <li>The original OOS result is marked "Invalidated" — it remains in the system permanently with its full audit trail. It is never deleted.</li>
+            <li>A retest is authorised. The retest is a fresh, complete analytical sequence — not a re-read of the same instrument run.</li>
+            <li>Retest result entered. If passing → sample can proceed to Completed. If failing again → Phase 2 mandatory.</li>
+          </ol>
+          <div class="callout callout-blue"><strong>ALCOA Original:</strong> The invalidated OOS result is preserved permanently. You can never delete it. An inspector can always see that an OOS result occurred and trace what happened to it. This is the correct behaviour — the audit trail tells the complete story.</div>
+        </div>
+      </div>
+
+      <div id="dp-oos-p2" class="detail-panel">
+        <div class="dp-title">🔴 Phase 2 — Full OOS Investigation</div>
+        <div class="dp-body">
+          <p>Phase 2 is a formal, expanded investigation that goes beyond the laboratory. It must be completed within a defined timeframe (typically 30 days, per your SOP).</p>
+          <p><strong>Phase 2 scope:</strong></p>
+          <ul>
+            <li><strong>Full retest of original sample:</strong> Complete retesting from scratch — new sample preparation, new standard, different analyst, same instrument type. Minimum number of retests defined in your OOS SOP (typically n=2 or n=3).</li>
+            <li><strong>Retain sample testing:</strong> Test the retained reference sample from the same batch.</li>
+            <li><strong>Manufacturing review:</strong> Examine batch manufacturing records for the production period — any deviations, equipment issues, raw material anomalies, process parameter excursions.</li>
+            <li><strong>Raw material review:</strong> Confirm CoA of all raw materials used in the batch.</li>
+            <li><strong>Environmental data:</strong> For temperature-sensitive products — review environmental monitoring data for production and storage periods.</li>
+            <li><strong>Statistical evaluation:</strong> Are the retest results consistent with each other? A wide spread in retest results suggests a lab variability issue. Consistently low results confirm a product failure.</li>
+          </ul>
+          <p><strong>Phase 2 outcomes:</strong></p>
+          <ul>
+            <li><strong>Confirmed OOS (product failure):</strong> Batch rejected. Formal disposition (Reject/Quarantine). Regulatory notification if required. CAPA raised.</li>
+            <li><strong>Inconclusive (additional testing):</strong> More retests with statistical justification. Cannot retest indefinitely — a pre-defined maximum retest number must be stated in your SOP.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="dp-oos-close" class="detail-panel">
+        <div class="dp-title">✅ OOS Closure &amp; Batch Disposition</div>
+        <div class="dp-body">
+          <p>The OOS investigation closes when all Phase 2 activities are complete and a documented conclusion is reached. The closure must be QA-signed.</p>
+          <ul>
+            <li><strong>Batch Fail:</strong> Batch disposition = Reject. QA closes OOS with a reject decision. Manufacturing is notified. Regulatory reporting assessed (is this a significant quality event requiring health authority notification?). CAPA raised if the root cause is systemic.</li>
+            <li><strong>OOS Invalidated (Phase 2 confirms lab error):</strong> Rare outcome from Phase 2. Requires very strong evidence. The original OOS result must be explicitly documented as laboratory-attributable in the Phase 2 conclusion with QA and ideally QP/RP sign-off.</li>
+          </ul>
+          <div class="callout"><strong>Averaging rule (FDA 2006 Guidance):</strong> You cannot average an OOS result with passing retest results to calculate a "passing average." Each result must stand on its own merits. If 1 of 3 retests is OOS, investigate the outlier — do not average it away. This is one of the most common OOS-related warning letter citations.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════
+         STAGE 10 — BATCH RELEASE & CoA
+    ════════════════════════════════ -->
+    <section class="stage-section" id="s10" data-tags="compliance">
+      <div class="stage-header">
+        <div class="stage-num-badge" style="color:var(--accent);border-color:rgba(79,255,176,0.3);background:rgba(79,255,176,0.07);">10</div>
+        <div>
+          <div class="stage-title">Batch Release &amp; Certificate of Analysis</div>
+          <div class="stage-subtitle">The final quality gate before product leaves the facility. How LIMS supports the batch release decision and generates the CoA that travels with the product.</div>
+        </div>
+      </div>
+
+      <div id="dp-batchrelease" class="detail-panel open" style="margin-top:0;">
+        <div class="dp-title">🏭 Batch Release Workflow</div>
+        <div class="dp-body">
+          <p>Batch release in LabWare is the process of confirming that all required analytical testing for a batch has been completed, all results are within specification, and QA has formally approved the batch for distribution.</p>
+          <p><strong>Prerequisites for batch release (system-enforced gates):</strong></p>
+          <ul>
+            <li>All required tests for the product (per its test plan) have a sample in Approved status</li>
+            <li>No open OOS investigations linked to this batch</li>
+            <li>Stability T=0 samples logged (if applicable)</li>
+            <li>All sample records for the batch are in Approved status (no open Completed or In Progress samples)</li>
+          </ul>
+          <p><strong>CoA Generation:</strong></p>
+          <ul>
+            <li>QA initiates CoA generation from the batch record. LabWare aggregates all approved test results for the batch into a Crystal Reports template.</li>
+            <li>CoA includes: product name, batch number, manufacturing date, expiry date, test name, specification, result, pass/fail for every tested parameter</li>
+            <li>QA reviews the CoA on-screen. Any discrepancy between the CoA and the LIMS results = data integrity flag = do not release</li>
+            <li>QA applies e-signature to the CoA with meaning "I certify this batch meets all release specifications." Signature is embedded in the CoA document and in the LIMS audit trail.</li>
+            <li>Approved CoA is generated as a PDF, stored in LabWare as an attachment to the batch record, and transmitted to the customer/distribution system.</li>
+          </ul>
+          <div class="callout callout-danger"><strong>CoA integrity rule:</strong> A CoA generated from LabWare must exactly reflect the approved LIMS data. The CoA PDF is locked (digitally signed) upon generation — it cannot be modified after QA signature. Any reissued CoA must go through a formal reissue workflow with documented reason and QA approval. Manually edited CoAs (Word, PDF editor) are a critical data integrity violation.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════
+         STAGE 11 — STABILITY
+    ════════════════════════════════ -->
+    <section class="stage-section" id="s11" data-tags="compliance">
+      <div class="stage-header">
+        <div class="stage-num-badge" style="color:var(--accent3);border-color:rgba(255,157,77,0.3);background:rgba(255,157,77,0.07);">11</div>
+        <div>
+          <div class="stage-title">Stability Management</div>
+          <div class="stage-subtitle">How LabWare manages long-running stability studies — protocol setup, automated pull scheduling, OOT detection, and shelf-life calculations.</div>
+        </div>
+      </div>
+
+      <div id="dp-stability-main" class="detail-panel open" style="margin-top:0;">
+        <div class="dp-title">📅 Stability Program Architecture in LabWare</div>
+        <div class="dp-body">
+          <p>Stability studies in LabWare are managed through a <strong>Stability Protocol → Study → Schedule → Pull → Sample</strong> hierarchy:</p>
+          <ol>
+            <li><strong>Stability Protocol</strong> — Master configuration: storage conditions (25°C/60%RH = Long Term, 40°C/75%RH = Accelerated, 30°C/65%RH = Intermediate), timepoints (T=0, T=1mo, T=3mo, T=6mo, T=9mo, T=12mo, T=18mo, T=24mo, T=36mo, T=48mo, T=60mo), test requirements at each timepoint, acceptance criteria.</li>
+            <li><strong>Stability Study</strong> — Instance of a protocol for a specific batch. Created when T=0 samples are logged. Contains all the scheduled pulls for that batch across all conditions.</li>
+            <li><strong>Automated Pull Scheduling</strong> — LabWare calculates the pull date for every timepoint from the T=0 date. Generates alerts 30/14/7 days before each pull is due. If a pull is overdue (beyond the ICH-defined tolerance window), it flags as a deviation.</li>
+            <li><strong>Pull tolerance windows</strong> — ICH Q1A defines allowable windows for each timepoint (e.g., T=3mo: Day 90 ± 7 days). LabWare enforces these windows. A sample pulled outside the tolerance window auto-creates a deviation record.</li>
+            <li><strong>OOT Detection</strong> — Results within specification but showing a downward trend are flagged as Out of Trend. LabWare uses statistical methods (linear regression trend analysis or designed trend tests per ICH Q1E) to evaluate stability trends over time.</li>
+            <li><strong>Shelf-life projection</strong> — From trend analysis, LabWare can project when a parameter will reach the specification limit — enabling proactive label claim review before the expiry date becomes an issue.</li>
+          </ol>
+          <div class="callout callout-blue"><strong>Regulatory basis:</strong> ICH Q1A (Stability Testing), ICH Q1E (Evaluation of Stability Data), FDA 21 CFR 211.166 (Stability Testing). Your LabWare stability configuration must align to these guidelines. The configuration (protocol timepoints, tolerance windows, OOT thresholds) is validated configuration — documented in the Configuration Spec and tested in OQ.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════
+         STAGE 12 — INSTRUMENT INTEGRATION
+    ════════════════════════════════ -->
+    <section class="stage-section" id="s12" data-tags="sample">
+      <div class="stage-header">
+        <div class="stage-num-badge" style="color:var(--accent2);border-color:rgba(0,212,255,0.3);background:rgba(0,212,255,0.06);">12</div>
+        <div>
+          <div class="stage-title">Instrument Integration</div>
+          <div class="stage-subtitle">Bidirectional LIMS-instrument communication — how worklists go to instruments, how results come back, and how you validate each interface.</div>
+        </div>
+      </div>
+
+      <div class="click-hint">▸ Click each integration pattern</div>
+      <div class="flow-wrap">
+        <svg width="100%" viewBox="0 0 720 200" style="display:block;">
+          <!-- LIMS centre -->
+          <rect x="300" y="74" width="120" height="52" rx="7" fill="rgba(79,255,176,0.08)" stroke="#4fffb0" stroke-width="1"/>
+          <text font-family="'DM Sans',sans-serif" font-size="13" font-weight="700" fill="#4fffb0" text-anchor="middle" x="360" y="96">LabWare LIMS</text>
+          <text font-family="'DM Mono',monospace" font-size="9.5" fill="#8b90a8" text-anchor="middle" x="360" y="114">Result repository</text>
+
+          <!-- HPLC -->
+          <g class="lw-node" onclick="toggleDP('dp-hplc')">
+            <rect x="30" y="20" width="120" height="52" rx="7" fill="rgba(0,212,255,0.06)" stroke="#00d4ff" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="11" font-weight="600" fill="#00d4ff" text-anchor="middle" x="90" y="42">HPLC System</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="90" y="58">Empower / Chromeleon</text>
+          </g>
+          <path d="M150 46 L300 100" fill="none" stroke="#2e3448" stroke-width="0.8" marker-end="url(#arr)"/>
+
+          <!-- Balance -->
+          <g class="lw-node" onclick="toggleDP('dp-balance')">
+            <rect x="30" y="128" width="120" height="52" rx="7" fill="rgba(255,157,77,0.07)" stroke="#ff9d4d" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="11" font-weight="600" fill="#ff9d4d" text-anchor="middle" x="90" y="150">Balance / LabX</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="90" y="166">Mettler Toledo · Sartorius</text>
+          </g>
+          <path d="M150 154 L300 120" fill="none" stroke="#2e3448" stroke-width="0.8" marker-end="url(#arr)"/>
+
+          <!-- Dissolution -->
+          <g class="lw-node" onclick="toggleDP('dp-dissolution')">
+            <rect x="570" y="20" width="130" height="52" rx="7" fill="rgba(200,125,255,0.07)" stroke="#c87dff" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="11" font-weight="600" fill="#c87dff" text-anchor="middle" x="635" y="42">Dissolution System</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="635" y="58">Agilent · Hanson · Sotax</text>
+          </g>
+          <path d="M570 46 L420 100" fill="none" stroke="#2e3448" stroke-width="0.8" marker-end="url(#arr)"/>
+
+          <!-- Micro -->
+          <g class="lw-node" onclick="toggleDP('dp-micro')">
+            <rect x="570" y="128" width="130" height="52" rx="7" fill="rgba(255,95,109,0.07)" stroke="#ff5f6d" stroke-width="0.8"/>
+            <text font-family="'DM Sans',sans-serif" font-size="11" font-weight="600" fill="#ff5f6d" text-anchor="middle" x="635" y="150">Microbiology</text>
+            <text font-family="'DM Mono',monospace" font-size="9" fill="#8b90a8" text-anchor="middle" x="635" y="166">Rapid micro · Colony counter</text>
+          </g>
+          <path d="M570 154 L420 120" fill="none" stroke="#2e3448" stroke-width="0.8" marker-end="url(#arr)"/>
+
+          <!-- Middleware -->
+          <g class="lw-node" onclick="toggleDP('dp-middleware')">
+            <rect x="260" y="162" width="200" height="30" rx="6" fill="rgba(255,209,102,0.07)" stroke="#ffd166" stroke-width="0.7"/>
+            <text font-family="'DM Mono',monospace" font-size="9.5" font-weight="500" fill="#ffd166" text-anchor="middle" x="360" y="182">Middleware option: NuGenesis / LabX / custom</text>
+          </g>
+        </svg>
+      </div>
+
+      <div id="dp-hplc" class="detail-panel">
+        <div class="dp-title">🧪 HPLC Integration (Empower / Chromeleon)</div>
+        <div class="dp-body">
+          <p>HPLC is typically the most complex instrument integration — high data volume, multi-component results, and strict data integrity requirements.</p>
+          <p><strong>Integration flow (bidirectional):</strong></p>
+          <ul>
+            <li><strong>LIMS → HPLC (worklist push):</strong> LabWare exports a sample worklist (sample IDs, methods, vial positions) to the CDS (Chromeleon or Empower). Analyst imports the worklist into the CDS, eliminating manual sample ID transcription.</li>
+            <li><strong>HPLC → LIMS (results pull):</strong> After the run, the CDS exports results (peak areas, retention times, calculated assay values) as a structured file. LabWare LBMS parser reads the file, maps each result row to the correct LIMS sample/test/component by sample ID, and imports all results in a single batch.</li>
+            <li><strong>Raw data linkage:</strong> The original CDS data file (or a PDF rendition) is attached to the LIMS result record as supporting raw data. Auditors can trace from the LIMS result back to the original chromatogram.</li>
+          </ul>
+          <div class="callout callout-blue"><strong>Data integrity — all runs imported:</strong> The LBMS import script must import ALL results from the CDS file — not just passing ones. If the import script has logic to skip OOS results, that is a data integrity violation. OQ test: run samples that produce an OOS result, import the file, verify the OOS result appears in LIMS with the OOS flag set.</div>
+        </div>
+      </div>
+
+      <div id="dp-balance" class="detail-panel">
+        <div class="dp-title">⚖️ Balance / LabX Integration</div>
+        <div class="dp-body">
+          <p>Balance integration (Mettler Toledo LabX, Sartorius LabX, or direct serial connection) captures weighing data directly into LIMS — eliminating manual transcription of weights.</p>
+          <ul>
+            <li><strong>Task-based workflow:</strong> LIMS sends a weighing task to the balance (via LabX middleware). Analyst places the sample on the balance. Balance sends the weight back to LIMS, which records it against the correct sample and test.</li>
+            <li><strong>WeightID uniqueness:</strong> Each weighing task must carry a unique WeightID that links the weight measurement to the specific LIMS sample record. <strong>The WeightID uniqueness constraint must be enforced at both application and database layer.</strong> (This is the exact root cause of the 2024 LabX incident at Gilead — missing uniqueness constraint allowed duplicate WeightIDs to be created, creating an unattributable measurement.)</li>
+            <li><strong>Audit trail:</strong> The balance records the operator, date/time, and weight value. LabX passes this to LIMS. The LIMS result record shows source = "balance import" with instrument ID and timestamp.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="dp-dissolution" class="detail-panel">
+        <div class="dp-title">💊 Dissolution System Integration</div>
+        <div class="dp-body">
+          <p>Dissolution testing typically involves UV/Vis spectrophotometry or HPLC for quantification, with the dissolution apparatus controller managing the physical test.</p>
+          <ul>
+            <li>Dissolution results include both the dissolution profile (% dissolved at each timepoint) and a final Q-value (pass/fail vs. specification)</li>
+            <li>Integration typically exports a results file from the dissolution software (Agilent SOFTmax, Hanson Elite, Sotax AT) to a watched folder, which LabWare's import engine picks up</li>
+            <li>For multi-vessel runs (e.g., 6 or 12 vessels per batch), the import maps each vessel position to the correct test component</li>
+            <li>LBMS calculates whether the mean % dissolved at each specified timepoint meets the Q criterion</li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="dp-micro" class="detail-panel">
+        <div class="dp-title">🦠 Microbiology System Integration</div>
+        <div class="dp-body">
+          <p>Microbiology LIMS integration is more varied — ranging from manual colony count entry to automated rapid microbiological systems.</p>
+          <ul>
+            <li><strong>Colony count entry:</strong> Analyst reads physical plates and enters counts manually. LBMS calculates CFU/g or CFU/mL from the count, dilution factor, and volume plated. OOS evaluation: result exceeds the microbial limit specification.</li>
+            <li><strong>Rapid micro systems (e.g., bioMérieux BacT/Alert, Biolog, MALDI-TOF):</strong> System exports identification or enumeration results as structured files → imported to LIMS via parser script.</li>
+            <li><strong>Environmental monitoring:</strong> LIMS manages EM sample schedules, sampling location tracking, and trend analysis across all monitoring points (ISO rooms, critical surfaces, personnel). Alert levels and Action limits evaluated per the EM program specification.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="dp-middleware" class="detail-panel">
+        <div class="dp-title">🔄 Middleware Options</div>
+        <div class="dp-body">
+          <p>For complex multi-instrument environments, a middleware layer sits between instruments and LIMS:</p>
+          <ul>
+            <li><strong>NuGenesis (Waters):</strong> Scientific Data Management System — captures raw data from multiple CDS and instrument systems, provides a managed repository, and integrates with LabWare via a validated connector</li>
+            <li><strong>LabX (Mettler Toledo):</strong> Balance/titration middleware — manages weighing tasks and interfaces with LabWare via the task API</li>
+            <li><strong>Custom middleware:</strong> Python/Java services built in-house to translate proprietary instrument formats to LabWare's import format. These are GAMP Cat 5 and require full SDLC validation.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════
+         STAGE 13 — ERP INTEGRATION
+    ════════════════════════════════ -->
+    <section class="stage-section" id="s13" data-tags="sample">
+      <div class="stage-header">
+        <div class="stage-num-badge" style="color:var(--warn);border-color:rgba(255,209,102,0.3);background:rgba(255,209,102,0.06);">13</div>
+        <div>
+          <div class="stage-title">ERP / SAP Integration</div>
+          <div class="stage-subtitle">How LabWare connects to SAP or Oracle ERP for batch management, material master sync, and quality inspection lots.</div>
+        </div>
+      </div>
+
+      <div id="dp-erp-main" class="detail-panel open" style="margin-top:0;">
+        <div class="dp-title">🔗 SAP ↔ LabWare Data Flows</div>
+        <div class="dp-body">
+          <table class="sub-table">
+            <thead><tr><th>Direction</th><th>Data</th><th>Trigger</th><th>Purpose</th></tr></thead>
+            <tbody>
+              <tr><td>SAP → LIMS</td><td>Batch / Lot master data, material master (product name, UoM, spec version)</td><td>Batch creation in SAP</td><td>Auto-populate LIMS sample login form — reduces manual entry, prevents mismatches</td></tr>
+              <tr><td>SAP → LIMS</td><td>Goods receipt (GR) notification</td><td>Raw material GR in SAP</td><td>Triggers automatic sample login in LIMS for incoming raw material QC testing</td></tr>
+              <tr><td>LIMS → SAP</td><td>Quality disposition (pass/fail/release decision)</td><td>QA approval in LIMS</td><td>Updates SAP inspection lot status — batch can now be transferred / used in manufacturing</td></tr>
+              <tr><td>LIMS → SAP</td><td>Certificate of Analysis data</td><td>CoA generation in LIMS</td><td>SAP receives structured CoA data for batch record completeness and customer delivery</td></tr>
+              <tr><td>SAP → LIMS</td><td>Stability study initiation</td><td>Batch released to market in SAP</td><td>Triggers stability T=0 sample login in LIMS for long-term shelf-life program</td></tr>
+            </tbody>
+          </table>
+          <div class="callout callout-blue"><strong>Integration validation:</strong> Each data flow above is a validated interface with its own OQ test cases. Test with known data, verify field mapping accuracy, test error handling (what happens if SAP sends an unknown material number to LIMS — LIMS must reject with a clear error, not silently create a corrupt record).</div>
+          <div class="callout callout-danger"><strong>Master data sync criticality:</strong> If product specifications in LabWare don't match the approved specifications in SAP (or in the master specification document), you have a data governance failure. Establish a single source of truth for specifications and enforce that LIMS always reflects the approved current version. Spec changes must update both systems simultaneously under change control.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════
+         STAGE 14 — CSV & VALIDATION
+    ════════════════════════════════ -->
+    <section class="stage-section" id="s14" data-tags="compliance">
+      <div class="stage-header">
+        <div class="stage-num-badge" style="color:var(--accent2);border-color:rgba(0,212,255,0.3);background:rgba(0,212,255,0.06);">14</div>
+        <div>
+          <div class="stage-title">CSV &amp; Validation Strategy</div>
+          <div class="stage-subtitle">How to validate LabWare end-to-end — GAMP classification, critical OQ test cases, Part 11 compliance checklist, and what an FDA inspector will ask you to show them.</div>
+        </div>
+      </div>
+
+      <div id="dp-csv-main" class="detail-panel open" style="margin-top:0;">
+        <div class="dp-title">📋 LabWare Validation — Complete Scope</div>
+        <div class="dp-body">
+          <p><strong>GAMP Classification:</strong></p>
+          <ul>
+            <li>Standard LabWare platform (uncustomised) = <span class="badge badge-orange">GAMP Cat 4</span> (configured COTS)</li>
+            <li>Any LBMS script written by your team = <span class="badge badge-red">GAMP Cat 5</span> (custom software)</li>
+            <li>Infrastructure (Oracle DB, WebLogic, OS) = <span class="badge badge-green">GAMP Cat 1</span> (infrastructure)</li>
+          </ul>
+          <p style="margin-top:14px;"><strong>Critical OQ test cases — must pass before go-live:</strong></p>
+          <div class="two-col">
+            <div>
+              <ul>
+                <li>Sample login with auto-test assignment for all product types</li>
+                <li>Result entry — manual and instrument import</li>
+                <li>OOS flag fires on correct value range; does not fire within spec</li>
+                <li>OOS blocks sample completion — cannot be bypassed</li>
+                <li>E-signature — correct user, password re-entry, meaning captured</li>
+                <li>Self-approval blocked — analyst cannot approve own results</li>
+                <li>Audit trail — all field changes captured with old/new value</li>
+                <li>LBMS calculations — every formula with pre-defined test cases</li>
+                <li>Status-based locking — Approved records cannot be edited</li>
+                <li>Instrument interface — all fields map correctly, all runs imported</li>
+              </ul>
+            </div>
+            <div>
+              <ul>
+                <li>CoA generation — every field matches LIMS approved data</li>
+                <li>Roles — QC Analyst cannot approve, Read-Only cannot edit</li>
+                <li>Uniqueness constraints on all identifier fields (WeightID, SampleID, Barcode)</li>
+                <li>Inactivity timeout forces re-login</li>
+                <li>Instrument calibration gate — expired calibration blocks worksheet</li>
+                <li>Stability pull scheduling — correct dates, tolerance window enforcement</li>
+                <li>Backup restore — full system recoverable from backup</li>
+                <li>ERP integration — correct data flows both directions</li>
+                <li>Stability OOT detection fires at correct threshold</li>
+                <li>Reports — audit trail, CoA, OOS summary match source data</li>
+              </ul>
+            </div>
+          </div>
+          <div class="callout callout-green" style="margin-top:16px;"><strong>What the FDA inspector will ask to see:</strong> (1) Your validation package — IQ/OQ/PQ + RTM with 100% coverage. (2) The audit trail for a specific result — show original entry, any corrections, approvals. (3) Your OOS procedure and a real OOS case from the past year — show the investigation record, the retest, the outcome. (4) Your access control records — who has QA Approver role, when were they added. (5) Your LBMS script inventory — can you produce a list of every script running in production with its validation evidence.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════
+         STAGE 15 — UPGRADES & MAINTENANCE
+    ════════════════════════════════ -->
+    <section class="stage-section" id="s15" data-tags="compliance">
+      <div class="stage-header">
+        <div class="stage-num-badge" style="color:var(--accent4);border-color:rgba(200,125,255,0.3);background:rgba(200,125,255,0.07);">15</div>
+        <div>
+          <div class="stage-title">Upgrades, Maintenance &amp; Periodic Review</div>
+          <div class="stage-subtitle">Keeping the validated state through the full system lifetime — patches, major upgrades, periodic reviews, and long-term maintenance strategy.</div>
+        </div>
+      </div>
+
+      <div id="dp-upgrade-main" class="detail-panel open" style="margin-top:0;">
+        <div class="dp-title">🔄 LabWare Upgrade Strategy</div>
+        <div class="dp-body">
+          <p>LabWare (on-premise) gives you full control over your upgrade schedule — and full responsibility. Unlike SaaS, patches don't auto-apply. This is both an advantage (no surprise changes to your validated system) and a risk (security patches must be proactively managed).</p>
+          <p><strong>Major version upgrade (e.g., v7.0 → v7.5 or v7 → v8):</strong></p>
+          <ol>
+            <li>Gap analysis between versions — what changed in the platform that affects your configured GxP functions</li>
+            <li>Clone PROD to upgrade test environment</li>
+            <li>Apply upgrade in test environment, execute full regression suite (Tier 3)</li>
+            <li>Special focus: LBMS scripts must be re-tested — syntax changes between major versions can silently alter behaviour</li>
+            <li>Crystal Reports re-validated — report output must be compared field-by-field before and after upgrade</li>
+            <li>All instrument interfaces re-tested with live test data</li>
+            <li>UAT by business users before go-live sign-off</li>
+            <li>Scheduled maintenance window for production upgrade, with tested rollback plan</li>
+          </ol>
+          <p><strong>Periodic Review checklist:</strong></p>
+          <ul>
+            <li>Admin audit trail reviewed — all production admin actions correspond to approved change controls</li>
+            <li>LBMS script inventory updated and all scripts tested</li>
+            <li>User access list reviewed — stale accounts disabled, roles appropriate</li>
+            <li>Open deviations and OOS records reviewed for trends</li>
+            <li>Backup verification records reviewed — monthly restores documented</li>
+            <li>SOPs current — all reference correct system version</li>
+            <li>Training records complete for all current users</li>
+          </ul>
+          <div class="callout"><strong>Director-level insight:</strong> "The labs that struggle with LabWare upgrades are the ones with the largest LBMS script debt — hundreds of undocumented scripts built over years with no version control. Our first priority should be a full script inventory and documentation exercise before the next major upgrade. That work protects the upgrade timeline and the validated state."</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="page-footer">
+      <span>LabWare LIMS · End-to-End Reference · Architecture · Sample Lifecycle · Results · OOS · Batch Release · Validation</span>
+      <span>GAMP 5 · 21 CFR Part 11 · ICH Q1A · FDA OOS 2006 Guidance · ALCOA+</span>
+    </div>
+
+  </main>
+</div><!-- /layout -->
+
+<script>
+  // ── TOGGLE DETAIL PANELS ─────────────────────────────
+  function toggleDP(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.toggle('open');
+  }
+
+  // ── SIDEBAR SCROLL ───────────────────────────────────
+  function scrollTo(id, navEl) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    navEl.classList.add('active');
+  }
+
+  // ── FILTER BY PILL ───────────────────────────────────
+  function filterStage(tag, pillEl) {
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+    pillEl.classList.add('active');
+    document.querySelectorAll('.stage-section').forEach(sec => {
+      if (tag === 'all') {
+        sec.classList.remove('hidden');
+      } else {
+        const tags = sec.dataset.tags || '';
+        sec.classList.toggle('hidden', !tags.includes(tag));
+      }
+    });
+  }
+
+  // ── SCROLL SPY ───────────────────────────────────────
+  const sections = document.querySelectorAll('.stage-section');
+  const navItems = document.querySelectorAll('.nav-item');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navItems.forEach(n => {
+          const fn = n.getAttribute('onclick') || '';
+          n.classList.toggle('active', fn.includes(`'${id}'`));
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
