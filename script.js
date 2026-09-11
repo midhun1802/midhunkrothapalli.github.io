@@ -12,6 +12,13 @@
   onScroll();window.addEventListener('scroll',onScroll,{passive:true});
   menuToggle?.addEventListener('click',()=>{const open=mobileMenu.classList.toggle('open');menuToggle.classList.toggle('active',open);menuToggle.setAttribute('aria-expanded',String(open));});
   mobileMenu?.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{mobileMenu.classList.remove('open');menuToggle.classList.remove('active');menuToggle.setAttribute('aria-expanded','false');}));
+
+  // Surface a measured application-performance outcome in both the hero and impact areas.
+  const heroProof=[...document.querySelectorAll('.hero-proof > div')];
+  if(heroProof[2]) heroProof[2].innerHTML='<strong data-count="50">0</strong><span>%</span><small>application latency reduced · 30s → 15s</small>';
+  const impactCards=[...document.querySelectorAll('.impact-card')];
+  if(impactCards[2]) impactCards[2].innerHTML='<strong data-count="50">0</strong><span>%</span><p>reduction in application lag, improving response time from approximately 30 seconds to 15 seconds through focused performance optimization.</p>';
+
   const revealEls=[...document.querySelectorAll('[data-reveal]')];
   if(reduceMotion||!('IntersectionObserver'in window)){revealEls.forEach(el=>el.classList.add('in-view'));}else{const io=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('in-view');io.unobserve(entry.target);}}),{threshold:.13,rootMargin:'0px 0px -5% 0px'});revealEls.forEach(el=>io.observe(el));}
   const counters=[...document.querySelectorAll('[data-count]')];
@@ -19,8 +26,6 @@
   if('IntersectionObserver'in window&&!reduceMotion){const countIO=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){runCounter(entry.target);countIO.unobserve(entry.target);}}),{threshold:.55});counters.forEach(el=>countIO.observe(el));}else counters.forEach(runCounter);
   if(!reduceMotion&&window.matchMedia('(pointer:fine)').matches&&spotlight){let tx=innerWidth/2,ty=innerHeight/2,x=tx,y=ty;window.addEventListener('pointermove',e=>{tx=e.clientX;ty=e.clientY;},{passive:true});const animateSpot=()=>{x+=(tx-x)*.12;y+=(ty-y)*.12;spotlight.style.transform=`translate(${x-325}px, ${y-325}px)`;requestAnimationFrame(animateSpot);};animateSpot();}
   if(!reduceMotion&&window.matchMedia('(pointer:fine)').matches){document.querySelectorAll('[data-tilt]').forEach(card=>{card.addEventListener('pointermove',e=>{const r=card.getBoundingClientRect(),px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;card.style.transform=`perspective(1100px) rotateX(${py*-5}deg) rotateY(${px*6}deg) translateY(-2px)`;});card.addEventListener('pointerleave',()=>{card.style.transition='transform 450ms cubic-bezier(.2,.8,.2,1)';card.style.transform='';setTimeout(()=>card.style.transition='',460);});});document.querySelectorAll('.magnetic').forEach(el=>{el.addEventListener('pointermove',e=>{const r=el.getBoundingClientRect(),x=(e.clientX-r.left-r.width/2)*.08,y=(e.clientY-r.top-r.height/2)*.11;el.style.transform=`translate(${x}px, ${y}px)`;});el.addEventListener('pointerleave',()=>el.style.transform='');});}
-
-  // Expandable expertise: one open tile at a time.
   const expertiseCards=[...document.querySelectorAll('[data-expertise]')];
   const toggleExpertise=card=>{const opening=!card.classList.contains('is-open');expertiseCards.forEach(item=>{item.classList.remove('is-open');item.setAttribute('aria-expanded','false');});if(opening){card.classList.add('is-open');card.setAttribute('aria-expanded','true');if(!reduceMotion)setTimeout(()=>card.scrollIntoView({behavior:'smooth',block:'center'}),180);}};
   expertiseCards.forEach(card=>{card.addEventListener('click',()=>toggleExpertise(card));card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleExpertise(card);}});if(!reduceMotion&&window.matchMedia('(pointer:fine)').matches){card.addEventListener('pointermove',e=>{const r=card.getBoundingClientRect();card.style.setProperty('--mx',`${e.clientX-r.left}px`);card.style.setProperty('--my',`${e.clientY-r.top}px`);});}});
