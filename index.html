@@ -1,588 +1,289 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" data-theme="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Midhun Krothapalli — Lab Informatics &amp; Regulatory Systems Leader</title>
-  <meta name="description" content="Senior Lab Informatics & LIS Lead with 10+ years driving GxP-compliant digital transformation at Gilead Sciences. Expert in LIS/LIMS, Veeva Vault RIMS, and enterprise regulatory platforms.">
-  <!-- ── FAVICON ─────────────────────────────────────────────── -->
-  <link rel="icon" type="image/x-icon" href="favicon.ico" />
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
-  <link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png" />
-  <link rel="apple-touch-icon" sizes="180x180" href="favicon-180.png" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Midhun Krothapalli — Lab Informatics & Digital Quality Leader</title>
+  <meta name="description" content="Lab Informatics, LIS/LIMS, digital quality systems, validation, automation, and GxP technology leadership across regulated life sciences.">
+  <meta name="theme-color" content="#07111f">
+  <meta name="author" content="Midhun Krothapalli">
+  <meta name="robots" content="index,follow">
 
-  <!-- ── OPEN GRAPH ─────────────────────────────────────────── -->
-  <meta property="og:type"        content="website" />
-  <meta property="og:url"         content="https://midhunkrothapalli.com/" />
-  <meta property="og:title"       content="Midhun Krothapalli — Lab Informatics & Regulatory Systems Leader" />
-  <meta property="og:description" content="Senior Lab Informatics & LIS Lead with 10+ years driving GxP-compliant digital transformation at Gilead Sciences. Expert in LIS/LIMS, Veeva Vault RIMS, and enterprise regulatory platforms." />
-  <meta property="og:image"       content="https://midhunkrothapalli.com/og-image.jpg" />
-  <meta property="og:image:width"  content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt"   content="Midhun Krothapalli — Senior Lab Informatics & LIS Lead" />
-  <meta property="og:locale"      content="en_US" />
-  <meta property="og:site_name"   content="Midhun Krothapalli" />
-
-  <!-- ── TWITTER / X CARD ──────────────────────────────────── -->
-  <meta name="twitter:card"        content="summary_large_image" />
-  <meta name="twitter:title"       content="Midhun Krothapalli — Lab Informatics & Regulatory Systems Leader" />
-  <meta name="twitter:description" content="10+ years building GxP-compliant lab platforms at Gilead Sciences. LIS · LIMS · Veeva Vault RIMS · 21 CFR Part 11." />
-  <meta name="twitter:image"       content="https://midhunkrothapalli.com/og-image.jpg" />
-  <meta name="twitter:image:alt"   content="Midhun Krothapalli — Senior Lab Informatics & LIS Lead" />
-
-  <!-- ── EXTRAS ────────────────────────────────────────────── -->
-  <meta name="theme-color" content="#2563eb" />
-  <meta name="author" content="Midhun Krothapalli" />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://midhunkrothapalli.com/" />
+  <link rel="icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="favicon-180.png">
+  <link rel="canonical" href="https://midhunkrothapalli.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Midhun Krothapalli — Lab Informatics & Digital Quality Leader">
+  <meta property="og:description" content="Building compliant, scalable laboratory and enterprise digital systems across regulated life sciences.">
+  <meta property="og:image" content="https://midhunkrothapalli.com/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="scroll-progress" aria-hidden="true"><span id="progressBar"></span></div>
+  <div class="spotlight" id="spotlight" aria-hidden="true"></div>
+  <div class="noise" aria-hidden="true"></div>
 
-  <a href="#main" class="sr-only skip-link">Skip to content</a>
-  <div class="progress-bar" id="progressBar"></div>
-  <div class="cursor-glow" id="cursorGlow"></div>
-  <canvas class="particle-canvas" id="particleCanvas"></canvas>
-
-  <!-- NAV -->
   <header class="site-header" id="siteHeader">
-    <div class="container header-inner">
-      <div class="logo">
-        <svg width="34" height="34" viewBox="0 0 34 34" fill="none" aria-label="MK Logo">
-          <rect width="34" height="34" rx="8" fill="url(#logoGrad)"/>
-          <defs>
-            <linearGradient id="logoGrad" x1="0" y1="0" x2="34" y2="34">
-              <stop offset="0%" stop-color="var(--color-primary)"/>
-              <stop offset="100%" stop-color="var(--color-primary-2)"/>
-            </linearGradient>
-          </defs>
-          <text x="5" y="23" font-family="monospace" font-weight="900" font-size="13" fill="white">MK</text>
-        </svg>
-        <span class="logo-text">Midhun Krothapalli</span>
-      </div>
+    <div class="container nav-shell">
+      <a class="brand" href="#hero" aria-label="Midhun Krothapalli home">
+        <span class="brand-mark">MK</span>
+        <span class="brand-name">Midhun Krothapalli</span>
+      </a>
+
       <nav class="nav-links" aria-label="Primary navigation">
         <a href="#about">About</a>
         <a href="#experience">Experience</a>
-        <a href="#skills">Skills</a>
-        <a href="#achievements">Impact</a>
-        <a href="#kb">Knowledge Base</a>
-        <a href="#contact">Contact</a>
+        <a href="#expertise">Expertise</a>
+        <a href="#impact">Impact</a>
+        <a href="#knowledge">Knowledge</a>
       </nav>
-      <div class="header-actions">
-        <a href="mailto:Midhunkrothapalli@yahoo.com?subject=Resume%20Request%20—%20[Your%20Name]&body=Hi%20Midhun%2C%0A%0AI%20came%20across%20your%20portfolio%20and%20would%20love%20to%20review%20your%20resume.%0A%0AThank%20you!" class="btn-resume-nav" aria-label="Request Resume">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-          Resume
-        </a>
-        <button data-theme-toggle aria-label="Switch to light mode" class="theme-toggle">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-        </button>
-        <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
-          <span></span><span></span><span></span>
+
+      <div class="nav-actions">
+        <a class="btn btn-small btn-ghost" href="mailto:Midhunkrothapalli@yahoo.com?subject=Portfolio%20Inquiry">Contact</a>
+        <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu">
+          <span></span><span></span>
         </button>
       </div>
     </div>
-    <div class="mobile-nav" id="mobileNav">
-      <a href="#about" class="mobile-link">About</a>
-      <a href="#experience" class="mobile-link">Experience</a>
-      <a href="#skills" class="mobile-link">Skills</a>
-      <a href="#achievements" class="mobile-link">Impact</a>
-      <a href="#kb" class="mobile-link">Knowledge Base</a>
-      <a href="#contact" class="mobile-link">Contact</a>
-    </div>
+
+    <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#expertise">Expertise</a>
+      <a href="#impact">Impact</a>
+      <a href="#knowledge">Knowledge</a>
+      <a href="mailto:Midhunkrothapalli@yahoo.com?subject=Portfolio%20Inquiry">Contact</a>
+    </nav>
   </header>
 
   <main id="main">
+    <section class="hero" id="hero">
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="hero-orb orb-a" aria-hidden="true"></div>
+      <div class="hero-orb orb-b" aria-hidden="true"></div>
 
-    <!-- HERO -->
-    <section class="hero-section" id="hero">
-      <div class="hero-grid-bg"></div>
-      <div class="hero-orb hero-orb-1"></div>
-      <div class="hero-orb hero-orb-2"></div>
-      <div class="container hero-container">
-        <div class="hero-left">
-          <div class="hero-badge">
-            <span class="badge-dot"></span>
-            <span class="mono">OPEN TO OPPORTUNITIES</span>
+      <div class="container hero-layout">
+        <div class="hero-copy">
+          <div class="eyebrow reveal" data-reveal>
+            <span class="status-dot"></span>
+            <span>LAB INFORMATICS · GxP · DIGITAL SYSTEMS</span>
           </div>
 
-          <h1 class="hero-heading">
-            <span class="hero-greeting">Hello, I'm</span>
-            <span class="hero-name"><span class="accent">Midhun</span> Krothapalli</span>
-            <span class="hero-role">I architect <span class="accent-2">compliant</span> lab ecosystems</span>
+          <h1 class="hero-title reveal" data-reveal>
+            I build <span class="gradient-text">inspection-ready</span><br>
+            digital ecosystems for science.
           </h1>
-          <p class="hero-sub">
-            Senior Lab Informatics &amp; LIS Lead with over a decade engineering inspection-ready digital platforms at the nexus of life sciences, GxP compliance, and enterprise technology.
+
+          <p class="hero-lead reveal" data-reveal>
+            Lab Informatics and Scientific Applications leader with 10+ years across regulated biopharma IT—connecting laboratories, quality, data, automation, and compliance into systems teams can trust.
           </p>
 
-          <div class="hero-cta-row">
-            <a href="#contact" class="btn-primary">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-              Let's Connect
-            </a>
-            <a href="mailto:Midhunkrothapalli@yahoo.com?subject=Resume%20Request%20%E2%80%94%20[Your%20Name]&body=Hi%20Midhun%2C%0A%0AI%20came%20across%20your%20portfolio%20and%20would%20love%20to%20review%20your%20resume.%0A%0AThank%20you!" class="btn-resume">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-              Request Resume
-            </a>
-            <a href="#experience" class="btn-ghost">View My Work</a>
+          <div class="hero-actions reveal" data-reveal>
+            <a class="btn btn-primary magnetic" href="#experience">Explore my work <span aria-hidden="true">↘</span></a>
+            <a class="btn btn-ghost magnetic" href="mailto:Midhunkrothapalli@yahoo.com?subject=Resume%20Request">Request resume</a>
           </div>
 
-          <div class="hero-floating-tags">
-            <span class="ftag">LIS / LIMS</span>
-            <span class="ftag">Veeva Vault RIMS</span>
-            <span class="ftag">GxP Compliance</span>
-            <span class="ftag">21 CFR Part 11</span>
-            <span class="ftag">Digital Product Owner</span>
-            <span class="ftag">Gilead Sciences</span>
+          <div class="hero-proof reveal" data-reveal>
+            <div><strong data-count="10">0</strong><span>+ years</span><small>regulated biopharma IT</small></div>
+            <div><strong data-count="40">0</strong><span>%</span><small>manual effort reduced</small></div>
+            <div><strong data-count="20">0</strong><span>%</span><small>faster turnaround</small></div>
           </div>
         </div>
 
-        <div class="hero-right">
-          <div class="profile-photo-wrap reveal delay-1">
-            <div class="profile-photo-ring"></div>
-            <div class="profile-photo-ring ring-2"></div>
-            <img
-              src="profile.jpeg"
-              alt="Midhun Krothapalli — Lab Informatics & LIS Lead"
-              class="profile-photo"
-              width="420" height="346"
-              loading="eager"
-            />
-            <div class="profile-photo-badge">
-              <span class="badge-dot"></span>
-              <span class="mono">Available</span>
+        <div class="hero-visual reveal" data-reveal>
+          <div class="portrait-card tilt-card" data-tilt>
+            <div class="portrait-glow" aria-hidden="true"></div>
+            <img src="profile.jpeg" alt="Portrait of Midhun Krothapalli" width="640" height="760" fetchpriority="high">
+            <div class="portrait-meta">
+              <span class="mono">SYSTEM STATUS</span>
+              <strong>Available for the right opportunity</strong>
             </div>
           </div>
 
-          <div class="hero-stats">
-            <div class="stat-card reveal delay-1">
-              <span class="stat-num" data-target="10">0</span><span class="stat-plus">+</span>
-              <span class="stat-label">Years in Pharma</span>
-            </div>
-            <div class="stat-card reveal delay-2">
-              <span class="stat-num" data-target="40">0</span><span class="stat-plus">%</span>
-              <span class="stat-label">Manual Effort Reduced</span>
-            </div>
-            <div class="stat-card reveal delay-3">
-              <span class="stat-num" data-target="25">0</span><span class="stat-plus">%</span>
-              <span class="stat-label">Data Quality Uplift</span>
-            </div>
-            <div class="stat-card reveal delay-4">
-              <span class="stat-num" data-target="20">0</span><span class="stat-plus">%</span>
-              <span class="stat-label">Faster Turnaround</span>
-            </div>
+          <div class="floating-card card-a" aria-hidden="true">
+            <span class="mono">STACK</span>
+            <strong>LIS · LIMS · ELN · SDMS</strong>
           </div>
+          <div class="floating-card card-b" aria-hidden="true">
+            <span class="mono">COMPLIANCE</span>
+            <strong>GxP · CSV/CSA · Part 11</strong>
+          </div>
+        </div>
+      </div>
 
-          <div class="terminal-card reveal delay-2">
-            <div class="terminal-bar">
-              <span class="dot red"></span>
-              <span class="dot yellow"></span>
-              <span class="dot green"></span>
-              <span class="mono terminal-title">midhun@gilead — zsh</span>
-            </div>
-            <div class="terminal-body">
-              <div class="terminal-line">
-                <span class="prompt mono">❯</span>
-                <span class="cmd mono" id="typedCmd"></span>
-                <span class="cursor-blink mono" id="cursor">▋</span>
-              </div>
-              <div class="terminal-output mono" id="terminalOutput"></div>
-            </div>
-          </div>
+      <div class="container marquee-wrap" aria-label="Core expertise">
+        <div class="marquee-track">
+          <span>Lab Informatics</span><i>•</i><span>LIS / LIMS</span><i>•</i><span>Scientific Applications</span><i>•</i><span>Veeva</span><i>•</i><span>Validation</span><i>•</i><span>Automation</span><i>•</i><span>Digital Quality</span><i>•</i>
+          <span aria-hidden="true">Lab Informatics</span><i aria-hidden="true">•</i><span aria-hidden="true">LIS / LIMS</span><i aria-hidden="true">•</i><span aria-hidden="true">Scientific Applications</span><i aria-hidden="true">•</i><span aria-hidden="true">Veeva</span><i aria-hidden="true">•</i><span aria-hidden="true">Validation</span><i aria-hidden="true">•</i><span aria-hidden="true">Automation</span><i aria-hidden="true">•</i><span aria-hidden="true">Digital Quality</span><i aria-hidden="true">•</i>
         </div>
       </div>
     </section>
 
-    <!-- ABOUT -->
     <section class="section" id="about">
+      <div class="container section-grid">
+        <div class="section-kicker reveal" data-reveal><span>01</span> ABOUT</div>
+        <div>
+          <h2 class="section-title reveal" data-reveal>Turning complex regulated workflows into <span class="muted">clear, scalable systems.</span></h2>
+          <div class="about-grid">
+            <div class="about-copy reveal" data-reveal>
+              <p>I work where laboratory science, enterprise technology, and compliance meet. My focus is not simply keeping systems running—it is building digital products that improve how scientists work while remaining robust under validation, audit, and inspection.</p>
+              <p>My experience spans system ownership, LIS/LIMS, ELN/LES, SDMS, Veeva platforms, CSV/CSA, integrations, automation, data governance, and multi-site delivery in regulated environments.</p>
+            </div>
+            <div class="principles reveal" data-reveal>
+              <article><span>01</span><div><strong>Compliance by design</strong><p>Controls, traceability, and risk are designed into the product—not bolted on later.</p></div></article>
+              <article><span>02</span><div><strong>Science-first usability</strong><p>Systems should simplify laboratory execution, not create administrative friction.</p></div></article>
+              <article><span>03</span><div><strong>Operational ownership</strong><p>Roadmaps, reliability, lifecycle, validation, and stakeholder outcomes all matter.</p></div></article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-dark" id="experience">
+      <div class="container section-grid">
+        <div class="section-kicker reveal" data-reveal><span>02</span> EXPERIENCE</div>
+        <div>
+          <div class="section-heading-row">
+            <h2 class="section-title reveal" data-reveal>Selected experience</h2>
+            <p class="section-intro reveal" data-reveal>Leadership across scientific applications, laboratory systems, validation, regulatory platforms, and digital transformation.</p>
+          </div>
+
+          <div class="timeline" id="timeline">
+            <div class="timeline-line" aria-hidden="true"><span id="timelineFill"></span></div>
+
+            <article class="timeline-item reveal" data-reveal>
+              <div class="timeline-marker"></div>
+              <div class="timeline-date mono">2024 — PRESENT</div>
+              <div class="timeline-card tilt-card" data-tilt>
+                <span class="role-badge">SCIENTIFIC APPLICATIONS</span>
+                <h3>System Manager / Digital Product Leadership</h3>
+                <p class="company">Enterprise laboratory and regulated digital platforms</p>
+                <p>Own product strategy, governance, lifecycle, compliance, integrations, and cross-functional delivery for scientific and quality technology portfolios.</p>
+                <div class="tag-row"><span>LIS/LIMS</span><span>Roadmaps</span><span>GxP</span><span>Integrations</span></div>
+              </div>
+            </article>
+
+            <article class="timeline-item reveal" data-reveal>
+              <div class="timeline-marker"></div>
+              <div class="timeline-date mono">2022 — 2024</div>
+              <div class="timeline-card tilt-card" data-tilt>
+                <span class="role-badge">LAB INFORMATICS</span>
+                <h3>LIS Project Lead / Scientific Data Management</h3>
+                <p class="company">Large-scale laboratory implementations and platform enhancements</p>
+                <p>Led system delivery across R&D and quality environments, improving traceability, validation readiness, data movement, and operational support.</p>
+                <div class="tag-row"><span>Implementation</span><span>Validation</span><span>Data</span><span>Quality</span></div>
+              </div>
+            </article>
+
+            <article class="timeline-item reveal" data-reveal>
+              <div class="timeline-marker"></div>
+              <div class="timeline-date mono">2020 — 2022</div>
+              <div class="timeline-card tilt-card" data-tilt>
+                <span class="role-badge">LAB SYSTEMS</span>
+                <h3>Senior Administrator / Systems Lead</h3>
+                <p class="company">Laboratory operations, instrument integration, and compliance</p>
+                <p>Drove workflow improvements, instrument integrations, reporting, validated changes, and lifecycle support across regulated laboratory systems.</p>
+                <div class="tag-row"><span>Part 11</span><span>GAMP 5</span><span>IQ/OQ/PQ</span><span>Instruments</span></div>
+              </div>
+            </article>
+
+            <article class="timeline-item reveal" data-reveal>
+              <div class="timeline-marker"></div>
+              <div class="timeline-date mono">EARLIER</div>
+              <div class="timeline-card tilt-card" data-tilt>
+                <span class="role-badge">FOUNDATION</span>
+                <h3>Progressive roles in systems, validation & automation</h3>
+                <p class="company">Regulated life sciences and enterprise technology</p>
+                <p>Built depth across system administration, validation, production support, integration, automation, data quality, and stakeholder delivery.</p>
+                <div class="tag-row"><span>CSV</span><span>Automation</span><span>Support</span><span>Governance</span></div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="expertise">
+      <div class="container section-grid">
+        <div class="section-kicker reveal" data-reveal><span>03</span> EXPERTISE</div>
+        <div>
+          <h2 class="section-title reveal" data-reveal>Deep domain knowledge. <span class="muted">Practical delivery.</span></h2>
+          <div class="expertise-grid">
+            <article class="expertise-card reveal tilt-card" data-reveal data-tilt>
+              <span class="expertise-index mono">01</span><h3>Lab Informatics</h3><p>LIS/LIMS, ELN/LES, SDMS, sample workflows, instrument integration, laboratory data, operational reporting.</p>
+            </article>
+            <article class="expertise-card reveal tilt-card" data-reveal data-tilt>
+              <span class="expertise-index mono">02</span><h3>Validation & Quality</h3><p>CSV/CSA, GxP, 21 CFR Part 11, Annex 11, GAMP 5, risk assessment, IQ/OQ/PQ, change control, periodic review.</p>
+            </article>
+            <article class="expertise-card reveal tilt-card" data-reveal data-tilt>
+              <span class="expertise-index mono">03</span><h3>Digital Platforms</h3><p>Veeva, scientific applications, QMS, RIMS, MES/EBR, document workflows, integrations, data governance.</p>
+            </article>
+            <article class="expertise-card reveal tilt-card" data-reveal data-tilt>
+              <span class="expertise-index mono">04</span><h3>Automation & Engineering</h3><p>Python, PowerShell, SQL, Oracle, APIs, workflow automation, data pipelines, access review, reporting and monitoring.</p>
+            </article>
+            <article class="expertise-card reveal tilt-card" data-reveal data-tilt>
+              <span class="expertise-index mono">05</span><h3>Product Ownership</h3><p>Roadmaps, portfolio strategy, stakeholder alignment, requirements, vendors, operational metrics, lifecycle management.</p>
+            </article>
+            <article class="expertise-card reveal tilt-card" data-reveal data-tilt>
+              <span class="expertise-index mono">06</span><h3>Regulated Delivery</h3><p>Global rollouts, audits, inspection readiness, remediation, CAPA support, controlled releases, service transition.</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-accent" id="impact">
       <div class="container">
-        <div class="section-label">01 &mdash; ABOUT</div>
-        <h2 class="section-heading reveal">The Person Behind the Platform</h2>
-        <div class="about-grid">
-          <div class="about-text reveal-left">
-            <p>I engineer laboratory and regulatory digital systems at the intersection of <strong>life sciences, GxP compliance, and enterprise technology</strong>. Over 10 years at Gilead Sciences, I've grown from hands-on LIS support engineer to Digital Product Owner of globally deployed lab platforms — building systems that keep pace with both science and regulators.</p>
-            <p>From architecting LIS/LIMS infrastructure to leading <strong>Veeva Vault RIMS integrations</strong> across global R&amp;D and GMP environments, my work translates complex laboratory requirements into scalable, audit-ready digital solutions that scientists and compliance teams can depend on.</p>
-            <p>My philosophy: the best pharma digital systems are both technically rigorous and inspection-ready from the first commit. I don't retrofit compliance — I build it in.</p>
-          </div>
-          <div class="about-stats-grid">
-            <div class="mini-stat reveal delay-1">
-              <span class="mini-num">10+</span>
-              <span class="mini-label">Years at Gilead Sciences</span>
-            </div>
-            <div class="mini-stat reveal delay-2">
-              <span class="mini-num">4+</span>
-              <span class="mini-label">Progressive Promotions</span>
-            </div>
-            <div class="mini-stat reveal delay-3">
-              <span class="mini-num">GxP</span>
-              <span class="mini-label">Compliance Expert</span>
-            </div>
-            <div class="mini-stat reveal delay-4">
-              <span class="mini-num">RIMS</span>
-              <span class="mini-label">Veeva Vault Lead</span>
-            </div>
-          </div>
+        <div class="section-kicker reveal" data-reveal><span>04</span> IMPACT</div>
+        <h2 class="impact-title reveal" data-reveal>Systems are valuable when they change outcomes.</h2>
+        <div class="impact-grid">
+          <article class="impact-card reveal" data-reveal><strong data-count="40">0</strong><span>%</span><p>reduction in manual handling through workflow automation and digital process redesign.</p></article>
+          <article class="impact-card reveal" data-reveal><strong data-count="25">0</strong><span>%</span><p>data quality uplift through governance, workflow controls, and improved data stewardship.</p></article>
+          <article class="impact-card reveal" data-reveal><strong data-count="20">0</strong><span>%</span><p>faster turnaround from laboratory workflow optimization and system improvements.</p></article>
+          <article class="impact-card reveal" data-reveal><strong>24/7</strong><p>operational mindset for systems that support regulated science and critical business processes.</p></article>
         </div>
       </div>
     </section>
 
-    <!-- EXPERIENCE -->
-    <section class="section section-alt" id="experience">
-      <div class="container">
-        <div class="section-label">02 &mdash; EXPERIENCE</div>
-        <h2 class="section-heading reveal">Career Timeline</h2>
-        <div class="timeline">
-
-          <div class="timeline-item reveal">
-            <div class="timeline-dot"></div>
-            <div class="timeline-content">
-              <div class="timeline-meta">
-                <span class="role-tag">CURRENT ROLE</span>
-                <span class="period">Jan 2024 — Present</span>
-              </div>
-              <h3>System Manager — Scientific Applications</h3>
-              <p class="company">Gilead Sciences &middot; Digital Product Owner &middot; Foster City, CA</p>
-              <ul class="bullet-list">
-                <li>Own strategy, governance, and full lifecycle management for enterprise LIS/LIMS and laboratory digital platforms serving global R&amp;D and GMP sites</li>
-                <li>Forge cross-functional partnerships across Quality, Regulatory Affairs, and R&amp;D to deliver compliant, scalable laboratory workflows and data management solutions</li>
-                <li>Oversee Veeva Vault RIMS platform administration, integrations, and health authority submission workflows supporting global regulatory operations</li>
-                <li>Architect and deliver cross-platform integrations connecting LIS, ELN, SDMS, and regulatory systems into a unified data fabric</li>
-                <li>Define and execute a multi-year product roadmap for laboratory digital platforms, balancing innovation with regulatory obligation</li>
-              </ul>
-              <div class="achievements-chips">
-                <span class="chip">+25% data quality</span>
-                <span class="chip">Global site standardization</span>
-                <span class="chip">Real-time analytics</span>
-              </div>
+    <section class="section" id="knowledge">
+      <div class="container section-grid">
+        <div class="section-kicker reveal" data-reveal><span>05</span> KNOWLEDGE</div>
+        <div>
+          <h2 class="section-title reveal" data-reveal>A working knowledge base for regulated technology.</h2>
+          <a class="knowledge-card reveal magnetic" data-reveal href="kb/index.html" target="_blank" rel="noopener noreferrer">
+            <div>
+              <span class="mono">PRIVATE REFERENCE LIBRARY</span>
+              <h3>GxP systems, validation, Veeva, quality and operating playbooks.</h3>
+              <p>Curated practical references built from real-world system ownership and regulated delivery.</p>
             </div>
-          </div>
-
-          <div class="timeline-item reveal">
-            <div class="timeline-dot"></div>
-            <div class="timeline-content">
-              <div class="timeline-meta">
-                <span class="period">Sep 2022 — Jan 2024</span>
-              </div>
-              <h3>Scientific Data Management — LIS Project Lead</h3>
-              <p class="company">Gilead Sciences &middot; Foster City, CA</p>
-              <ul class="bullet-list">
-                <li>Served as technical and functional lead for large-scale LIS implementations, upgrades, and platform enhancements across R&amp;D and Quality environments</li>
-                <li>Collaborated with Regulatory Affairs and Quality Assurance on Veeva RIMS data integration, health authority tracking, and submission readiness</li>
-                <li>Designed and delivered laboratory data pipelines that substantially improved traceability, audit trails, and compliance reporting</li>
-                <li>Ensured all system enhancements met GxP validation standards, audit requirements, and change control obligations</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="timeline-item reveal">
-            <div class="timeline-dot"></div>
-            <div class="timeline-content">
-              <div class="timeline-meta">
-                <span class="period">Jan 2020 — Sep 2022</span>
-              </div>
-              <h3>Lab Information Systems — Senior Administrator</h3>
-              <p class="company">Gilead Sciences &middot; Foster City, CA</p>
-              <ul class="bullet-list">
-                <li>Drove LIS workflow re-engineering that reduced sample turnaround time by 20%, directly improving laboratory operational efficiency</li>
-                <li>Led instrument integration initiatives, sample lifecycle tracking improvements, and advanced laboratory reporting capabilities</li>
-                <li>Authored comprehensive validation documentation — IQ/OQ/PQ protocols, risk assessments, and change control packages — ensuring sustained compliance</li>
-                <li>Maintained strict adherence to 21 CFR Part 11, GAMP 5, and GxP standards across all systems and processes</li>
-              </ul>
-              <div class="achievements-chips">
-                <span class="chip">-20% turnaround</span>
-                <span class="chip">21 CFR Part 11</span>
-                <span class="chip">GAMP 5</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="timeline-item reveal">
-            <div class="timeline-dot"></div>
-            <div class="timeline-content">
-              <div class="timeline-meta">
-                <span class="period">2016 — 2020</span>
-              </div>
-              <h3>Progressive Leadership — Lab Systems &amp; Validation</h3>
-              <p class="company">Gilead Sciences &middot; LIS Support → Administrator → Senior Administrator → Validation Engineer</p>
-              <ul class="bullet-list">
-                <li>Progressed through four distinct roles supporting Digital Quality Lab Systems in both GMP manufacturing and R&amp;D research environments</li>
-                <li>Drove instrument integrations, data pipeline enhancements, and reporting tool improvements that measurably raised platform reliability and data accuracy</li>
-                <li>Developed a strong validation foundation, authoring risk assessments, formal change controls, and regulatory documentation aligned with GxP frameworks</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="timeline-item reveal">
-            <div class="timeline-dot edu-dot"></div>
-            <div class="timeline-content">
-              <div class="timeline-meta">
-                <span class="role-tag edu-tag">EDUCATION</span>
-              </div>
-              <h3>Master of Science — Computer Science</h3>
-              <p class="company">Silicon Valley University &middot; San Jose, CA</p>
-            </div>
-          </div>
-
-          <div class="timeline-item reveal">
-            <div class="timeline-dot edu-dot"></div>
-            <div class="timeline-content">
-              <div class="timeline-meta">
-                <span class="role-tag edu-tag">EDUCATION</span>
-              </div>
-              <h3>Bachelor of Technology — Mechanical Engineering</h3>
-              <p class="company">Jawaharlal Nehru Technological University (JNTU) &middot; Kakinada, India</p>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- SKILLS -->
-    <section class="section" id="skills">
-      <div class="container">
-        <div class="section-label">03 &mdash; SKILLS</div>
-        <h2 class="section-heading reveal">Technical Expertise</h2>
-        <div class="skills-grid">
-          <div class="skill-group reveal delay-1">
-            <div class="skill-group-title">Lab Informatics</div>
-            <div class="skill-tags">
-              <span class="tag">LIS / LIMS</span>
-              <span class="tag">ELN (BIOVIA / Benchling)</span>
-              <span class="tag">SDMS</span>
-              <span class="tag">Instrument Integration</span>
-              <span class="tag">Data Pipelines</span>
-              <span class="tag">Analytical Reporting</span>
-            </div>
-          </div>
-          <div class="skill-group reveal delay-2">
-            <div class="skill-group-title">Regulatory Platforms</div>
-            <div class="skill-tags">
-              <span class="tag">Veeva Vault RIMS</span>
-              <span class="tag">Regulatory Submissions</span>
-              <span class="tag">Document Management</span>
-              <span class="tag">Health Authority Tracking</span>
-              <span class="tag">Data Governance</span>
-            </div>
-          </div>
-          <div class="skill-group reveal delay-3">
-            <div class="skill-group-title">Compliance &amp; Validation</div>
-            <div class="skill-tags">
-              <span class="tag">GxP (GMP / GLP / GCP)</span>
-              <span class="tag">21 CFR Part 11</span>
-              <span class="tag">Annex 11</span>
-              <span class="tag">GAMP 5</span>
-              <span class="tag">HIPAA / GDPR</span>
-              <span class="tag">CLIA / CAP</span>
-              <span class="tag">CSV / CSA</span>
-              <span class="tag">IQ / OQ / PQ</span>
-            </div>
-          </div>
-          <div class="skill-group reveal delay-1">
-            <div class="skill-group-title">Digital Quality Systems</div>
-            <div class="skill-tags">
-              <span class="tag">MES</span>
-              <span class="tag">QMS</span>
-              <span class="tag">EDC</span>
-              <span class="tag">RIMS</span>
-            </div>
-          </div>
-          <div class="skill-group reveal delay-2">
-            <div class="skill-group-title">Technical Stack</div>
-            <div class="skill-tags">
-              <span class="tag">Python</span>
-              <span class="tag">PowerShell</span>
-              <span class="tag">Bash</span>
-              <span class="tag">Oracle (10g / 19c)</span>
-              <span class="tag">SQL Server</span>
-              <span class="tag">AWS Cloud</span>
-              <span class="tag">Linux</span>
-              <span class="tag">Apache Tomcat</span>
-              <span class="tag">WebLogic</span>
-            </div>
-          </div>
-          <div class="skill-group reveal delay-3">
-            <div class="skill-group-title">Product &amp; Delivery</div>
-            <div class="skill-tags">
-              <span class="tag">Agile / Scrum / Kanban</span>
-              <span class="tag">JIRA</span>
-              <span class="tag">ServiceNow</span>
-              <span class="tag">Product Roadmapping</span>
-              <span class="tag">User Story Development</span>
-              <span class="tag">Stakeholder Alignment</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ACHIEVEMENTS -->
-    <section class="section section-alt" id="achievements">
-      <div class="container">
-        <div class="section-label">04 &mdash; IMPACT</div>
-        <h2 class="section-heading reveal">Measurable Outcomes</h2>
-        <div class="achievements-grid">
-          <div class="achievement-card reveal delay-1">
-            <div class="ach-icon">01</div>
-            <p>Directed <strong>enterprise LIS platform governance</strong> for global laboratories across Gilead Sciences, ensuring continuous compliance and operational continuity</p>
-          </div>
-          <div class="achievement-card reveal delay-2">
-            <div class="ach-icon">02</div>
-            <p>Delivered end-to-end integrations spanning <strong>LIS, ELN, SDMS, and Veeva RIMS</strong> in GxP-regulated environments, eliminating data silos and accelerating regulatory workflows</p>
-          </div>
-          <div class="achievement-card reveal delay-3">
-            <div class="ach-icon">03</div>
-            <p>Cut manual laboratory data handling by <strong>40%</strong> through targeted workflow automation, digital form adoption, and intelligent data routing solutions</p>
-          </div>
-          <div class="achievement-card reveal delay-1">
-            <div class="ach-icon">04</div>
-            <p>Established <strong>real-time operational dashboards</strong> for laboratory and regulatory data, empowering R&amp;D and Quality leadership with instant, audit-ready visibility</p>
-          </div>
-          <div class="achievement-card reveal delay-2">
-            <div class="ach-icon">05</div>
-            <p>Delivered multi-site systems achieving sustained <strong>GxP compliance and inspection readiness</strong>, supporting successful health authority inspections across global facilities</p>
-          </div>
-          <div class="achievement-card reveal delay-3">
-            <div class="ach-icon">06</div>
-            <p>Elevated laboratory data quality and usability by <strong>25%</strong> through systematic workflow optimization, governance enforcement, and proactive data stewardship</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- KNOWLEDGE BASE -->
-    <section class="section" id="kb">
-      <div class="container">
-        <div class="section-label">05 &mdash; KNOWLEDGE BASE</div>
-        <h2 class="section-heading reveal">GxP Reference Library</h2>
-        <p class="contact-sub reveal" style="margin-bottom:2.5rem;">Curated reference materials on GxP system validation, Veeva Vault QMS &amp; RIM administration, and regulatory compliance frameworks. Password-protected — request access below.</p>
-        <div class="kb-cards-row">
-
-          <!-- KB Card 1 -->
-          <a class="kb-entry-card reveal delay-1" href="kb/index.html" target="_blank" rel="noopener noreferrer">
-            <div class="kb-entry-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-            </div>
-            <div class="kb-entry-body">
-              <div class="kb-entry-tag">KB-001 · GxP · CSV · GAMP 5</div>
-              <div class="kb-entry-title">GxP System Lifecycle Reference Guide</div>
-              <div class="kb-entry-desc">Onboarding, IQ/OQ/PQ, Change Control, Periodic Review, ALCOA+, Decommissioning — full lifecycle from SIA to retirement.</div>
-              <div class="kb-entry-chips">
-                <span class="chip">IQ / OQ / PQ</span>
-                <span class="chip">Change Control</span>
-                <span class="chip">21 CFR Part 11</span>
-                <span class="chip">RTM</span>
-              </div>
-            </div>
-            <div class="kb-entry-cta">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </div>
-          </a>
-
-          <!-- KB Card 2 -->
-          <a class="kb-entry-card reveal delay-2" href="kb/index.html" target="_blank" rel="noopener noreferrer">
-            <div class="kb-entry-icon" style="background:rgba(99,102,241,0.12);border-color:rgba(99,102,241,0.25);color:#818cf8;">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h1v6H9zM14 9h1v6h-1z"/></svg>
-            </div>
-            <div class="kb-entry-body">
-              <div class="kb-entry-tag">KB-002 · Veeva · QMS · RIM</div>
-              <div class="kb-entry-title">Veeva Vault QMS &amp; RIM — Q&amp;A</div>
-              <div class="kb-entry-desc">32 deep technical and process questions at Admin &amp; Validation Lead level. Lifecycle config, eCTD publishing, e-signatures, CSV strategy.</div>
-              <div class="kb-entry-chips">
-                <span class="chip">Vault QMS</span>
-                <span class="chip">Vault RIM</span>
-                <span class="chip">eCTD</span>
-                <span class="chip">CSV</span>
-              </div>
-            </div>
-            <div class="kb-entry-cta">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </div>
-          </a>
-
-          <!-- KB Card 3 -->
-          <a class="kb-entry-card reveal delay-2" href="kb/index.html" target="_blank" rel="noopener noreferrer">
-            <div class="kb-entry-icon" style="background:rgba(16,185,129,0.1);border-color:rgba(16,185,129,0.25);color:#10b981;">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>
-            </div>
-            <div class="kb-entry-body">
-              <div class="kb-entry-tag">KB-003 · LabWare · Biovia ELN · LIS</div>
-              <div class="kb-entry-title">LabWare LIMS · Biovia ELN &amp; LIS — Q&amp;A</div>
-              <div class="kb-entry-desc">25 technical questions at Admin &amp; Validation Lead level. LIMS architecture, ELN workflows, HL7 integration, OOS handling, ALCOA+.</div>
-              <div class="kb-entry-chips">
-                <span class="chip">LabWare</span>
-                <span class="chip">Biovia ELN</span>
-                <span class="chip">LIS · HL7</span>
-                <span class="chip">OOS</span>
-              </div>
-            </div>
-            <div class="kb-entry-cta">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </div>
-          </a>
-
-        </div>
-
-        <!-- Access note -->
-        <div class="kb-access-note reveal">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          Password protected &mdash;
-          <a href="mailto:Midhunkrothapalli@yahoo.com?subject=KB%20Access%20Request&body=Hi%20Midhun%2C%0A%0AI'd%20like%20to%20request%20access%20to%20your%20GxP%20Knowledge%20Base.%0A%0AMy%20name%3A%20%0AMy%20role%20%2F%20company%3A%20%0AReason%20for%20access%3A%0A%0AThank%20you!">email me to request access</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section class="section contact-section" id="contact">
-      <div class="container contact-inner">
-        <div class="section-label">06 &mdash; CONTACT</div>
-        <h2 class="section-heading reveal">Let's Build Something Great</h2>
-        <p class="contact-sub reveal">I'm actively exploring senior leadership roles in lab informatics, regulatory systems, and pharma digital transformation. If you're building something that demands both technical depth and compliance rigor — let's talk.</p>
-        <div class="contact-links">
-          <a href="mailto:Midhunkrothapalli@yahoo.com" class="contact-card reveal delay-1">
-            <div class="contact-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-            </div>
-            <div class="contact-info">
-              <span class="contact-label">EMAIL</span>
-              <span class="contact-value">Midhunkrothapalli@yahoo.com</span>
-            </div>
-            <svg class="contact-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
-          <a href="tel:3463231393" class="contact-card reveal delay-2">
-            <div class="contact-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12 19.79 19.79 0 0 1 1.1 3.4 2 2 0 0 1 3.08 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-            </div>
-            <div class="contact-info">
-              <span class="contact-label">PHONE</span>
-              <span class="contact-value">(346) 323-1393</span>
-            </div>
-            <svg class="contact-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
-          <a href="https://www.linkedin.com/in/midhunkrothapalli" target="_blank" rel="noopener noreferrer" class="contact-card reveal delay-3">
-            <div class="contact-icon">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
-            </div>
-            <div class="contact-info">
-              <span class="contact-label">LINKEDIN</span>
-              <span class="contact-value">Connect on LinkedIn</span>
-            </div>
-            <svg class="contact-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <span class="knowledge-arrow" aria-hidden="true">↗</span>
           </a>
         </div>
       </div>
     </section>
 
+    <section class="contact" id="contact">
+      <div class="container contact-inner reveal" data-reveal>
+        <span class="mono">LET'S BUILD SOMETHING THAT HOLDS UP UNDER SCRUTINY.</span>
+        <h2>Need someone who can speak science, systems, and compliance?</h2>
+        <div class="contact-actions">
+          <a class="btn btn-light magnetic" href="mailto:Midhunkrothapalli@yahoo.com?subject=Portfolio%20Inquiry">Start a conversation <span aria-hidden="true">↗</span></a>
+          <a class="text-link" href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <footer class="site-footer">
+  <footer class="footer">
     <div class="container footer-inner">
-      <span class="footer-text">&copy; 2026 Midhun Krothapalli</span>
-      <span class="footer-text mono">Crafted with precision.</span>
+      <span>© <span id="year"></span> Midhun Krothapalli</span>
+      <span class="mono">LAB INFORMATICS · DIGITAL QUALITY · GxP TECHNOLOGY</span>
     </div>
   </footer>
 
