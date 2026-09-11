@@ -10,7 +10,6 @@
 
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  // Header + page progress + scroll-linked timeline.
   const onScroll = () => {
     const y = window.scrollY;
     header?.classList.toggle('scrolled', y > 24);
@@ -31,7 +30,6 @@
   onScroll();
   window.addEventListener('scroll', onScroll, { passive: true });
 
-  // Mobile nav.
   menuToggle?.addEventListener('click', () => {
     const open = mobileMenu.classList.toggle('open');
     menuToggle.classList.toggle('active', open);
@@ -46,7 +44,6 @@
     })
   );
 
-  // Reveal choreography.
   const revealEls = [...document.querySelectorAll('[data-reveal]')];
 
   if (reduceMotion || !('IntersectionObserver' in window)) {
@@ -70,7 +67,6 @@
     revealEls.forEach(el => io.observe(el));
   }
 
-  // Number counters trigger once when visible.
   const counters = [...document.querySelectorAll('[data-count]')];
 
   const runCounter = el => {
@@ -116,7 +112,6 @@
     counters.forEach(runCounter);
   }
 
-  // Cursor spotlight on fine pointers only.
   if (
     !reduceMotion &&
     window.matchMedia('(pointer:fine)').matches &&
@@ -149,7 +144,6 @@
     animateSpot();
   }
 
-  // Premium, restrained 3D tilt for cards.
   if (
     !reduceMotion &&
     window.matchMedia('(pointer:fine)').matches
@@ -180,7 +174,6 @@
       });
     });
 
-    // Magnetic CTA movement.
     document.querySelectorAll('.magnetic').forEach(el => {
       el.addEventListener('pointermove', e => {
         const r = el.getBoundingClientRect();
@@ -199,4 +192,98 @@
       });
     });
   }
+})();
+
+// CHAKRA featured engineering project.
+(() => {
+  if (document.getElementById('chakra')) return;
+
+  const css = document.createElement('link');
+  css.rel = 'stylesheet';
+  css.href = 'chakra.css';
+  document.head.appendChild(css);
+
+  const desktopNav = document.querySelector('.nav-links');
+  const mobileNav = document.getElementById('mobileMenu');
+  const projectLink = '<a href="#chakra">Projects</a>';
+
+  if (desktopNav && !desktopNav.querySelector('a[href="#chakra"]')) {
+    desktopNav.insertAdjacentHTML('beforeend', projectLink);
+  }
+  if (mobileNav && !mobileNav.querySelector('a[href="#chakra"]')) {
+    mobileNav.querySelector('a[href="#knowledge"]')?.insertAdjacentHTML('beforebegin', projectLink);
+  }
+
+  const knowledge = document.getElementById('knowledge');
+  if (!knowledge) return;
+
+  const section = document.createElement('section');
+  section.className = 'chakra-section';
+  section.id = 'chakra';
+  section.innerHTML = `
+    <div class="container chakra-wrap">
+      <div class="chakra-kicker reveal in-view" data-reveal>
+        <span>05</span>
+        <span>FEATURED ENGINEERING PROJECT</span>
+        <span class="chakra-status">ACTIVE RESEARCH</span>
+      </div>
+
+      <div class="chakra-head">
+        <h2 class="chakra-title reveal in-view" data-reveal>CHAKRA <em>Market Intelligence</em></h2>
+        <p class="chakra-intro reveal in-view" data-reveal>
+          A research-driven platform for SPX/SPY and index-options market intelligence—built to turn raw market data into structured, quality-gated setups before any execution layer is allowed to exist.
+        </p>
+      </div>
+
+      <div class="chakra-panel reveal in-view" data-reveal>
+        <div class="chakra-console">
+          <div class="chakra-visual">
+            <div class="chakra-topline">
+              <span class="chakra-label">SIGNAL PIPELINE / OBSERVATION MODE</span>
+              <span class="chakra-live">● ARCHITECTURE IN VALIDATION</span>
+            </div>
+            <div class="chakra-flow" aria-label="CHAKRA system flow">
+              <div class="chakra-node">Market<br>Data</div>
+              <div class="chakra-node">Domain<br>Model</div>
+              <div class="chakra-node">Shared<br>State</div>
+              <div class="chakra-node">Scoring<br>Engine</div>
+              <div class="chakra-node">Discord<br>Alerts</div>
+            </div>
+            <div class="chakra-wave" aria-hidden="true">
+              <svg viewBox="0 0 700 100" preserveAspectRatio="none">
+                <defs><linearGradient id="cw" x1="0" x2="1"><stop offset="0" stop-color="#62e6d1"/><stop offset=".5" stop-color="#6ea8ff"/><stop offset="1" stop-color="#9b8cff"/></linearGradient></defs>
+                <path d="M0 62 C55 68 72 32 124 42 S203 78 251 54 S335 22 380 47 S463 82 511 53 S595 34 700 45" fill="none" stroke="url(#cw)" stroke-width="2" opacity=".95"/>
+                <path d="M0 72 C55 78 72 42 124 52 S203 88 251 64 S335 32 380 57 S463 92 511 63 S595 44 700 55" fill="none" stroke="url(#cw)" stroke-width="1" opacity=".22"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="chakra-details">
+            <span class="chakra-label">QUANTITATIVE RESEARCH · PERSONAL PROJECT</span>
+            <h3>Engineered for confidence before live operation.</h3>
+            <p>
+              CHAKRA is being developed through staged architecture, data-quality, state-management, recovery, and acceptance-validation phases. The current objective is high-quality market setup intelligence and Discord notifications—not autonomous trading.
+            </p>
+            <div class="chakra-tags">
+              <span>SPX / SPY</span><span>0–5 DTE</span><span>Python</span><span>Options Data</span><span>Data Quality</span><span>Observability</span><span>Risk Gates</span>
+            </div>
+            <div class="chakra-metrics">
+              <div class="chakra-metric"><strong>0–5</strong><small>DTE research universe</small></div>
+              <div class="chakra-metric"><strong>Offline</strong><small>validation-first design</small></div>
+              <div class="chakra-metric"><strong>Discord</strong><small>setup-notification target</small></div>
+            </div>
+            <div class="chakra-note">Research/engineering project only. No performance claims and no financial advice.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chakra-principles">
+        <article class="chakra-principle reveal in-view" data-reveal><span>01</span><strong>Canonical data</strong><p>Normalize instruments, contracts, calendars, and market observations before strategy logic.</p></article>
+        <article class="chakra-principle reveal in-view" data-reveal><span>02</span><strong>Quality gates</strong><p>Stale, conflicting, incomplete, or structurally invalid data should never silently become a setup.</p></article>
+        <article class="chakra-principle reveal in-view" data-reveal><span>03</span><strong>Shared state</strong><p>Typed ownership, freshness, revisions, and publication boundaries make downstream reasoning inspectable.</p></article>
+        <article class="chakra-principle reveal in-view" data-reveal><span>04</span><strong>Controlled rollout</strong><p>Observation and alerting come before paper execution; live execution comes only after acceptance confidence.</p></article>
+      </div>
+    </div>`;
+
+  knowledge.parentNode.insertBefore(section, knowledge);
 })();
